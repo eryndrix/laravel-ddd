@@ -1,0 +1,32 @@
+services:
+  # Watchtower auto-update service
+  watchtower:
+    image: containrrr/watchtower:latest
+    restart: unless-stopped
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      TZ: ${APP_TZ}
+      WATCHTOWER_CLEANUP: "true"
+      WATCHTOWER_DEBUG: "true"
+      DOCKER_API_VERSION: "1.44"
+    command: --cleanup --interval 86400 --debug --label-enable
+    networks:
+      - app-network
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    read_only: true
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,size=64m
+    labels:
+      - "com.centurylinklabs.watchtower.enable=false"
+
+# Empty volumes
+volumes: {}
+
+# External network
+networks:
+  app-network:
+    external: true

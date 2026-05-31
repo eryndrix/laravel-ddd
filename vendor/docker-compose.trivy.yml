@@ -1,0 +1,38 @@
+services:
+  # Trivy security scanner service
+  trivy:
+    image: aquasec/trivy:0.69.3
+    profiles:
+      - security
+    restart: "no"
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    volumes:
+      - ./docker/trivy/trivy.yml:/root/.config/trivy/trivy.yml:ro
+      - trivy-cache:/root/.cache/trivy
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    command: image --config /root/.config/trivy/trivy.yml chechly-app:latest
+    networks:
+      - app-network
+    read_only: true
+    tmpfs:
+      - /tmp:size=2g,mode=1777
+    deploy:
+      resources:
+        limits:
+          memory: 2G
+        reservations:
+          memory: 1G
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"
+
+# Empty volumes
+volumes:
+  trivy-cache:
+
+# External network
+networks:
+  app-network:
+    external: true

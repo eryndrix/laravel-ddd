@@ -1,0 +1,30 @@
+services:
+  # Schedule service (supercronic)
+  schedule:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+      args:
+        UID: ${UID:-1000}
+        GID: ${GID:-1000}
+    user: "${UID:-1000}:${GID:-1000}"
+    restart: unless-stopped
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    volumes:
+      - ./docker/schedule/crontab:/etc/supercronic/schedule:ro
+    command: ["supercronic", "/etc/supercronic/schedule"]
+    networks:
+      - app-network
+    labels:
+      - "com.centurylinklabs.watchtower.enable=false"
+
+# Empty volumes
+volumes: {}
+
+# External network
+networks:
+  app-network:
+    external: true
