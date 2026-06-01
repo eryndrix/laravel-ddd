@@ -34,7 +34,7 @@ final class CachedRoleRepository implements RoleRepositoryInterface
          *         slug: string,
          *         permissions?: list<array>,
          *         created_at: string|null,
-         *         update_at: string|null
+         *         updated_at: string|null
          *     }
          * > $data
          */
@@ -72,7 +72,7 @@ final class CachedRoleRepository implements RoleRepositoryInterface
          *     slug: string,
          *     permissions?: list<array>,
          *     created_at: string|null,
-         *     update_at: string|null
+         *     updated_at: string|null
          * }|null $data
          */
         $data = Cache::rememberForever(
@@ -106,7 +106,7 @@ final class CachedRoleRepository implements RoleRepositoryInterface
          *     slug: string,
          *     permissions?: list<array>,
          *     created_at: string|null,
-         *     update_at: string|null
+         *     updated_at: string|null
          * }|null $data
          */
         $data = Cache::rememberForever(

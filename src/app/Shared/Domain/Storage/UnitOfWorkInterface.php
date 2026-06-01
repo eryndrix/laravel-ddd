@@ -8,7 +8,6 @@ namespace App\Shared\Domain\Storage;
 interface UnitOfWorkInterface
 {
     /**
-     * @phpstan-pure
      * @phpstan-return void
      */
     public function flush(): void;

@@ -66,7 +66,9 @@ final class RoleMapper
      *     id: string,
      *     name: string,
      *     slug: string,
-     *     permissions?: list<array>
+     *     permissions?: list<array>,
+     *     created_at?: string|null,
+     *     updated_at?: string|null
      * } $data
      * @phpstan-return Role
      */
