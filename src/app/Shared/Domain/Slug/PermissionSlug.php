@@ -15,7 +15,7 @@ final class PermissionSlug extends UniqueSlug
 	    if (strlen(string: $slug) > 50
 	    	|| strlen(string: $slug) < 3
 	    ) {
-	        throw new \InvalidArgumentException(
+	        throw new \DomainException(
 	        	message: 'Permission slug 3-50 chars.'
 	        );
 	    }

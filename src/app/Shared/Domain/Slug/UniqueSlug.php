@@ -33,7 +33,7 @@ abstract class UniqueSlug extends Primitive
     protected function __construct(string $slug)
     {
         if ($slug === '') {
-            throw new \InvalidArgumentException(
+            throw new \DomainException(
                 message: 'Slug cannot be empty.'
             );
         }

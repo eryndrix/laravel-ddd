@@ -27,7 +27,7 @@ abstract class UniqueId extends Primitive
         $uuid = trim(string: $id);
 
         if (!Str::isUuid(value: $uuid, version: 7)) {
-            throw new \InvalidArgumentException(
+            throw new \DomainException(
                 message: 'Invalid UUID format.'
             );
         }

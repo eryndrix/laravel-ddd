@@ -7,16 +7,6 @@ use App\Shared\Domain\Slug\PermissionSlug;
 use App\Privilege\Domain\Guard;
 use App\Shared\Domain\Id\PermissionId;
 
-/**
- * @phpstan-template TPrimitives of array{
- *     id: string,
- *     name: string,
- *     slug: string,
- *     guard: string,
- *     created_at: string|null,
- *     updated_at: string|null
- * }
- */
 final class PermissionMapper
 {
     /**
@@ -31,7 +21,7 @@ final class PermissionMapper
      *     updated_at: string|null
      * }
      */
-    public static function toPrimitives(Permission $permission): array
+    public static function toArray(Permission $permission): array
     {
         return [
             'id' => $permission->id->value(),
@@ -57,7 +47,7 @@ final class PermissionMapper
      * 
      * @phpstan-return Permission
      */
-    public static function fromPrimitives(array $data): Permission
+    public static function fromArray(array $data): Permission
     {
         return new Permission(
             id: PermissionId::of(value: $data['id']),

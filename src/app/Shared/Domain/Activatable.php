@@ -6,13 +6,13 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\DBAL\Types\Types;
 
 /**
- * @phpstan-template TState of object
+ * @phpstan-template TStatus of bool
  */
 #[ORM\MappedSuperclass]
 trait Activatable
 {
     /**
-     * @phpstan-var bool
+     * @phpstan-var TStatus
      */
     #[ORM\Column(
         name: 'is_active', type: Types::BOOLEAN, options: [

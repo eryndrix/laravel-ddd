@@ -15,7 +15,7 @@ final class RoleSlug extends UniqueSlug
 	    if (strlen(string: $slug) > 20
 	    	|| strlen(string: $slug) < 3
 	    ) {
-	        throw new \InvalidArgumentException(
+	        throw new \DomainException(
 	        	message: 'Role slug 3-20 chars.'
 	        );
 	    }

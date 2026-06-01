@@ -42,7 +42,7 @@ final class CachedRoleRepository implements RoleRepositoryInterface
             key: 'roles_all',
             callback: fn(): array => array_map(
                 callback: function (Role $role): array {
-                    return RoleMapper::toPrimitives(role: $role);
+                    return RoleMapper::toArray(role: $role);
                 },
                 array: $this->repository->all()
             )
@@ -51,7 +51,7 @@ final class CachedRoleRepository implements RoleRepositoryInterface
         /** @phpstan-var list<Role> $roles */
         $roles = array_map(
             callback: function (array $role): Role {
-                return RoleMapper::fromPrimitives(data: $role);
+                return RoleMapper::fromArray(data: $role);
             },
             array: $data
         );
@@ -83,13 +83,13 @@ final class CachedRoleRepository implements RoleRepositoryInterface
                 );
 
                 return $role !== null
-                    ? RoleMapper::toPrimitives(role: $role)
+                    ? RoleMapper::toArray(role: $role)
                     : null;
             }
         );
 
         return $data !== null
-            ? RoleMapper::fromPrimitives(data: $data)
+            ? RoleMapper::fromArray(data: $data)
             : null;
     }
 
@@ -117,13 +117,13 @@ final class CachedRoleRepository implements RoleRepositoryInterface
                 );
 
                 return $role !== null
-                    ? RoleMapper::toPrimitives(role: $role)
+                    ? RoleMapper::toArray(role: $role)
                     : null;
             }
         );
 
         return $data !== null
-            ? RoleMapper::fromPrimitives(data: $data)
+            ? RoleMapper::fromArray(data: $data)
             : null;
     }
 }
