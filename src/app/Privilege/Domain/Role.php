@@ -22,6 +22,11 @@ use Doctrine\DBAL\Types\Types;
 class Role extends AggregateRoot
 {
     /**
+     * @phpstan-use RoleRelationship<Permission>
+     */
+    use RoleRelationship;
+    
+    /**
      * @phpstan-use CreatedDateProvider<\DateTimeImmutable>
      */
     use CreatedDateProvider;
@@ -30,11 +35,6 @@ class Role extends AggregateRoot
      * @phpstan-use UpdatedDateProvider<\DateTimeImmutable>
      */
     use UpdatedDateProvider;
-
-    /**
-     * @phpstan-use RoleRelationship<Permission>
-     */
-    use RoleRelationship;
     
     /**
      * @phpstan-var RoleId

@@ -22,6 +22,11 @@ use Doctrine\DBAL\Types\Types;
 class Permission extends AggregateRoot
 {
     /**
+     * @phpstan-use PermissionRelationship<Role>
+     */
+    use PermissionRelationship;
+
+    /**
      * @phpstan-use CreatedDateProvider<\DateTimeImmutable>
      */
     use CreatedDateProvider;
@@ -30,11 +35,6 @@ class Permission extends AggregateRoot
      * @phpstan-use UpdatedDateProvider<\DateTimeImmutable>
      */
     use UpdatedDateProvider;
-
-    /**
-     * @phpstan-use PermissionRelationship<Role>
-     */
-    use PermissionRelationship;
 
     /**
      * @phpstan-var PermissionId

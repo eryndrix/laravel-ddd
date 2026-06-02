@@ -7,8 +7,8 @@ use Illuminate\Contracts\Auth\Authenticatable;
 interface AuthenticatorInterface
 {
     /**
-     * @phpstan-param CredentialData $data
+     * @phpstan-param array<string, mixed> $credentials
      * @phpstan-return Authenticatable
      */
-	public function authenticate(CredentialData $data): Authenticatable;
+	public function authenticate(array $credentials): Authenticatable;
 }
