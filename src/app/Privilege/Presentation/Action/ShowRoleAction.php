@@ -25,11 +25,7 @@ final class ShowRoleAction extends Action
     /**
      * @phpstan-param QueryBusInterface<
      *     ShowRoleQuery<RoleId>,
-     *     object,
-     *     \App\Shared\Application\Result\Result<
-     *         \App\Privilege\Domain\Role,
-     *         string
-     *     >
+     *     \App\Privilege\Application\Handler\ShowRoleHandler
      * > $queryBus
      */
     public function __construct(
@@ -48,8 +44,10 @@ final class ShowRoleAction extends Action
     {
         /**
          * @phpstan-var \App\Shared\Application\Result\Result<
-         *     \App\Privilege\Domain\Role,
-         *     string
+         *     \App\Privilege\Application\RoleSuccess<
+         *         \App\Privilege\Domain\Role
+         *     >,
+         *     \App\Privilege\Application\RoleError
          * > $result
          */
         $result = $this->queryBus->ask(

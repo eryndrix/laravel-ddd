@@ -33,6 +33,7 @@ return [
          * @var array<string>
          */
         $directories = [
+            'Identity/Presentation/Action/Auth',
             'Privilege/Presentation/Action',
         ];
 

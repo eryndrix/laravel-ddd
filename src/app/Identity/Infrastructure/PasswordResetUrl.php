@@ -26,7 +26,6 @@ final class PasswordResetUrl extends ServiceProvider
 
                 /** @phpstan-var non-falsy-string $appUrl */
                 $appUrl = config(key: 'app.url');
-                
                 return $appUrl . "/password/reset?{$params}";
             }
         );

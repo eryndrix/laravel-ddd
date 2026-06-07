@@ -32,9 +32,11 @@ final class JwtTokenIssuer implements JwtTokenIssuerInterface
             user: $user
         );
 
-        $rTtl = config(key: 'jwt.refresh_ttl');
+        /** @phpstan-var int|null $rTtlValue */
+        $rTtlValue = config(key: 'jwt.refresh_ttl');
+        $rTtl = $rTtlValue === null ? 0 : (int) $rTtlValue;
 
-        if (!is_int(value: $rTtl)) {
+        if ($rTtl <= 0) {
             throw new \RuntimeException(
                 message: 'Invalid refresh_ttl configuration.'
             );
@@ -47,13 +49,15 @@ final class JwtTokenIssuer implements JwtTokenIssuerInterface
 
         if ($refreshToken === '') {
             throw new \RuntimeException(
-                 message: 'Failed to issue new refresh token.'
+                message: 'Failed to issue new refresh token.'
             );
         }
 
-        $aTtl = config(key: 'jwt.ttl');
+        /** @phpstan-var int|null $aTtlValue */
+        $aTtlValue = config(key: 'jwt.ttl');
+        $aTtl = $aTtlValue === null ? 0 : (int) $aTtlValue;
 
-        if (!is_int(value: $aTtl)) {
+        if ($aTtl <= 0) {
             throw new \RuntimeException(
                 message: 'Invalid ttl configuration.'
             );
@@ -63,7 +67,7 @@ final class JwtTokenIssuer implements JwtTokenIssuerInterface
             'access_token' => $accessToken,
             'access_token_ttl' => $aTtl,
             'refresh_token' => $refreshToken,
-            'refresh_token_ttl' => $rTtl
+            'refresh_token_ttl' => $rTtl,
         ];
     }
 }

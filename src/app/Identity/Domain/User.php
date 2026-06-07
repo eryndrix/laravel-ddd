@@ -4,16 +4,16 @@ namespace App\Identity\Domain;
 
 use Doctrine\ORM\Mapping as ORM;
 use App\Shared\Domain\AggregateRoot;
-use App\Identity\Domain\Changing\UserChanger;
+use App\Identity\Domain\Changing\UserStateChange;
+use App\Shared\Domain\Email\Email;
+use App\Shared\Domain\Email\EmailVerification;
+use App\Shared\Domain\Activatable;
+use App\Identity\Domain\Password\Password;
+use App\Shared\Domain\Id\UserId;
+use App\Shared\Domain\Id\RoleId;
 use App\Shared\Domain\Date\CreatedDateProvider;
 use App\Shared\Domain\Date\UpdatedDateProvider;
 use App\Shared\Domain\Date\DeletedDateProvider;
-use App\Shared\Domain\Activatable;
-use App\Shared\Domain\Email\Email;
-use App\Shared\Domain\Email\EmailVerification;
-use App\Shared\Domain\Id\UserId;
-use App\Shared\Domain\Id\RoleId;
-use App\Identity\Domain\Password\Password;
 use Doctrine\DBAL\Types\Types;
 
 /**
@@ -33,6 +33,11 @@ class User extends AggregateRoot
      * @phpstan-use EmailVerification<\DateTimeImmutable|null>
      */
     use EmailVerification;
+
+    /**
+     * @phpstan-use UserStateChange<$this>
+     */
+    use UserStateChange;
     
     /**
      * @phpstan-use CreatedDateProvider<\DateTimeImmutable>
@@ -70,10 +75,17 @@ class User extends AggregateRoot
 
     /**
      * @phpstan-var string
+     * @throws \DomainException
      */
     #[ORM\Column(name: 'name', type: Types::STRING, length: 61)]
     public private(set) string $name {
         set (string $value) {
+            if ($value === '') {
+                throw new \DomainException(
+                    message: 'Name cannot be empty.'
+                );
+            }
+
             $this->name = $value
                 |> trim(...)
                 |> (fn (string $name): string => mb_convert_case(
@@ -98,6 +110,7 @@ class User extends AggregateRoot
     
     /**
      * @phpstan-var string|null
+     * @throws \DomainException
      */
     #[ORM\Column(
         name: 'remember_token',
@@ -108,6 +121,12 @@ class User extends AggregateRoot
     )]
     public private(set) ?string $rememberToken = null {
         set (string|null $value) {
+            if ($value === '') {
+                throw new \DomainException(
+                    message: 'Remember token cannot be empty.'
+                );
+            }
+            
             $rememberToken = $value !== null
                 ? trim(string: $value)
                 : null;
@@ -148,67 +167,5 @@ class User extends AggregateRoot
          */
         $this->initializeCreatedAt();
         $this->initializeUpdatedAt();
-    }
-    
-    /**
-     * @phpstan-return UserChanger
-     */
-    public function beginChange(): UserChanger
-    {
-        return new UserChanger(user: $this);
-    }
-    
-    /**
-     * @phpstan-param Avatar|null $avatar
-     * @phpstan-return void
-     */
-    public function changeAvatar(?Avatar $avatar): void
-    {
-        $this->avatar = $avatar;
-    }
-
-    /**
-     * @phpstan-param string $name
-     * @phpstan-return void
-     */
-    public function changeName(string $name): void
-    {
-        $this->name = $name;
-    }
-
-    /**
-     * @phpstan-param Email $email
-     * @phpstan-return void
-     */
-    public function changeEmail(Email $email): void
-    {
-        $this->email = $email;
-        $this->emailVerifiedAt = null;
-    }
-
-    /**
-     * @phpstan-param Password $password
-     * @phpstan-return void
-     */
-    public function changePassword(Password $password): void
-    {
-        $this->password = $password;
-    }
-
-    /**
-     * @phpstan-param string|null $rememberToken
-     */
-    public function changeRememberToken(
-        ?string $rememberToken): void
-    {
-        $this->rememberToken = $rememberToken;
-    }
-
-    /**
-     * @phpstan-return User
-     */
-    public function endChange(): User
-    {
-        return $this;
     }
 }

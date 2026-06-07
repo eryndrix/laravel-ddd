@@ -5,13 +5,12 @@ namespace App\Shared\Domain\Bus;
 /**
  * @phpstan-template TCommand of object
  * @phpstan-template THandler of object
- * @phpstan-template TResult
  */
 interface CommandBusInterface
 {
     /**
      * @phpstan-param TCommand $command
-     * @phpstan-return TResult
+     * @phpstan-return mixed
      */
     public function send(object $command): mixed;
     

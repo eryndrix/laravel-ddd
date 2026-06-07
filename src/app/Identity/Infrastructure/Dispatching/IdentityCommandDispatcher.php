@@ -3,10 +3,10 @@
 namespace App\Identity\Infrastructure\Dispatching;
 
 use Illuminate\Support\ServiceProvider;
-// use App\Identity\Application\Register\RegisterCommand;
-// use App\Identity\Application\Register\RegisterProcess;
-// use App\Identity\Application\Login\LoginCommand;
-// use App\Identity\Application\Login\LoginProcess;
+use App\Identity\Application\Auth\Register\RegisterCommand;
+use App\Identity\Application\Auth\Register\RegisterProcess;
+use App\Identity\Application\Auth\Login\LoginCommand;
+use App\Identity\Application\Auth\Login\LoginProcess;
 // use App\Identity\Application\RefreshToken\RefreshTokenCommand;
 // use App\Identity\Application\RefreshToken\RefreshTokenProcess;
 // use App\Identity\Application\Password\Forgot\ForgotPasswordCommand;
@@ -27,8 +27,8 @@ final class IdentityCommandDispatcher extends ServiceProvider
      * @phpstan-var array<class-string, class-string>
      */
     private array $auth = [
-        // RegisterCommand::class => RegisterProcess::class,
-        // LoginCommand::class => LoginProcess::class,
+        RegisterCommand::class => RegisterProcess::class,
+        LoginCommand::class => LoginProcess::class,
         // RefreshTokenCommand::class => RefreshTokenProcess::class,
         // ForgotPasswordCommand::class => ForgotPasswordHandler::class,
         // ResetPasswordCommand::class => ResetPasswordProcess::class,
@@ -44,7 +44,7 @@ final class IdentityCommandDispatcher extends ServiceProvider
     ];
 
     /**
-     * @phpstan-param CommandBusInterface<object, object, mixed> $commandBus
+     * @phpstan-param CommandBusInterface<object, object> $commandBus
      * @phpstan-return void
      */
     public function boot(CommandBusInterface $commandBus): void

@@ -4,10 +4,11 @@ namespace App\Identity\Domain;
 
 use Doctrine\ORM\Mapping as ORM;
 use App\Shared\Domain\AggregateRoot;
-use App\Identity\Domain\Changing\TokenChanger;
+use App\Identity\Domain\Changing\TokenStateChange;
+use App\Shared\Domain\Id\TokenId;
+use App\Shared\Domain\Id\UserId;
 use App\Shared\Domain\Date\CreatedDateProvider;
 use App\Shared\Domain\Date\UpdatedDateProvider;
-use App\Shared\Domain\Id\{UserId, TokenId};
 use Doctrine\DBAL\Types\Types;
 
 /**
@@ -18,6 +19,11 @@ use Doctrine\DBAL\Types\Types;
 #[ORM\HasLifecycleCallbacks]
 class Token extends AggregateRoot
 {
+    /**
+     * @phpstan-use TokenStateChange<$this>
+     */
+    use TokenStateChange;
+
     /**
      * @phpstan-use CreatedDateProvider<\DateTimeImmutable>
      */
@@ -141,59 +147,5 @@ class Token extends AggregateRoot
          */
         $this->initializeCreatedAt();
         $this->initializeUpdatedAt();
-    }
-
-    /**
-     * @phpstan-return TokenChanger
-     */
-    public function beginChange(): TokenChanger
-    {
-        return new TokenChanger(token: $this);
-    }
-
-    /**
-     * @phpstan-param string $name
-     * @phpstan-return void
-     */
-    public function changeName(string $name): void
-    {
-        $this->name = $name;
-    }
-
-    /**
-     * @phpstan-param Abilities|null $abilities
-     * @phpstan-return void
-     */
-    public function changeAbilities(?Abilities $abilities): void
-    {
-        $this->abilities = $abilities;
-    }
-
-    /**
-     * @phpstan-param \DateTimeImmutable|null $lastUsedAt
-     * @phpstan-return void
-     */
-    public function changeLastUsedAt(
-        ?\DateTimeImmutable $lastUsedAt): void
-    {
-        $this->lastUsedAt = $lastUsedAt;
-    }
-
-    /**
-     * @phpstan-param \DateTimeImmutable|null $expiresAt
-     * @phpstan-return void
-     */
-    public function changeExpiresAt(
-        ?\DateTimeImmutable $expiresAt): void
-    {
-        $this->expiresAt = $expiresAt;
-    }
-
-    /**
-     * @phpstan-return Token
-     */
-    public function endChange(): Token
-    {
-        return $this;
     }
 }

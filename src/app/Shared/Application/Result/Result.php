@@ -8,9 +8,6 @@ namespace App\Shared\Application\Result;
  */
 abstract class Result
 {
-    /** @phpstan-use MapHelpers<TValue, TError> */
-    use MapHelpers;
-
     /**
      * @phpstan-param TValue|null $value
      * @phpstan-param TError|null $error
@@ -51,5 +48,57 @@ abstract class Result
     public function isFailure(): bool
     {
         return !$this->isSuccess();
+    }
+
+    /**
+     * @template TNewValue
+     * @phpstan-param callable(TValue): TNewValue $mapper
+     * @phpstan-return Result<TNewValue, TError>
+     */
+    public function map(callable $mapper): Result
+    {
+        if (!$this->isSuccess()) {
+            return $this;
+        }
+        
+        /** @phpstan-var TValue $value */
+        $value = $this->value;
+        return static::success(value: $mapper($value));
+    }
+    
+    /**
+     * @template TSuperError
+     * @phpstan-param callable(TError): TSuperError $mapper
+     * @phpstan-return Result<TValue, TSuperError>
+     */
+    public function mapError(callable $mapper): Result
+    {
+        if ($this->isSuccess()) {
+            return $this;
+        }
+        
+        /** @phpstan-var TError $error */
+        $error = $this->error;
+        return static::failure(error: $mapper($error));
+    }
+    
+    /**
+     * @template TResult
+     * @phpstan-param callable(TValue): TResult $onSuccess
+     * @phpstan-param callable(TError): TResult $onError
+     * @phpstan-return TResult
+     */
+    public function match(
+        callable $onSuccess, callable $onError): mixed
+    {
+        if ($this->isSuccess()) {
+            /** @phpstan-var TValue $value */
+            $value = $this->value;
+            return $onSuccess($value);
+        }
+
+        /** @phpstan-var TError $error */
+        $error = $this->error;
+        return $onError($error);
     }
 }

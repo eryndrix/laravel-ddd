@@ -73,7 +73,7 @@ final class JwtTokenManager implements JwtTokenManagerInterface
             $exp = $payload->get(claim: 'exp');
             $iat = $payload->get(claim: 'iat');
 
-            if (!is_int($exp) || !is_int($iat)) {
+            if (!is_int(value: $exp) || !is_int(value: $iat)) {
                 return false;
             }
 

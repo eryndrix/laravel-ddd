@@ -68,7 +68,7 @@ return [
     'providers' => [
         'users' => [
             'driver' => 'doctrine',
-            'model' => App\Identity\Domain\User::class,
+            'model' => App\Identity\Infrastructure\Auth\UserAdapter::class,
         ],
 
         // 'users' => [

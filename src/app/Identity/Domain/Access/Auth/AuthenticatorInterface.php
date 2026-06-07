@@ -8,7 +8,7 @@ interface AuthenticatorInterface
 {
     /**
      * @phpstan-param array<string, mixed> $credentials
-     * @phpstan-return Authenticatable
+     * @phpstan-return Authenticatable|null
      */
-	public function authenticate(array $credentials): Authenticatable;
+	public function authenticate(array $credentials): ?Authenticatable;
 }

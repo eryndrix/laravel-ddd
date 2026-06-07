@@ -17,30 +17,26 @@ final class Authenticator implements AuthenticatorInterface
 
     /**
      * @phpstan-param array<string, mixed> $credentials
-     * @phpstan-return Authenticatable
+     * @phpstan-return Authenticatable|null
      *
      * @throws \InvalidArgumentException
      */
     public function authenticate(
-        array $credentials): Authenticatable
+        array $credentials): ?Authenticatable
     {
         $user = $this->userProvider->retrieveByCredentials(
             $credentials
         );
 
         if (!$user instanceof Authenticatable) {
-            throw new \InvalidArgumentException(
-                message: 'Invalid credentials.'
-            );
+            return null;
         }
 
         if (!$this->userProvider->validateCredentials(
             user: $user,
             credentials: $credentials
         )) {
-            throw new \InvalidArgumentException(
-                message: 'Invalid credentials.'
-            );
+            return null;
         }
 
         $this->userProvider->rehashPasswordIfRequired(

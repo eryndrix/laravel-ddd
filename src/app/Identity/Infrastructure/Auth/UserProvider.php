@@ -128,16 +128,8 @@ final class UserProvider implements UserProviderInterface
         if (!is_string(value: $plainPassword)) {
             return false;
         }
-
-        $password = $user->getAuthPassword();
         
-        if (!is_string(value: $password)) {
-            return false;
-        }
-
-        $hashedPassword = new Password(hash: $password);
-        
-        return $hashedPassword->verify(
+        return $user->unwrap()->password->verify(
             password: $plainPassword
         );
     }

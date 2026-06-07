@@ -2,34 +2,47 @@
 
 namespace App\Privilege\Presentation\Responder;
 
-use Illuminate\Http\Response;
-use App\Privilege\Presentation\RoleResource;
-use App\Shared\Presentation\Response\ApiResponse;
-use App\Privilege\Application\Error\RoleError;
 use App\Shared\Presentation\Responder;
+use App\Privilege\Presentation\RoleResource;
+use Illuminate\Http\Response as Status;
+use App\Privilege\Application\RoleSuccess;
+use App\Privilege\Application\RoleError;
+use App\Shared\Presentation\Response\ApiResponse;
 use App\Shared\Application\Result\Result;
-use App\Privilege\Domain\Role;
 
 /**
- * @phpstan-extends Responder<Role, string>
+ * @phpstan-extends Responder<
+ *     RoleSuccess<\App\Privilege\Domain\Role>,
+ *     RoleError
+ * >
  */
 final class ShowRoleResponder extends Responder
 {
     /**
-     * @phpstan-param Result<Role, string> $result
+     * @phpstan-param Result<
+     *     RoleSuccess<\App\Privilege\Domain\Role>,
+     *     RoleError
+     * > $result
+     * 
      * @phpstan-return ApiResponse
      */
     public function respond(Result $result): ApiResponse
     {
         return $result->match(
-            onSuccess: fn (Role $role) => new ApiResponse(
-                data: new RoleResource(resource: $role),
-                status: Response::HTTP_OK
+            onSuccess: fn (RoleSuccess $success) => new ApiResponse(
+                data: new RoleResource(resource: $success->result),
+                status: Status::HTTP_OK
             ),
-            onError: fn (string $error) => new ApiResponse(
-                data: ['message' => $error],
-                status: Response::HTTP_NOT_FOUND
-            )
+            onError: fn (RoleError $error) => match ($error) {
+                RoleError::NotFound => new ApiResponse(
+                    data: ['message' => $error->message()],
+                    status: Status::HTTP_NOT_FOUND
+                ),
+                default => new ApiResponse(
+                    data: ['message' => $error->message()],
+                    status: Status::HTTP_INTERNAL_SERVER_ERROR
+                )
+            }
         );
     }
 }

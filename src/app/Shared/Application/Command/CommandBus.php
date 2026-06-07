@@ -8,8 +8,7 @@ use Illuminate\Contracts\Bus\Dispatcher;
 /**
  * @phpstan-implements CommandBusInterface<
  *     Command,
- *     \App\Shared\Application\Handler,
- *     mixed
+ *     \App\Shared\Application\Handler
  * >
  */
 final class CommandBus implements CommandBusInterface

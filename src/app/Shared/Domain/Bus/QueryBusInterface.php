@@ -5,13 +5,12 @@ namespace App\Shared\Domain\Bus;
 /**
  * @phpstan-template TQuery of object
  * @phpstan-template THandler of object
- * @phpstan-template TResult
  */
 interface QueryBusInterface
 {
     /**
      * @phpstan-param TQuery $query
-     * @phpstan-return TResult
+     * @phpstan-return mixed
      */
     public function ask(object $query): mixed;
 

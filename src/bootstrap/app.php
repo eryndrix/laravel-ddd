@@ -24,8 +24,8 @@ return Application::configure(
             group: 'api',
             middleware: [
                 HandleCors::class,
-                //SecurityHeaders::class,
-                //ApiRequestLogger::class
+                SecurityHeaders::class,
+                ApiRequestLogger::class
             ]
         );
     }
@@ -42,7 +42,7 @@ return Application::configure(
                     \Throwable $e,
                     Request $request): mixed
                 {
-                    if (str_contains(
+                    if (app()->environment('production') && str_contains(
                         haystack: $request->path(),
                         needle: 'v1'
                     )) {

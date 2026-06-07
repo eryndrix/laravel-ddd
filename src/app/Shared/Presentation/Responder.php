@@ -6,15 +6,15 @@ use App\Shared\Presentation\Response\ApiResponse;
 use App\Shared\Application\Result\Result;
 
 /**
- * @phpstan-template TSuccess
+ * @phpstan-template TValue
  * @phpstan-template TError
  *
- * @phpstan-method ApiResponse respond(Result<TSuccess, TError> $result)
+ * @phpstan-method ApiResponse respond(Result<TValue, TError> $result)
  */
 abstract class Responder
 {
 	/**
-     * @phpstan-param Result<TSuccess, TError> $result
+     * @phpstan-param Result<TValue, TError> $result
      * @phpstan-return ApiResponse
      */
 	abstract public function respond(Result $result): ApiResponse;

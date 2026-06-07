@@ -3,12 +3,13 @@
 namespace App\Privilege\Domain\Repository;
 
 use App\Shared\Domain\{Slug\RoleSlug, Id\RoleId};
+use App\Shared\Domain\Repository\RoleRepositoryInterface as RepositoryInterface;
 use App\Privilege\Domain\Role;
 
 /**
  * @phpstan-template TRole of Role
  */
-interface RoleRepositoryInterface
+interface RoleRepositoryInterface extends RepositoryInterface
 {
     /**
      * @phpstan-return list<TRole>

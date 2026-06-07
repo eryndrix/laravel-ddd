@@ -5,6 +5,8 @@ namespace App\Privilege\Application\Handler;
 use App\Shared\Application\Handler;
 use App\Privilege\Application\Query\ListRoleQuery;
 use App\Privilege\Domain\Repository\RoleRepositoryInterface;
+use App\Privilege\Application\RoleSuccess;
+use App\Privilege\Application\RoleError;
 use App\Shared\Application\Result\Result;
 use Eryndrix\Paginator\Paginator;
 
@@ -22,10 +24,9 @@ final class ListRoleHandler extends Handler
     /**
      * @phpstan-param ListRoleQuery<int> $query
      * 
-     * @phpstan-return Result<
-     *     \Eryndrix\Paginator\Paginator<\App\Privilege\Domain\Role>,
-     *     string
-     * >
+     * @phpstan-return Result<RoleSuccess<
+     *     Paginator<\App\Privilege\Domain\Role>
+     * >, RoleError>
      */
     public function handle(ListRoleQuery $query): Result
     {
@@ -33,15 +34,16 @@ final class ListRoleHandler extends Handler
 
         if ($perPage < 10 || $perPage > 100) {
             return Result::failure(
-                error: 'perPage must be between 10-100.'
+                error: RoleError::PerPageOutOfRange
             );
         }
 
         $roles = new Paginator(
             items: $this->repository->all(),
-            perPage: $query->perPage
+            perPage: $perPage
         );
 
-        return Result::success(value: $roles);
-}
+        $result = new RoleSuccess(result: $roles);
+        return Result::success(value: $result);
+    }
 }

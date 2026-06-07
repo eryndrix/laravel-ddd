@@ -93,23 +93,4 @@ final class UserChanger
 
         return $this;
     }
-
-    /**
-     * @phpstan-param string|null $rememberToken
-     * @phpstan-return self
-     */
-    public function rememberToken(?string $rememberToken): self
-    {
-        if ($this->user->rememberToken === $rememberToken) {
-            return $this;
-        }
-
-        $this->user->changeRememberToken(
-            rememberToken: $rememberToken
-        );
-
-        $this->isDirty = true;
-
-        return $this;
-    }
 }

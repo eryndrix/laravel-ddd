@@ -25,11 +25,7 @@ final class ListRoleAction extends Action
     /**
      * @phpstan-param QueryBusInterface<
      *     ListRoleQuery<int>,
-     *     object,
-     *     \App\Shared\Application\Result\Result<
-     *         \Eryndrix\Paginator\Paginator<\App\Privilege\Domain\Role>,
-     *         string
-     *     >
+     *     \App\Privilege\Application\Handler\ListRoleHandler
      * > $queryBus
      */
     public function __construct(
@@ -50,8 +46,10 @@ final class ListRoleAction extends Action
 
         /**
          * @phpstan-var \App\Shared\Application\Result\Result<
-         *     \Eryndrix\Paginator\Paginator<\App\Privilege\Domain\Role>,
-         *     string
+         *     \App\Privilege\Application\RoleSuccess<
+         *         \Eryndrix\Paginator\Paginator<\App\Privilege\Domain\Role>
+         *     >,
+         *     \App\Privilege\Application\RoleError
          * > $result
          */
         $result = $this->queryBus->ask(

@@ -8,8 +8,7 @@ use Illuminate\Contracts\Bus\Dispatcher;
 /**
  * @phpstan-implements QueryBusInterface<
  *     Query,
- *     \App\Shared\Application\Handler,
- *     mixed
+ *     \App\Shared\Application\Handler
  * >
  */
 final class QueryBus implements QueryBusInterface

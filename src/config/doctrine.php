@@ -84,6 +84,7 @@ return [
      |
     */
     'metadata_dirs' => [
+        app_path(path: 'Identity/Domain'),
         app_path(path: 'Privilege/Domain'),
     ],
 
@@ -102,6 +103,10 @@ return [
             Ramsey\Uuid\Doctrine\UuidType::class
         ],
         [
+            App\Shared\Infrastructure\Id\UserIdType::NAME,
+            App\Shared\Infrastructure\Id\UserIdType::class
+        ],
+        [
             App\Shared\Infrastructure\Id\RoleIdType::NAME,
             App\Shared\Infrastructure\Id\RoleIdType::class
         ],
@@ -116,6 +121,10 @@ return [
         [
             App\Shared\Infrastructure\Slug\PermissionSlugType::NAME,
             App\Shared\Infrastructure\Slug\PermissionSlugType::class
+        ],
+        [
+            App\Shared\Infrastructure\Id\TokenIdType::NAME,
+            App\Shared\Infrastructure\Id\TokenIdType::class
         ],
     ],
 

@@ -26,7 +26,7 @@ final class IdentityQueryDispatcher extends ServiceProvider
     ];
 
     /**
-     * @phpstan-param QueryBusInterface<object, object, mixed> $queryBus
+     * @phpstan-param QueryBusInterface<object, object> $queryBus
      * @phpstan-return void
      */
     public function boot(QueryBusInterface $queryBus): void

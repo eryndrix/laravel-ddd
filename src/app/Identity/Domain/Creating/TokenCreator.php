@@ -27,29 +27,7 @@ final class TokenCreator
             tokenableId: $userId,
             name: 'refresh_token',
             token: $tokenHash,
-            abilities: Abilities::fromArray(value: ['refresh']),
-            expiresAt: $expiresAt,
-        );
-    }
-    
-    /**
-     * @phpstan-param UserId $userId
-     * @phpstan-param TokenHash $tokenHash
-     * @phpstan-param \DateTimeImmutable $expiresAt
-     * 
-     * @phpstan-return Token
-     */
-    public static function newAccessToken(
-        UserId $userId,
-        TokenHash $tokenHash,
-        \DateTimeImmutable $expiresAt): Token
-    {
-        return new Token(
-            tokenableType: User::class,
-            tokenableId: $userId,
-            name: 'access_token',
-            token: $tokenHash,
-            abilities: Abilities::fromArray(value: ['access']),
+            abilities: Abilities::fromArray(value: ['*']),
             expiresAt: $expiresAt,
         );
     }

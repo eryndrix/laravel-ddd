@@ -4,23 +4,24 @@ namespace App\Privilege\Presentation\Responder;
 
 use App\Shared\Presentation\Responder;
 use App\Privilege\Presentation\RoleCollection;
-use Eryndrix\Paginator\Paginator;
-use App\Shared\Application\Result\Result;
+use App\Privilege\Application\RoleSuccess;
+use App\Privilege\Application\RoleError;
+use Illuminate\Http\Response as Status;
 use App\Shared\Presentation\Response\ApiResponse;
-use Illuminate\Http\Response;
+use App\Shared\Application\Result\Result;
 
 /**
  * @phpstan-extends Responder<
- *     Paginator<\App\Privilege\Domain\Role>,
- *     string
+ *     RoleSuccess<\Eryndrix\Paginator\Paginator<\App\Privilege\Domain\Role>>,
+ *     RoleError
  * >
  */
 final class ListRoleResponder extends Responder
 {
     /**
      * @phpstan-param Result<
-     *     Paginator<\App\Privilege\Domain\Role>,
-     *     string
+     *     RoleSuccess<\Eryndrix\Paginator\Paginator<\App\Privilege\Domain\Role>>,
+     *     RoleError
      * > $result
      * 
      * @phpstan-return ApiResponse
@@ -28,14 +29,20 @@ final class ListRoleResponder extends Responder
     public function respond(Result $result): ApiResponse
     {
         return $result->match(
-            onSuccess: fn (Paginator $roles) => new ApiResponse(
-                data: new RoleCollection(resource: $roles),
-                status: Response::HTTP_OK
+            onSuccess: fn (RoleSuccess $success) => new ApiResponse(
+                data: new RoleCollection(resource: $success->result),
+                status: Status::HTTP_OK
             ),
-            onError: fn (string $error) => new ApiResponse(
-                data: ['message' => $error],
-                status: Response::HTTP_BAD_REQUEST
-            ),
+            onError: fn (RoleError $error) => match ($error) {
+                RoleError::PerPageOutOfRange => new ApiResponse(
+                    data: ['message' => $error->message()],
+                    status: Status::HTTP_BAD_REQUEST
+                ),
+                default => new ApiResponse(
+                    data: ['message' => $error->message()],
+                    status: Status::HTTP_INTERNAL_SERVER_ERROR
+                )
+            }
         );
     }
 }

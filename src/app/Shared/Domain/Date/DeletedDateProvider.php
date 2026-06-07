@@ -7,7 +7,6 @@ use Doctrine\DBAL\Types\Types;
 
 /**
  * @phpstan-template TDeletedDate as \DateTimeImmutable|null
- * @phpstan-ignore trait.unused
  */
 #[ORM\HasLifecycleCallbacks]
 trait DeletedDateProvider

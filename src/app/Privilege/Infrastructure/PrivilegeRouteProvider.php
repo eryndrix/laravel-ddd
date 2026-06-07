@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 use App\Shared\Domain\Id\RoleId;
 
-final class RouteServiceProvider extends ServiceProvider
+final class PrivilegeRouteProvider extends ServiceProvider
 {
     /**
      * @phpstan-return void
