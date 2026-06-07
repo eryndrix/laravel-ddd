@@ -33,13 +33,12 @@ final class RevokeOldRefreshTokensHandler extends Handler
             );
         }
 
-        $identifier = $command->user->getAuthIdentifier();
+        $userId = $command->user->getAuthIdentifier();
 
-        if (!is_string(value: $identifier)) {
+        if (!$userId instanceof UserId) {
             return Result::failure(error: LoginError::SystemError);
         }
 
-        $userId = UserId::of(value: $identifier);
         $tokens = $this->repository->allByUserId(userId: $userId);
         $now = new \DateTimeImmutable();
 

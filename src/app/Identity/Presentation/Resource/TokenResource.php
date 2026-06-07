@@ -22,19 +22,14 @@ final class TokenResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        /** @phpstan-var \App\Identity\Application\Auth\Login\Output\LoginSuccess $resource */
-        $resource = $this->resource;
-        $data = $resource->result;
-
-        $accessToken = (string) ($data['access_token'] ?? '');
-        $refreshToken = (string) ($data['refresh_token'] ?? '');
-        $ttl = (int) ($data['ttl'] ?? 0);
+        /** @phpstan-var array{access_token: string, refresh_token: string, ttl: int} $data */
+        $data = $this->resource;
 
         return [
-            'access_token' => $accessToken,
-            'refresh_token' => $refreshToken,
+            'access_token' => (string) ($data['access_token'] ?? ''),
+            'refresh_token' => (string) ($data['refresh_token'] ?? ''),
             'token_type' => 'Bearer',
-            'expires_in' => $ttl * 60,
+            'expires_in' => (int) ($data['ttl'] ?? 0) * 60,
         ];
     }
 }

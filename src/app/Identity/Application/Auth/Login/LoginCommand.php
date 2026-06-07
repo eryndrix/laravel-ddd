@@ -40,7 +40,7 @@ final class LoginCommand extends Command
      * @phpstan-var array<string, mixed>
      */
     #[Cast(type: ArrayCast::class, param: null)]
-    public array $token = [];
+    public ?array $token;
     
     /**
      * @phpstan-return array<string, string>
