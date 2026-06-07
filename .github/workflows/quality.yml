@@ -29,6 +29,10 @@ jobs:
         working-directory: ./src
         run: cp .env.example .env
 
+      - name: Generate JWT secret
+        working-directory: ./src
+        run: php artisan jwt:secret
+
       - name: Generate Laravel application key
         working-directory: ./src
         run: php artisan key:generate
