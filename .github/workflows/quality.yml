@@ -25,13 +25,11 @@ jobs:
         working-directory: ./src/libs
         run: composer install --prefer-dist --no-progress --no-scripts
 
-      - name: Copy .env.example to .env
+      - name: Create .env with JWT_SECRET
         working-directory: ./src
-        run: cp .env.example .env
-
-      - name: Generate JWT secret
-        working-directory: ./src
-        run: php artisan jwt:secret
+        run: |
+          cp .env.example .env
+          echo "JWT_SECRET=$(openssl rand -base64 32 | tr -d '\n')" >> .env
 
       - name: Generate Laravel application key
         working-directory: ./src
