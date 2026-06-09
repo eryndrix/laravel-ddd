@@ -5,7 +5,6 @@ namespace App\Privilege\Application\Handler;
 use App\Shared\Application\Handler;
 use App\Privilege\Application\Query\ShowRoleQuery;
 use App\Privilege\Domain\Repository\RoleRepositoryInterface;
-use App\Privilege\Application\RoleSuccess;
 use App\Privilege\Application\RoleError;
 use App\Shared\Application\Result\Result;
 
@@ -26,7 +25,7 @@ final class ShowRoleHandler extends Handler
      * > $query
      * 
      * @phpstan-return Result<
-     *     RoleSuccess<\App\Privilege\Domain\Role>,
+     *     \App\Privilege\Domain\Role,
      *     RoleError
      * >
      */
@@ -42,7 +41,6 @@ final class ShowRoleHandler extends Handler
             );
         }
 
-        $result = new RoleSuccess(result: $role);
-        return Result::success(value: $result);
+        return Result::success(value: $role);
     }
 }

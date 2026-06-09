@@ -46,8 +46,8 @@ final class ListRoleAction extends Action
 
         /**
          * @phpstan-var \App\Shared\Application\Result\Result<
-         *     \App\Privilege\Application\RoleSuccess<
-         *         \Eryndrix\Paginator\Paginator<\App\Privilege\Domain\Role>
+         *     \Eryndrix\Paginator\Paginator<
+         *         \App\Privilege\Domain\Role
          *     >,
          *     \App\Privilege\Application\RoleError
          * > $result

@@ -44,9 +44,7 @@ final class ShowRoleAction extends Action
     {
         /**
          * @phpstan-var \App\Shared\Application\Result\Result<
-         *     \App\Privilege\Application\RoleSuccess<
-         *         \App\Privilege\Domain\Role
-         *     >,
+         *     \App\Privilege\Domain\Role,
          *     \App\Privilege\Application\RoleError
          * > $result
          */

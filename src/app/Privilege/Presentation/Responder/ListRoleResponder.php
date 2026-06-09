@@ -4,15 +4,15 @@ namespace App\Privilege\Presentation\Responder;
 
 use App\Shared\Presentation\Responder;
 use App\Privilege\Presentation\RoleCollection;
-use App\Privilege\Application\RoleSuccess;
-use App\Privilege\Application\RoleError;
 use Illuminate\Http\Response as Status;
+use Eryndrix\Paginator\Paginator;
+use App\Privilege\Application\RoleError;
 use App\Shared\Presentation\Response\ApiResponse;
 use App\Shared\Application\Result\Result;
 
 /**
  * @phpstan-extends Responder<
- *     RoleSuccess<\Eryndrix\Paginator\Paginator<\App\Privilege\Domain\Role>>,
+ *     Paginator<\App\Privilege\Domain\Role>,
  *     RoleError
  * >
  */
@@ -20,7 +20,7 @@ final class ListRoleResponder extends Responder
 {
     /**
      * @phpstan-param Result<
-     *     RoleSuccess<\Eryndrix\Paginator\Paginator<\App\Privilege\Domain\Role>>,
+     *     Paginator<\App\Privilege\Domain\Role>,
      *     RoleError
      * > $result
      * 
@@ -29,8 +29,8 @@ final class ListRoleResponder extends Responder
     public function respond(Result $result): ApiResponse
     {
         return $result->match(
-            onSuccess: fn (RoleSuccess $success) => new ApiResponse(
-                data: new RoleCollection(resource: $success->result),
+            onSuccess: fn (Paginator $roles) => new ApiResponse(
+                data: new RoleCollection(resource: $roles),
                 status: Status::HTTP_OK
             ),
             onError: fn (RoleError $error) => match ($error) {
