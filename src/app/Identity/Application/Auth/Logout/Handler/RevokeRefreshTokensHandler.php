@@ -1,13 +1,12 @@
 <?php declare(strict_types=1);
 
-namespace App\Identity\Application\Auth\Login\Handler;
+namespace App\Identity\Application\Auth\Logout\Handler;
 
 use App\Shared\Application\Handler;
-use App\Identity\Application\Auth\Login\LoginCommand;
 use App\Identity\Domain\Repository\TokenRepositoryInterface;
-use App\Shared\Application\Result\Result;
+use App\Identity\Application\Auth\Logout\LogoutCommand;
 
-final class RevokeOldRefreshTokensHandler extends Handler
+final class RevokeRefreshTokensHandler extends Handler
 {
     /**
      * @phpstan-param TokenRepositoryInterface $repository
@@ -17,27 +16,32 @@ final class RevokeOldRefreshTokensHandler extends Handler
     ) {}
 
     /**
-     * @phpstan-param LoginCommand $command
+     * @phpstan-param LogoutCommand $command
      * @phpstan-param \Closure $next
      * 
      * @phpstan-return mixed
      */
     public function handle(
-        LoginCommand $command, \Closure $next): mixed
+        LogoutCommand $command, \Closure $next): mixed
     {
-        /** @phpstan-var \Illuminate\Contracts\Auth\Authenticatable $user */
+        /** @phpstan-var \App\Identity\Domain\User $user */
         $user = $command->user;
-        /** @phpstan-var \App\Shared\Domain\Id\UserId $userId */
-        $userId = $user->getAuthIdentifier();
 
         $tokens = $this->repository->allByUserId(
-            userId: $userId
+            userId: $user->id
         );
 
+        $revokedTokensCount = 0;
+
         foreach ($tokens as $token) {
-            if ($token->expiresAt > new \DateTimeImmutable()) {
-                $token->revoke();
+            $expiresAt = $token->expiresAt;
+            
+            if (is_null(value: $expiresAt)
+                || $expiresAt > new \DateTimeImmutable()
+            ) {
+                $token->markAsUsed();
                 $this->repository->save(token: $token);
+                $revokedTokensCount++;
             }
         }
 

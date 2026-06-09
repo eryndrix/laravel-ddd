@@ -13,8 +13,8 @@ abstract class Result
      * @phpstan-param TError|null $error
      */
     protected function __construct(
-        public readonly mixed $value = null,
-        public readonly mixed $error = null
+        public private(set) mixed $value = null,
+        public private(set) mixed $error = null
     ) {}
 
     /**

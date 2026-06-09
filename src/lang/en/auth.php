@@ -16,6 +16,7 @@ return [
     'failed' => 'These credentials do not match our records.',
     'password' => 'The provided password is incorrect.',
     'throttle' => 'Too many login attempts. Please try again in :seconds seconds.',
+    'invalid_credentials' => 'Invalid email or password.',
 
     'registration' => [
         'success' => 'Registration successful!',
@@ -24,7 +25,11 @@ return [
 
     'login' => [
         'too_many_attempts' => 'Too many login attempts. Please wait a few minutes.',
-        'invalid_credentials' => 'Invalid email or password.',
         'failed' => 'Login failed. Please try again later.',
+    ],
+
+    'logout' => [
+        'success' => 'Logout successful!',
+        'failed' => 'Logout failed. Please try again later.',
     ],
 ];

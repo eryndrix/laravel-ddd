@@ -6,24 +6,23 @@ use App\Shared\Presentation\Responder;
 use App\Identity\Presentation\Resource\TokenResource;
 use App\Shared\Presentation\Response\ApiResponse;
 use Illuminate\Http\Response as Status;
-use App\Identity\Application\Auth\Login\Output\LoginSuccess;
-use App\Identity\Application\Auth\Login\Output\LoginError;
+use App\Identity\Application\Auth\Login\LoginError;
 use App\Shared\Application\Result\Result;
 
 /**
- * @phpstan-extends Responder<LoginSuccess, LoginError>
+ * @phpstan-extends Responder<array<string, int>, LoginError>
  */
 final class LoginResponder extends Responder
 {
     /**
-     * @phpstan-param Result<LoginSuccess, LoginError> $result
+     * @phpstan-param Result<array<string, int>, LoginError> $result
      * @phpstan-return ApiResponse
      */
     public function respond(Result $result): ApiResponse
     {
         return $result->match(
-            onSuccess: fn (LoginSuccess $success) => new ApiResponse(
-                data: new TokenResource(resource: $success->result),
+            onSuccess: fn (array $token) => new ApiResponse(
+                data: new TokenResource(resource: $token),
                 status: Status::HTTP_OK
             ),
             onError: fn (LoginError $error) => match ($error) {

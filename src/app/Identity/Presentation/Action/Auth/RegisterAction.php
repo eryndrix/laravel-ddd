@@ -42,8 +42,8 @@ final class RegisterAction extends Action
 	{
         /**
          * @phpstan-var \App\Shared\Application\Result\Result<
-         *     \App\Identity\Application\Auth\Register\Output\RegisterSuccess,
-         *     \App\Identity\Application\Auth\Register\Output\RegisterError
+         *     string,
+         *     \App\Identity\Application\Auth\Register\RegisterError
          * > $result */
         $result = $this->commandBus->send(
             command: RegisterCommand::fromRequest(request: $request)

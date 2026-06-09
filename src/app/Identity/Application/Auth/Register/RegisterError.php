@@ -1,18 +1,18 @@
 <?php declare(strict_types=1);
 
-namespace App\Identity\Application\Auth\Register\Output;
+namespace App\Identity\Application\Auth\Register;
 
 enum RegisterError: string
 {
     /**
-     * Registration failed due to system error.
+     * Invalid credentials provided.
      */
-    case SystemError = 'auth.registration.failed';
+    case InvalidCredentials = 'auth.invalid_credentials';
 
     /**
-     * Unexpected error.
+     * Unknown error during registration.
      */
-    case UnexpectedError = 'common.unexpected_error';
+    case Unknown = 'auth.registration.failed';
     
     /**
      * @phpstan-return string

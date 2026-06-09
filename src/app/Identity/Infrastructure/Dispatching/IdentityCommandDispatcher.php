@@ -13,8 +13,8 @@ use App\Identity\Application\Auth\Login\LoginProcess;
 // use App\Identity\Application\Password\Forgot\ForgotPasswordHandler;
 // use App\Identity\Application\Password\Reset\ResetPasswordCommand;
 // use App\Identity\Application\Password\Reset\ResetPasswordProcess;
-// use App\Identity\Application\Logout\LogoutCommand;
-// use App\Identity\Application\Logout\LogoutProcess;
+use App\Identity\Application\Auth\Logout\LogoutCommand;
+use App\Identity\Application\Auth\Logout\LogoutProcess;
 // use App\Identity\Application\Profile\Update\UpdateProfileCommand;
 // use App\Identity\Application\Profile\Update\UpdateProfileProcess;
 // use App\Identity\Application\Profile\Delete\DeleteProfileCommand;
@@ -32,7 +32,7 @@ final class IdentityCommandDispatcher extends ServiceProvider
         // RefreshTokenCommand::class => RefreshTokenProcess::class,
         // ForgotPasswordCommand::class => ForgotPasswordHandler::class,
         // ResetPasswordCommand::class => ResetPasswordProcess::class,
-        // LogoutCommand::class => LogoutProcess::class
+        LogoutCommand::class => LogoutProcess::class
     ];
     
     /**

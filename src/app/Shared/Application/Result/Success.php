@@ -19,7 +19,8 @@ final class Success extends Result
     /**
      * @phpstan-return bool
      */
-    public function isSuccess(): bool {
+    public function isSuccess(): bool
+    {
         return true;
     }
 }

@@ -6,7 +6,6 @@ use App\Shared\Application\Handler;
 use App\Shared\Domain\Repository\RoleRepositoryInterface;
 use App\Shared\Domain\Slug\RoleSlug;
 use App\Identity\Application\Auth\Register\RegisterCommand;
-use App\Identity\Application\Auth\Register\Output\RegisterError;
 use App\Privilege\Domain\Role;
 use App\Shared\Application\Result\Result;
 
@@ -35,8 +34,8 @@ final class AttachDefaultRoleHandler
         );
 
         if (!$role instanceof Role) {
-            return Result::failure(
-                error: RegisterError::SystemError
+            throw new \RuntimeException(
+                message: 'Role with slug "user" not found.'
             );
         }
         

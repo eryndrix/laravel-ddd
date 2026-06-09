@@ -7,8 +7,6 @@ use App\Identity\Application\Auth\Login\LoginCommand;
 use App\Identity\Domain\Repository\TokenRepositoryInterface;
 use App\Identity\Domain\TokenHash;
 use App\Identity\Domain\Creating\TokenCreator;
-use App\Shared\Domain\Id\UserId;
-use App\Identity\Application\Auth\Login\Output\LoginError;
 use App\Shared\Application\Result\Result;
 
 final class PersistRefreshTokenHandler extends Handler
@@ -29,13 +27,7 @@ final class PersistRefreshTokenHandler extends Handler
     public function handle(
         LoginCommand $command, \Closure $next): mixed
     {
-        if (is_null(value: $command->user)) {
-            return Result::failure(
-                error: LoginError::InvalidCredentials
-            );
-        }
-
-        /** @phpstan-var array{access_token: string, access_token_ttl: int, refresh_token: string, refresh_token_ttl: int} $tokenData */
+        /** @phpstan-var array<string, string> $tokenData*/
         $tokenData = $command->token;
 
         $rTtl = $tokenData['refresh_token_ttl'];
@@ -45,14 +37,11 @@ final class PersistRefreshTokenHandler extends Handler
             datetime: '+ ' . $rTtl . ' minutes'
         );
 
-        $identifier = $command->user->getAuthIdentifier();
+        /** @phpstan-var \Illuminate\Contracts\Auth\Authenticatable $user */
+        $user = $command->user;
 
-        if (!is_string(value: $identifier)) {
-            return $next($command);
-        }
-
-        $userId = UserId::of(value: $identifier);
-
+        /** @phpstan-var \App\Shared\Domain\Id\UserId $userId */
+        $userId = $user->getAuthIdentifier();
         $token = TokenCreator::newRefreshToken(
             userId: $userId,
             tokenHash: TokenHash::fromPlainToken(

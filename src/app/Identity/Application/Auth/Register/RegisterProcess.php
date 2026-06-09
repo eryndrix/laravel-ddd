@@ -3,21 +3,25 @@
 namespace App\Identity\Application\Auth\Register;
 
 use App\Shared\Application\Process;
-use App\Identity\Application\Auth\Register\Handler\RegisterUserHandler;
 use App\Identity\Application\Auth\Register\Handler\AttachDefaultRoleHandler;
+use App\Identity\Application\Auth\Register\Handler\RegisterUserHandler;
 use App\Shared\Application\Result\Result;
-use App\Identity\Application\Auth\Register\Output\RegisterSuccess;
-use App\Identity\Application\Auth\Register\Output\RegisterError;
-use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\{Cache, Log};
+use Illuminate\Support\Str;
 
 /**
  * @phpstan-extends Process<
  *     RegisterCommand,
- *     Result<RegisterSuccess, RegisterError>
+ *     Result<string, RegisterError>
  * >
  */
 final class RegisterProcess extends Process
 {
+    /**
+     * @phpstan-var string
+     */
+    private const SUCCESS = 'auth.registration.success';
+    
     /**
      * @phpstan-var list<class-string>
      */
@@ -28,17 +32,31 @@ final class RegisterProcess extends Process
 
     /**
      * @phpstan-param RegisterCommand $command
-     * @phpstan-return Result<RegisterSuccess, RegisterError>
+     * @phpstan-return Result<string, RegisterError>
      */
     public function __invoke(RegisterCommand $command): Result
     {
         try {
+            $jobId = Str::uuid7()->toString();
+            /** @phpstan-var array<string, mixed> $data */
+            $data = $command->toArray();
+
             dispatch_sync(
-                new RegisterJob(command: $command)
+                new RegisterJob(jobId: $jobId, data: $data)
             );
 
-            $result = new RegisterSuccess();
-            return Result::success(value: $result);
+            /**
+             * @phpstan-var \App\Shared\Application\Result\Failure<
+             *     RegisterError
+             * > $result
+             */
+            $result = Cache::get(key: "register:{$jobId}");
+
+            if ($result->isFailure()) {
+                return $result;
+            }
+
+            return Result::success(value: self::SUCCESS);
         }
 
         catch (\Throwable $e) {
@@ -49,7 +67,7 @@ final class RegisterProcess extends Process
             ]);
 
             return Result::failure(
-                error: RegisterError::UnexpectedError
+                error: RegisterError::Unknown
             );
         }
     }

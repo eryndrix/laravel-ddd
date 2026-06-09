@@ -6,9 +6,9 @@ use App\Shared\Application\Command\Command;
 use WendellAdriel\ValidatedDTO\Casting\StringCast;
 use WendellAdriel\ValidatedDTO\Casting\BooleanCast;
 use WendellAdriel\ValidatedDTO\Casting\ObjectCast;
+use Illuminate\Contracts\Auth\Authenticatable;
 use WendellAdriel\ValidatedDTO\Casting\ArrayCast;
 use WendellAdriel\ValidatedDTO\Attributes\Cast;
-use Illuminate\Contracts\Auth\Authenticatable;
 
 final class LoginCommand extends Command
 {

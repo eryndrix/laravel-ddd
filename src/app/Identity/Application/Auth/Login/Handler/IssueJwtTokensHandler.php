@@ -5,7 +5,6 @@ namespace App\Identity\Application\Auth\Login\Handler;
 use App\Shared\Application\Handler;
 use App\Identity\Application\Auth\Login\LoginCommand;
 use App\Identity\Domain\Access\Jwt\JwtTokenIssuerInterface;
-use App\Identity\Application\Auth\Login\Output\LoginError;
 use App\Shared\Application\Result\Result;
 
 final class IssueJwtTokensHandler extends Handler
@@ -26,23 +25,12 @@ final class IssueJwtTokensHandler extends Handler
     public function handle(
         LoginCommand $command, \Closure $next): mixed
     {
-        if (is_null(value: $command->user)) {
-            return Result::failure(
-                error: LoginError::SystemError
-            );
-        }
+        /** @phpstan-var \Illuminate\Contracts\Auth\Authenticatable $user */
+        $user = $command->user;
 
         $token = $this->jwtTokenIssuer->issueTokensFor(
-            user: $command->user
+            user: $user
         );
-
-        if ($token['access_token'] === ''
-            || $token['refresh_token'] === ''
-        ) {
-            return Result::failure(
-                error: LoginError::SystemError
-            );
-        }
         
         $command->token = $token;
 

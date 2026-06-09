@@ -5,7 +5,7 @@ namespace App\Identity\Application\Auth\Login\Handler;
 use App\Shared\Application\Handler;
 use App\Identity\Application\Auth\Login\LoginCommand;
 use Illuminate\Support\Facades\RateLimiter;
-use App\Identity\Application\Auth\Login\Output\LoginError;
+use App\Identity\Application\Auth\Login\LoginError;
 use App\Shared\Application\Result\Result;
 
 final class ThrottleLoginsHandler extends Handler

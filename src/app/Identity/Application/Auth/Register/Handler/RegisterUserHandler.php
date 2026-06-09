@@ -3,12 +3,12 @@
 namespace App\Identity\Application\Auth\Register\Handler;
 
 use App\Shared\Application\Handler;
-use App\Identity\Domain\Creating\UserCreator;
+use App\Identity\Application\Auth\Register\RegisterCommand;
 use App\Identity\Domain\Repository\UserRepositoryInterface;
 use App\Identity\Domain\Password\Password;
-use App\Identity\Application\Auth\Register\RegisterCommand;
-use App\Identity\Application\Auth\Register\Output\RegisterError;
 use App\Shared\Domain\Email\Email;
+use App\Identity\Domain\Creating\UserCreator;
+use App\Identity\Application\Auth\Register\RegisterError;
 use App\Shared\Application\Result\Result;
 
 final class RegisterUserHandler extends Handler
@@ -32,17 +32,28 @@ final class RegisterUserHandler extends Handler
         RegisterCommand $command, \Closure $next): mixed
     {
         if (is_null(value: $command->roleId)) {
+            throw new \RuntimeException(
+                message: 'Role ID is required.'
+            );
+        }
+
+        try {
+            $email = Email::of(value: $command->email);
+            $password = Password::fromPlain(
+                value: $command->password
+            );
+        }
+
+        catch (\DomainException $e) {
             return Result::failure(
-                error: RegisterError::SystemError
+                error: RegisterError::InvalidCredentials
             );
         }
 
         $user = UserCreator::new(
             name: $command->name,
-            email: Email::of(value: $command->email),
-            password: Password::fromPlain(
-                value: $command->password
-            ),
+            email: $email,
+            password: $password,
             roleId: $command->roleId
         );
 

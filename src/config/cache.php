@@ -76,6 +76,7 @@ return [
             'driver' => 'redis',
             'connection' => env('REDIS_CACHE_CONNECTION', 'cache'),
             'lock_connection' => env('REDIS_CACHE_LOCK_CONNECTION', 'default'),
+            'serializable_classes' => true
         ],
 
         'dynamodb' => [
@@ -125,6 +126,10 @@ return [
     |
     */
 
-    'serializable_classes' => false,
+    'serializable_classes' => [
+        \App\Shared\Application\Result\Result::class,
+        \App\Shared\Application\Result\Success::class,
+        \App\Shared\Application\Result\Failure::class,
+    ],
 
 ];
