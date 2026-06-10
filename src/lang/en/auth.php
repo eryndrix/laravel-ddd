@@ -37,5 +37,6 @@ return [
         'invalid' => 'Invalid refresh token.',
         'expired' => 'Refresh token has expired. Please log in again.',
         'missing_ability' => 'This token cannot be used to refresh.',
+        'failed' => 'Refresh token failed. Please log in again.',
     ],
 ];

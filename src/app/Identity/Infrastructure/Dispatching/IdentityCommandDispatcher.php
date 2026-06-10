@@ -7,8 +7,8 @@ use App\Identity\Application\Auth\Register\RegisterCommand;
 use App\Identity\Application\Auth\Register\RegisterProcess;
 use App\Identity\Application\Auth\Login\LoginCommand;
 use App\Identity\Application\Auth\Login\LoginProcess;
-// use App\Identity\Application\Auth\Token\RefreshTokenCommand;
-// use App\Identity\Application\Auth\Token\RefreshTokenProcess;
+use App\Identity\Application\Auth\Token\RefreshTokenCommand;
+use App\Identity\Application\Auth\Token\RefreshTokenProcess;
 // use App\Identity\Application\Password\Forgot\ForgotPasswordCommand;
 // use App\Identity\Application\Password\Forgot\ForgotPasswordHandler;
 // use App\Identity\Application\Password\Reset\ResetPasswordCommand;
@@ -29,7 +29,7 @@ final class IdentityCommandDispatcher extends ServiceProvider
     private array $auth = [
         RegisterCommand::class => RegisterProcess::class,
         LoginCommand::class => LoginProcess::class,
-        // RefreshTokenCommand::class => RefreshTokenProcess::class,
+        RefreshTokenCommand::class => RefreshTokenProcess::class,
         // ForgotPasswordCommand::class => ForgotPasswordHandler::class,
         // ResetPasswordCommand::class => ResetPasswordProcess::class,
         LogoutCommand::class => LogoutProcess::class

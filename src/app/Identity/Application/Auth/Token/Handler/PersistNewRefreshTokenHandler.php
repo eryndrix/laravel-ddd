@@ -1,16 +1,16 @@
 <?php declare(strict_types=1);
 
-namespace App\Identity\Application\Auth\Login\Handler;
+namespace App\Identity\Application\Auth\Token\Handler;
 
 use App\Shared\Application\Handler\Handler;
-use App\Identity\Application\Auth\Login\LoginCommand;
+use App\Identity\Application\Auth\Token\RefreshTokenCommand;
 use App\Identity\Domain\Repository\TokenRepositoryInterface;
 use App\Identity\Domain\TokenHash;
 use App\Identity\Domain\Creating\TokenCreator;
 use Illuminate\Contracts\Auth\Authenticatable;
 use App\Shared\Domain\Id\UserId;
 
-final class PersistRefreshTokenHandler extends Handler
+final class PersistNewRefreshTokenHandler extends Handler
 {
     /**
      * @phpstan-param TokenRepositoryInterface $repository
@@ -20,13 +20,13 @@ final class PersistRefreshTokenHandler extends Handler
     ) {}
 
     /**
-     * @phpstan-param LoginCommand $command
+     * @phpstan-param RefreshTokenCommand $command
      * @phpstan-param \Closure $next
      *
      * @phpstan-return mixed
      */
     public function handle(
-        LoginCommand $command, \Closure $next): mixed
+        RefreshTokenCommand $command, \Closure $next): mixed
     {
         /**
          * @phpstan-var array{
