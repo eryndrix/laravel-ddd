@@ -2,7 +2,7 @@
 
 namespace App\Privilege\Application\Handler;
 
-use App\Shared\Application\Handler;
+use App\Shared\Application\Handler\Handler;
 use App\Privilege\Application\Query\ShowRoleQuery;
 use App\Privilege\Domain\Repository\RoleRepositoryInterface;
 use App\Privilege\Application\RoleError;

@@ -2,9 +2,11 @@
 
 namespace App\Identity\Application\Auth\Login\Handler;
 
-use App\Shared\Application\Handler;
+use App\Shared\Application\Handler\Handler;
 use App\Identity\Application\Auth\Login\LoginCommand;
 use App\Identity\Domain\Repository\TokenRepositoryInterface;
+use Illuminate\Contracts\Auth\Authenticatable;
+use App\Shared\Domain\Id\UserId;
 use App\Shared\Application\Result\Result;
 
 final class RevokeOldRefreshTokensHandler extends Handler
@@ -25,17 +27,20 @@ final class RevokeOldRefreshTokensHandler extends Handler
     public function handle(
         LoginCommand $command, \Closure $next): mixed
     {
-        /** @phpstan-var \Illuminate\Contracts\Auth\Authenticatable $user */
+        /** @phpstan-var Authenticatable $user */
         $user = $command->user;
-        /** @phpstan-var \App\Shared\Domain\Id\UserId $userId */
+
+        /** @phpstan-var UserId $userId */
         $userId = $user->getAuthIdentifier();
 
         $tokens = $this->repository->allByUserId(
             userId: $userId
         );
 
+        $now = new \DateTimeImmutable();
+
         foreach ($tokens as $token) {
-            if ($token->expiresAt > new \DateTimeImmutable()) {
+            if ($token->expiresAt < $now) {
                 $token->revoke();
                 $this->repository->save(token: $token);
             }

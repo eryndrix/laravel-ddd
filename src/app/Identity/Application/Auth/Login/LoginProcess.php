@@ -8,15 +8,12 @@ use App\Identity\Application\Auth\Login\Handler\AuthenticateUserHandler;
 use App\Identity\Application\Auth\Login\Handler\RevokeOldRefreshTokensHandler;
 use App\Identity\Application\Auth\Login\Handler\IssueJwtTokensHandler;
 use App\Identity\Application\Auth\Login\Handler\PersistRefreshTokenHandler;
-use App\Shared\Application\Result\Failure;
 use App\Shared\Application\Result\Result;
+use App\Shared\Application\Handler\HandlerException;
 use Illuminate\Support\Facades\Log;
 
 /**
- * @phpstan-extends Process<
- *     LoginCommand,
- *     LoginCommand|Result<array<string, int>, LoginError>
- * >
+ * @phpstan-extends Process<LoginCommand, LoginCommand>
  */
 final class LoginProcess extends Process
 {
@@ -33,22 +30,23 @@ final class LoginProcess extends Process
 
     /**
      * @phpstan-param LoginCommand $command
-     * @phpstan-return Result<array<string, int>, LoginError>
+     * @phpstan-return Result<array<string, mixed>, LoginError>
      */
     public function __invoke(LoginCommand $command): Result
     {
         try {
-            /** @phpstan-var LoginCommand $result */
             $result = $this->run(payload: $command);
 
-            if ($result instanceof Failure) {
-                return $result;
-            }
+            /** @phpstan-var array<string, mixed> $jwtTokenPair */
+            $jwtTokenPair = $result->jwtTokenPair;
 
-            /** @phpstan-var array<string, int> $token */
-            $token = $result->token;
+            return Result::success(value: $jwtTokenPair);
+        }
 
-            return Result::success(value: $token);
+        catch (HandlerException $e) {
+            /** @phpstan-var LoginError $error */
+            $error = $e->getError();
+            return Result::failure(error: $error);
         }
 
         catch (\Throwable $e) {

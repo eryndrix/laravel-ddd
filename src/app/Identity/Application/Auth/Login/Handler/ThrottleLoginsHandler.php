@@ -2,10 +2,11 @@
 
 namespace App\Identity\Application\Auth\Login\Handler;
 
-use App\Shared\Application\Handler;
+use App\Shared\Application\Handler\Handler;
 use App\Identity\Application\Auth\Login\LoginCommand;
 use Illuminate\Support\Facades\RateLimiter;
 use App\Identity\Application\Auth\Login\LoginError;
+use App\Shared\Application\Handler\HandlerException;
 use App\Shared\Application\Result\Result;
 
 final class ThrottleLoginsHandler extends Handler
@@ -16,7 +17,7 @@ final class ThrottleLoginsHandler extends Handler
      * 
      * @phpstan-return mixed
      * 
-     * @throws \RuntimeException
+     * @throws HandlerException<LoginError>
      */
     public function handle(
         LoginCommand $command, \Closure $next): mixed
@@ -28,8 +29,8 @@ final class ThrottleLoginsHandler extends Handler
             maxAttempts: 5
         )) {
             RateLimiter::availableIn(key: $key);
-            
-            return Result::failure(
+
+            throw new HandlerException(
                 error: LoginError::TooManyAttempts
             );
         }

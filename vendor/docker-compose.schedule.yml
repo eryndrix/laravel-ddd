@@ -14,7 +14,12 @@ services:
     security_opt:
       - no-new-privileges:true
     volumes:
+      - ./certs/ca.crt:/certs/ca.crt:ro
+      - ./certs/client.crt:/certs/client.crt:ro
+      - ./certs/client.key:/certs/client.key:ro
       - ./docker/schedule/crontab:/etc/supercronic/schedule:ro
+      - ./src/storage/logs/schedule.log:/var/log/schedule.log
+      - ./src:/var/www/html
     command: ["supercronic", "/etc/supercronic/schedule"]
     networks:
       - app-network

@@ -2,7 +2,7 @@
 
 namespace App\Identity\Application\Auth\Logout\Handler;
 
-use App\Shared\Application\Handler;
+use App\Shared\Application\Handler\Handler;
 use App\Identity\Domain\Repository\TokenRepositoryInterface;
 use App\Identity\Application\Auth\Logout\LogoutCommand;
 

@@ -6,7 +6,7 @@ use App\Shared\Domain\Storage\UnitOfWorkInterface;
 use Illuminate\Pipeline\Pipeline;
 
 /**
- * @phpstan-template TPayload of mixed
+ * @phpstan-template TPayload of object
  * @phpstan-template TResult
  */
 abstract class Process
@@ -25,7 +25,7 @@ abstract class Process
      * @phpstan-param TPayload $payload
      * @phpstan-return TResult
      */
-    public function run(mixed $payload)
+    public function run(object $payload): mixed
     {
         $unitOfWork = app()->make(
             abstract: UnitOfWorkInterface::class

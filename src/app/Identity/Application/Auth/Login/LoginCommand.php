@@ -5,10 +5,10 @@ namespace App\Identity\Application\Auth\Login;
 use App\Shared\Application\Command\Command;
 use WendellAdriel\ValidatedDTO\Casting\StringCast;
 use WendellAdriel\ValidatedDTO\Casting\BooleanCast;
-use WendellAdriel\ValidatedDTO\Casting\ObjectCast;
-use Illuminate\Contracts\Auth\Authenticatable;
 use WendellAdriel\ValidatedDTO\Casting\ArrayCast;
+use WendellAdriel\ValidatedDTO\Casting\ObjectCast;
 use WendellAdriel\ValidatedDTO\Attributes\Cast;
+use Illuminate\Contracts\Auth\Authenticatable;
 
 final class LoginCommand extends Command
 {
@@ -40,7 +40,7 @@ final class LoginCommand extends Command
      * @phpstan-var array<string, mixed>
      */
     #[Cast(type: ArrayCast::class, param: null)]
-    public ?array $token;
+    public ?array $jwtTokenPair;
     
     /**
      * @phpstan-return array<string, string>

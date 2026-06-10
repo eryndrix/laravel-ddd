@@ -10,9 +10,9 @@ interface JwtTokenIssuerInterface
      * @phpstan-param Authenticatable $user
      * @phpstan-return array{
      *     access_token: string,
-     *     access_token_ttl: int,
+     *     ttl: int,
      *     refresh_token: string,
-     *     refresh_token_ttl: int
+     *     refresh_ttl: \DateTimeImmutable
      * }
      */
     public function issueTokensFor(Authenticatable $user): array;

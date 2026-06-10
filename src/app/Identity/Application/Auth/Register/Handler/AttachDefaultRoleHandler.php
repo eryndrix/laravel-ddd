@@ -2,7 +2,7 @@
 
 namespace App\Identity\Application\Auth\Register\Handler;
 
-use App\Shared\Application\Handler;
+use App\Shared\Application\Handler\Handler;
 use App\Shared\Domain\Repository\RoleRepositoryInterface;
 use App\Shared\Domain\Slug\RoleSlug;
 use App\Identity\Application\Auth\Register\RegisterCommand;

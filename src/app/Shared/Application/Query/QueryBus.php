@@ -8,7 +8,7 @@ use Illuminate\Contracts\Bus\Dispatcher;
 /**
  * @phpstan-implements QueryBusInterface<
  *     Query,
- *     \App\Shared\Application\Handler
+ *     \App\Shared\Application\Handler\Handler
  * >
  */
 final class QueryBus implements QueryBusInterface
@@ -34,7 +34,9 @@ final class QueryBus implements QueryBusInterface
     /**
      * @phpstan-param array<
      *     class-string<Query>,
-     *     class-string<\App\Shared\Application\Handler>
+     *     class-string<
+     *         \App\Shared\Application\Handler\Handler
+     *     >
      * > $map
      * 
      * @phpstan-return void

@@ -2,10 +2,12 @@
 
 namespace App\Identity\Application\Auth\Login\Handler;
 
-use App\Shared\Application\Handler;
+use App\Shared\Application\Handler\Handler;
 use App\Identity\Application\Auth\Login\LoginCommand;
 use App\Identity\Domain\Repository\TokenRepositoryInterface;
 use App\Identity\Domain\TokenHash;
+use Illuminate\Contracts\Auth\Authenticatable;
+use App\Shared\Domain\Id\UserId;
 use App\Identity\Domain\Creating\TokenCreator;
 use App\Shared\Application\Result\Result;
 
@@ -27,25 +29,27 @@ final class PersistRefreshTokenHandler extends Handler
     public function handle(
         LoginCommand $command, \Closure $next): mixed
     {
-        /** @phpstan-var array<string, string> $tokenData*/
-        $tokenData = $command->token;
+        /**
+         * @phpstan-var array{
+         *     refresh_token: string,
+         *     refresh_ttl: \DateTimeImmutable
+         * } $jwtTokenPair
+         */
+        $jwtTokenPair = $command->jwtTokenPair;
 
-        $rTtl = $tokenData['refresh_token_ttl'];
-        $refreshToken = $tokenData['refresh_token'];
-
-        $expiresAt = new \DateTimeImmutable(
-            datetime: '+ ' . $rTtl . ' minutes'
-        );
-
-        /** @phpstan-var \Illuminate\Contracts\Auth\Authenticatable $user */
+        /** @phpstan-var Authenticatable $user */
         $user = $command->user;
 
-        /** @phpstan-var \App\Shared\Domain\Id\UserId $userId */
+        /** @phpstan-var UserId $userId */
         $userId = $user->getAuthIdentifier();
+        
+        $plainToken = $jwtTokenPair['refresh_token'];
+        $expiresAt = $jwtTokenPair['refresh_ttl'];
+
         $token = TokenCreator::newRefreshToken(
             userId: $userId,
             tokenHash: TokenHash::fromPlainToken(
-                plainToken: $refreshToken
+                plainToken: $plainToken
             ),
             expiresAt: $expiresAt
         );

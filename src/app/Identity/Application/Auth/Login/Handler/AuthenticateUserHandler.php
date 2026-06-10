@@ -2,10 +2,11 @@
 
 namespace App\Identity\Application\Auth\Login\Handler;
 
-use App\Shared\Application\Handler;
+use App\Shared\Application\Handler\Handler;
 use App\Identity\Application\Auth\Login\LoginCommand;
 use App\Identity\Domain\Access\Auth\AuthenticatorInterface;
 use App\Identity\Application\Auth\Login\LoginError;
+use App\Shared\Application\Handler\HandlerException;
 use App\Shared\Application\Result\Result;
 
 final class AuthenticateUserHandler extends Handler
@@ -22,6 +23,8 @@ final class AuthenticateUserHandler extends Handler
      * @phpstan-param \Closure $next
      * 
      * @phpstan-return mixed
+     * 
+     * @throws HandlerException<LoginError>
      */
     public function handle(
         LoginCommand $command, \Closure $next): mixed
@@ -34,7 +37,7 @@ final class AuthenticateUserHandler extends Handler
         );
 
         if (is_null(value: $user)) {
-            return Result::failure(
+            throw new HandlerException(
                 error: LoginError::InvalidCredentials
             );
         }

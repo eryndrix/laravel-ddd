@@ -8,7 +8,7 @@ use Illuminate\Contracts\Bus\Dispatcher;
 /**
  * @phpstan-implements CommandBusInterface<
  *     Command,
- *     \App\Shared\Application\Handler
+ *     \App\Shared\Application\Handler\Handler
  * >
  */
 final class CommandBus implements CommandBusInterface
@@ -34,7 +34,9 @@ final class CommandBus implements CommandBusInterface
     /**
      * @phpstan-param array<
      *     class-string<Command>,
-     *     class-string<\App\Shared\Application\Handler>
+     *     class-string<
+     *         \App\Shared\Application\Handler\Handler
+     *     >
      * > $map
      * 
      * @phpstan-return void

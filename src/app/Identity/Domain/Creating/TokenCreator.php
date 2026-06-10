@@ -27,8 +27,8 @@ final class TokenCreator
             tokenableId: $userId,
             name: 'refresh_token',
             token: $tokenHash,
-            abilities: Abilities::fromArray(value: ['*']),
-            expiresAt: $expiresAt,
+            abilities: Abilities::fromArray(value: ['refresh']),
+            expiresAt: $expiresAt
         );
     }
 }

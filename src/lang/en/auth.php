@@ -32,4 +32,10 @@ return [
         'success' => 'Logout successful!',
         'failed' => 'Logout failed. Please try again later.',
     ],
+
+    'token' => [
+        'invalid' => 'Invalid refresh token.',
+        'expired' => 'Refresh token has expired. Please log in again.',
+        'missing_ability' => 'This token cannot be used to refresh.',
+    ],
 ];

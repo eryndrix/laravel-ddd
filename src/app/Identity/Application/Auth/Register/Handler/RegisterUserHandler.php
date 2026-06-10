@@ -2,14 +2,15 @@
 
 namespace App\Identity\Application\Auth\Register\Handler;
 
-use App\Shared\Application\Handler;
+use App\Shared\Application\Handler\Handler;
 use App\Identity\Application\Auth\Register\RegisterCommand;
 use App\Identity\Domain\Repository\UserRepositoryInterface;
-use App\Identity\Domain\Password\Password;
-use App\Shared\Domain\Email\Email;
 use App\Identity\Domain\Creating\UserCreator;
-use App\Identity\Application\Auth\Register\RegisterError;
+use App\Shared\Domain\Email\Email;
+use App\Identity\Domain\Password\Password;
 use App\Shared\Application\Result\Result;
+use App\Identity\Application\Auth\Register\RegisterError;
+use App\Shared\Application\Handler\HandlerException;
 
 final class RegisterUserHandler extends Handler
 {
@@ -26,7 +27,7 @@ final class RegisterUserHandler extends Handler
      * 
      * @phpstan-return mixed
      * 
-     * @throws \RuntimeException
+     * @throws HandlerException<RegisterError>
      */
     public function handle(
         RegisterCommand $command, \Closure $next): mixed
@@ -45,7 +46,7 @@ final class RegisterUserHandler extends Handler
         }
 
         catch (\DomainException $e) {
-            return Result::failure(
+            throw new HandlerException(
                 error: RegisterError::InvalidCredentials
             );
         }

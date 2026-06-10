@@ -19,9 +19,9 @@ final class JwtTokenIssuer implements JwtTokenIssuerInterface
      * @phpstan-param Authenticatable $user
      * @phpstan-return array{
      *     access_token: string,
-     *     access_token_ttl: int,
+     *     ttl: int,
      *     refresh_token: string,
-     *     refresh_token_ttl: int
+     *     refresh_ttl: \DateTimeImmutable
      * }
      * 
      * @throws \RuntimeException
@@ -65,9 +65,11 @@ final class JwtTokenIssuer implements JwtTokenIssuerInterface
 
         return [
             'access_token' => $accessToken,
-            'access_token_ttl' => $aTtl,
+            'ttl' => $aTtl * 60,
             'refresh_token' => $refreshToken,
-            'refresh_token_ttl' => $rTtl,
+            'refresh_ttl' => new \DateTimeImmutable(
+                datetime: '+ ' . $rTtl . ' minutes'
+            )
         ];
     }
 }

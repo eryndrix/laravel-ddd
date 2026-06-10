@@ -15,16 +15,6 @@ use Illuminate\Support\Facades\Log;
 final class LogoutProcess extends Process
 {
     /**
-     * @phpstan-var string
-     */
-    private const string SUCCESS = 'auth.logout.success';
-
-    /**
-     * @phpstan-var string
-     */
-    private const string FAILED = 'auth.logout.failed';
-
-    /**
      * @phpstan-var list<class-string>
      */
     protected array $handlers = [
@@ -40,8 +30,11 @@ final class LogoutProcess extends Process
     public function __invoke(LogoutCommand $command): Result
     {
         try {
-            $result = $this->run(payload: $command);
-            return Result::success(value: self::SUCCESS);
+            $this->run(payload: $command);
+
+            return Result::success(
+                value: 'auth.logout.success'
+            );
         }
 
         catch (\Throwable $e) {
@@ -51,7 +44,9 @@ final class LogoutProcess extends Process
                 'message' => $e->getMessage()
             ]);
 
-            return Result::failure(error: self::FAILED);
+            return Result::failure(
+                error: 'auth.logout.failed'
+            );
         }
     }
 }

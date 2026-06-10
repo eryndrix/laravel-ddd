@@ -6,7 +6,7 @@ use Illuminate\Foundation\Configuration\Middleware;
 use Illuminate\Http\Middleware\HandleCors;
 use App\Shared\Presentation\Response\ResultResponse;
 use Illuminate\Console\Scheduling\Schedule;
-use App\Identity\Presentation\CleanupRefreshTokens;
+use App\Identity\Presentation\RefreshTokensRotator;
 use Eryndrix\Middleware\SecurityHeaders;
 use Eryndrix\Middleware\ApiRequestLogger;
 use Illuminate\Http\Request;
@@ -35,28 +35,15 @@ return Application::configure(
             type: \PDOException::class,
             level: \Psr\Log\LogLevel::CRITICAL
         );
-
-        if (app()->environment('production')) {
-            $exceptions->render(
-                using: function (
-                    \Throwable $e,
-                    Request $request): mixed
-                {
-                    if (app()->environment('production') && str_contains(
-                        haystack: $request->path(),
-                        needle: 'v1'
-                    )) {
-                        return new ResultResponse(
-                            data: [
-                                'error' => $e->getMessage()
-                            ],
-                            status: 500
-                        );
-                    }
-
-                    return null;
-                }
-            );
-        }
     }
+)->withSchedule(
+    callback: function (Schedule $schedule): void {
+        $schedule->command(
+            command: 'tokens:cleanup'
+        )->dailyAt(
+            time: '00:00'
+        );
+    }
+)->withCommands(
+    commands: [RefreshTokensRotator::class]
 )->create();

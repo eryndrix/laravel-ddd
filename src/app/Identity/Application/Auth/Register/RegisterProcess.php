@@ -6,8 +6,8 @@ use App\Shared\Application\Process;
 use App\Identity\Application\Auth\Register\Handler\AttachDefaultRoleHandler;
 use App\Identity\Application\Auth\Register\Handler\RegisterUserHandler;
 use App\Shared\Application\Result\Result;
-use Illuminate\Support\Facades\{Cache, Log};
-use Illuminate\Support\Str;
+use App\Shared\Application\Handler\HandlerException;
+use Illuminate\Support\Facades\Log;
 
 /**
  * @phpstan-extends Process<
@@ -17,11 +17,6 @@ use Illuminate\Support\Str;
  */
 final class RegisterProcess extends Process
 {
-    /**
-     * @phpstan-var string
-     */
-    private const SUCCESS = 'auth.registration.success';
-    
     /**
      * @phpstan-var list<class-string>
      */
@@ -37,26 +32,19 @@ final class RegisterProcess extends Process
     public function __invoke(RegisterCommand $command): Result
     {
         try {
-            $jobId = Str::uuid7()->toString();
-            /** @phpstan-var array<string, mixed> $data */
-            $data = $command->toArray();
-
             dispatch_sync(
-                new RegisterJob(jobId: $jobId, data: $data)
+                new RegisterJob(command: $command)
             );
 
-            /**
-             * @phpstan-var \App\Shared\Application\Result\Failure<
-             *     RegisterError
-             * > $result
-             */
-            $result = Cache::get(key: "register:{$jobId}");
+            return Result::success(
+                value: 'auth.registration.success'
+            );
+        }
 
-            if ($result->isFailure()) {
-                return $result;
-            }
-
-            return Result::success(value: self::SUCCESS);
+        catch (HandlerException $e) {
+            /** @phpstan-var RegisterError $error */
+            $error = $e->getError();
+            return Result::failure(error: $error);
         }
 
         catch (\Throwable $e) {

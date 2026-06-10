@@ -42,7 +42,7 @@ final class LoginAction extends Action
     {
         /**
          * @phpstan-var \App\Shared\Application\Result\Result<
-         *     array<string, int>,
+         *     array<string, mixed>,
          *     \App\Identity\Application\Auth\Login\LoginError
          * > $result */
         $result = $this->commandBus->send(

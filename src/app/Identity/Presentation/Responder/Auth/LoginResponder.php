@@ -3,26 +3,28 @@
 namespace App\Identity\Presentation\Responder\Auth;
 
 use App\Shared\Presentation\Responder;
-use App\Identity\Presentation\Resource\TokenResource;
 use App\Shared\Presentation\Response\ApiResponse;
+use App\Identity\Presentation\JwtTokenPair;
 use Illuminate\Http\Response as Status;
 use App\Identity\Application\Auth\Login\LoginError;
 use App\Shared\Application\Result\Result;
 
 /**
- * @phpstan-extends Responder<array<string, int>, LoginError>
+ * @phpstan-extends Responder<array<string, mixed>, LoginError>
  */
 final class LoginResponder extends Responder
 {
     /**
-     * @phpstan-param Result<array<string, int>, LoginError> $result
+     * @phpstan-param Result<array<string, mixed>, LoginError> $result
      * @phpstan-return ApiResponse
      */
     public function respond(Result $result): ApiResponse
     {
         return $result->match(
             onSuccess: fn (array $token) => new ApiResponse(
-                data: new TokenResource(resource: $token),
+                data: JwtTokenPair::fromArray(
+                    data: $token // @phpstan-ignore argument.type
+                )->toArray(),
                 status: Status::HTTP_OK
             ),
             onError: fn (LoginError $error) => match ($error) {

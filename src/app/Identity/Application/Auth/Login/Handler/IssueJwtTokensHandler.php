@@ -2,9 +2,10 @@
 
 namespace App\Identity\Application\Auth\Login\Handler;
 
-use App\Shared\Application\Handler;
+use App\Shared\Application\Handler\Handler;
 use App\Identity\Application\Auth\Login\LoginCommand;
 use App\Identity\Domain\Access\Jwt\JwtTokenIssuerInterface;
+use Illuminate\Contracts\Auth\Authenticatable;
 use App\Shared\Application\Result\Result;
 
 final class IssueJwtTokensHandler extends Handler
@@ -25,14 +26,14 @@ final class IssueJwtTokensHandler extends Handler
     public function handle(
         LoginCommand $command, \Closure $next): mixed
     {
-        /** @phpstan-var \Illuminate\Contracts\Auth\Authenticatable $user */
+        /** @phpstan-var Authenticatable $user */
         $user = $command->user;
 
-        $token = $this->jwtTokenIssuer->issueTokensFor(
+        $jwtTokenPair = $this->jwtTokenIssuer->issueTokensFor(
             user: $user
         );
         
-        $command->token = $token;
+        $command->jwtTokenPair = $jwtTokenPair;
 
         return $next($command);
     }

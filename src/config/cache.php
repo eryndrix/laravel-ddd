@@ -126,10 +126,6 @@ return [
     |
     */
 
-    'serializable_classes' => [
-        \App\Shared\Application\Result\Result::class,
-        \App\Shared\Application\Result\Success::class,
-        \App\Shared\Application\Result\Failure::class,
-    ],
+    'serializable_classes' => false,
 
 ];
