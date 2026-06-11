@@ -9,8 +9,6 @@ services:
         GID: ${GID:-1000}
     user: "${UID:-1000}:${GID:-1000}"
     restart: unless-stopped
-    ports:
-      - "127.0.0.1:8000:8000"
     cap_drop:
       - ALL
     security_opt:

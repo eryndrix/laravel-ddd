@@ -14,6 +14,7 @@ COMPOSE_FILES := -f docker-compose.yml \
                  -f vendor/docker-compose.queue.yml \
                  -f vendor/docker-compose.schedule.yml \
                  -f vendor/docker-compose.swagger.yml \
+                 -f vendor/docker-compose.mailhog.yml \
                  -f vendor/docker-compose.trivy.yml \
                  -f vendor/docker-compose.watchtower.yml
 

@@ -24,6 +24,8 @@ entryPoints:
           scheme: https
   https:
     address: ":443"
+  smtp:
+    address: ":1025"
   postgres:
     address: ":5432"
   rabbitmq:

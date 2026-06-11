@@ -159,10 +159,6 @@ final class UserProvider implements UserProviderInterface
 
         $password = $user->getAuthPassword();
         
-        if (!is_string(value: $password)) {
-            return false;
-        }
-
         $hashedPassword = new Password(hash: $password);
         
         if (!$hashedPassword->needsRehash() || !$force) {

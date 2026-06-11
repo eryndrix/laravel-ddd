@@ -31,18 +31,14 @@ final class UserAdapter implements
     use Authenticatable;
 
     /**
-     * Create a new AuthUserAdapter instance.
-     *
-     * @param User $user
+     * @phpstan-param User $user
      */
     public function __construct(
         public private(set) User $user,
     ) {}
 
     /**
-     * Get the identifier that will be stored in the JWT subject claim.
-     *
-     * @return string
+     * @phpstan-return string
      */
     public function getJWTIdentifier(): string
     {
@@ -50,9 +46,7 @@ final class UserAdapter implements
     }
 
     /**
-     * Get the custom claims to be added to the JWT.
-     *
-     * @return array<string, mixed>
+     * @phpstan-return array<string, mixed>
      */
     public function getJWTCustomClaims(): array
     {
@@ -63,9 +57,7 @@ final class UserAdapter implements
     }
 
     /**
-     * Returns the primary key name used by the model.
-     *
-     * @return string
+     * @phpstan-return string
      */
     public function getKeyName(): string
     {
@@ -73,9 +65,7 @@ final class UserAdapter implements
     }
 
     /**
-     * Get the user's email address as string.
-     *
-     * @return string The user's email.
+     * @phpstan-return string The user's email.
      */
     public function getEmail(): string
     {
@@ -83,9 +73,32 @@ final class UserAdapter implements
     }
 
     /**
-     * Get the "remember me" token value.
-     *
-     * @return string
+     * @phpstan-param mixed $notification
+     * @phpstan-return string
+     */
+    public function routeNotificationForMail($notification = null): string
+    {
+        return $this->getEmail();
+    }
+
+    /**
+     * @phpstan-return string
+     */
+    public function getAuthPassword(): string
+    {
+        return $this->user->password->value();
+    }
+
+    /**
+     * @phpstan-return string
+     */
+    public function getAuthPasswordName(): string
+    {
+        return 'password';
+    }
+
+    /**
+     * @phpstan-return string
      */
     public function getRememberToken(): string
     {
@@ -93,9 +106,7 @@ final class UserAdapter implements
     }
 
     /**
-     * Set the "remember me" token value.
-     *
-     * @param string|null $value
+     * @phpstan-param string|null $value
      */
     public function setRememberToken($value): void
     {
@@ -105,9 +116,7 @@ final class UserAdapter implements
     }
 
     /**
-     * Get the name of the "remember me" token column.
-     *
-     * @return string
+     * @phpstan-return string
      */
     public function getRememberTokenName(): string
     {
@@ -115,9 +124,7 @@ final class UserAdapter implements
     }
 
     /**
-     * Unwraps and returns the underlying User domain object.
-     *
-     * @return User
+     * @phpstan-return User
      */
     public function unwrap(): User
     {
@@ -125,10 +132,8 @@ final class UserAdapter implements
     }
 
     /**
-     * Magic getter for accessing wrapped user properties.
-     *
-     * @param string $name
-     * @return mixed
+     * @phpstan-param string $name
+     * @phpstan-return mixed
      */
     public function __get(string $name)
     {

@@ -18,6 +18,11 @@ tcp:
       service: redis-service
       rule: "HostSNI(`redis`)"
       tls: {}
+    mailhog-router:
+      entryPoints:
+        - smtp
+      service: mailhog-service
+      rule: "HostSNI(`*`)"
   services:
     postgres-service:
       loadBalancer:
@@ -31,6 +36,10 @@ tcp:
       loadBalancer:
         servers:
           - address: "redis:6379"
+    mailhog-service:
+      loadBalancer:
+        servers:
+          - address: "mailhog:1025"
   middlewares:
     ip-allowlist:
       ipAllowList:

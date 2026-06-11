@@ -4,6 +4,10 @@ http:
       stripPrefix:
         prefixes:
           - "/docs/"
+    mailhog-strip:
+      stripPrefix:
+        prefixes:
+          - "/mailhog/"
     telescope-auth:
       basicAuth:
         users:
@@ -14,3 +18,8 @@ http:
         users:
           - "swagger:$2y$05$Nf2wHGEcko7aKtG2s.mHYuBD5N3XIp79WPtLNbNbBioGSlbCH6EGK"
         realm: "Swagger UI"
+    mailhog-auth:
+      basicAuth:
+        users:
+          - "mailhog:$2y$05$OfayfHAoLKJ8EPJNVsbpduCO8VIuk27Eo0paCChTrTrQYACNSD4g6"
+        realm: "Mailhog"

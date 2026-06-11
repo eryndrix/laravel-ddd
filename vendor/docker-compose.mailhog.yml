@@ -1,0 +1,28 @@
+services:
+  # MailHog service for dev email
+  mailhog:
+    image: mailhog/mailhog:v1.0.1
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:1025:1025"
+    networks:
+      - app-network
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"
+      # Traefik routing for MailHog web interface
+      - "traefik.enable=true"
+      - "traefik.http.routers.mailhog.rule=PathPrefix(`/mailhog/`)"
+      - "traefik.http.routers.mailhog.entrypoints=https"
+      - "traefik.http.routers.mailhog.tls=true"
+      - "traefik.http.routers.mailhog.middlewares=mailhog-auth@file,mailhog-strip@file"
+      - "traefik.http.services.mailhog.loadbalancer.server.port=8025"
+
+volumes: {}
+
+networks:
+  app-network:
+    external: true

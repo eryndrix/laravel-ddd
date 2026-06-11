@@ -5,9 +5,9 @@ namespace App\Identity\Application\Auth\Login\Handler;
 use App\Shared\Application\Handler\Handler;
 use App\Identity\Application\Auth\Login\LoginCommand;
 use App\Identity\Domain\Repository\TokenRepositoryInterface;
+use App\Shared\Application\Result\Result;
 use Illuminate\Contracts\Auth\Authenticatable;
 use App\Shared\Domain\Id\UserId;
-use App\Shared\Application\Result\Result;
 
 final class RevokeOldRefreshTokensHandler extends Handler
 {
