@@ -1,15 +1,15 @@
 <?php declare(strict_types=1);
 
-namespace App\Identity\Application\Email\Update\Handler;
+namespace App\Identity\Application\Password\Update\Handler;
 
 use App\Shared\Application\Handler\Handler;
+use App\Identity\Application\Password\Update\UpdatePasswordCommand;
 use App\Identity\Domain\Repository\UserRepositoryInterface;
-use App\Identity\Application\Email\Update\UpdateEmailCommand;
-use App\Identity\Domain\Changing\UserChanger;
+use App\Identity\Domain\Password\Password;
 use App\Identity\Domain\Access\Auth\UserAdapterInterface;
-use App\Shared\Domain\Email\Email;
+use App\Identity\Domain\Changing\UserChanger;
 
-final class PersistNewEmailHandler extends Handler
+final class UpdatePasswordHandler extends Handler
 {
     /**
      * @phpstan-param UserRepositoryInterface $repository
@@ -19,23 +19,26 @@ final class PersistNewEmailHandler extends Handler
     ) {}
 
     /**
-     * @phpstan-param UpdateEmailCommand $command
+     * @phpstan-param UpdatePasswordCommand $command
      * @phpstan-param \Closure $next
      * 
      * @phpstan-return mixed
      */
     public function handle(
-        UpdateEmailCommand $command, \Closure $next): mixed
+        UpdatePasswordCommand $command, \Closure $next): mixed
     {
         $authUser = $command->user;
         
         /** @phpstan-var UserAdapterInterface $authUser */
         $profile = $authUser->unwrap();
 
-        $newEmail = Email::of(value: $command->email);
+        $newPassword = Password::fromPlain(
+            value: $command->password
+        );
+
         $user = new UserChanger(user: $profile)
             ->beginChange()
-            ->email(email: $newEmail)
+            ->password(newPassword: $newPassword)
             ->endChange();
 
         $this->repository->save(user: $user);

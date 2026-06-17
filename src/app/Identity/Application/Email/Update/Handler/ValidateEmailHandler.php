@@ -4,6 +4,7 @@ namespace App\Identity\Application\Email\Update\Handler;
 
 use App\Shared\Application\Handler\Handler;
 use App\Identity\Application\Email\Update\UpdateEmailCommand;
+use App\Identity\Domain\Access\Auth\UserAdapterInterface;
 use App\Shared\Application\Handler\HandlerException;
 use App\Identity\Application\Email\Update\UpdateEmailError;
 use App\Shared\Domain\Email\Email;
@@ -23,11 +24,11 @@ final class ValidateEmailHandler extends Handler
     {
         try {
             $authUser = $command->user;
-            /** @phpstan-var \App\Identity\Infrastructure\Auth\UserAdapter $authUser */
+            /** @phpstan-var UserAdapterInterface $authUser */
             $user = $authUser->unwrap();
 
             $newEmail = Email::of(value: $command->email);
-            /** @phpstan-var \App\Shared\Domain\Email\Email $oldEmail */
+            /** @phpstan-var Email $oldEmail */
             $oldEmail = $user->email;
 
             if ($oldEmail->value() === $newEmail->value()) {

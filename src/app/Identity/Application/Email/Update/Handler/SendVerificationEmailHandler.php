@@ -4,6 +4,7 @@ namespace App\Identity\Application\Email\Update\Handler;
 
 use App\Shared\Application\Handler\Handler;
 use App\Identity\Application\Email\Update\UpdateEmailCommand;
+use App\Identity\Domain\Access\Auth\UserAdapterInterface;
 
 final class SendVerificationEmailHandler extends Handler
 {
@@ -16,7 +17,7 @@ final class SendVerificationEmailHandler extends Handler
     public function handle(
         UpdateEmailCommand $command, \Closure $next): mixed
     {
-        /** @phpstan-var \App\Identity\Infrastructure\Auth\UserAdapter $user */
+        /** @phpstan-var UserAdapterInterface $user */
         $user = $command->user;
         $user->sendEmailVerificationNotification();
 

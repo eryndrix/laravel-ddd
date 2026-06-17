@@ -2,21 +2,17 @@
 
 namespace App\Identity\Infrastructure\Auth;
 
-use Tymon\JWTAuth\Contracts\JWTSubject;
-use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
+use App\Identity\Domain\User;
+use App\Identity\Domain\Access\Auth\UserAdapterInterface;
 use Illuminate\Auth\Authenticatable;
-use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
+use Tymon\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Auth\Passwords\CanResetPassword;
-use Illuminate\Contracts\Auth\MustVerifyEmail as MustVerifyEmailContract;
 use Illuminate\Auth\MustVerifyEmail;
-use App\Identity\Domain\User;
 
 final class UserAdapter implements
-    AuthenticatableContract,
     JWTSubject,
-    CanResetPasswordContract,
-    MustVerifyEmailContract
+    UserAdapterInterface
 {
     /**
      * Enables password reset functionality for the user.

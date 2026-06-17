@@ -48,6 +48,11 @@ return [
             'failed' => 'Failed to reset password. Please try again.',
             'unknown' => 'An error occurred during password reset.',
         ],
+        'update' => [
+            'success' => 'Password update successfully!',
+            'failed' => 'Failed to update password. Please try again.',
+            'unknown' => 'An error occurred during password update.',
+        ],
 	],
 
     'email' => [
