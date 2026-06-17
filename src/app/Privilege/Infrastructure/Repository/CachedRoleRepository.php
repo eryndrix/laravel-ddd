@@ -9,9 +9,6 @@ use App\Shared\Domain\Id\RoleId;
 use App\Shared\Domain\Slug\RoleSlug;
 use App\Privilege\Domain\Role;
 
-/**
- * @phpstan-implements RoleRepositoryInterface<Role>
- */
 final class CachedRoleRepository implements RoleRepositoryInterface
 {
     /**

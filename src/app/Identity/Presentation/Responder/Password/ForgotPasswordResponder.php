@@ -25,9 +25,17 @@ final class ForgotPasswordResponder extends Responder
                 status: Status::HTTP_OK
             ),
             onError: fn (ForgotPasswordError $error) => match ($error) {
-                ForgotPasswordError::Throttled => new ApiResponse(
+                ForgotPasswordError::TooManyAttempts => new ApiResponse(
                     data: ['message' => $error->message()],
                     status: Status::HTTP_TOO_MANY_REQUESTS
+                ),
+                ForgotPasswordError::InvalidEmailFormat => new ApiResponse(
+                    data: ['message' => $error->message()],
+                    status: Status::HTTP_BAD_REQUEST
+                ),
+                ForgotPasswordError::EmailNotExists => new ApiResponse(
+                    data: ['message' => $error->message()],
+                    status: Status::HTTP_UNAUTHORIZED
                 ),
                 default => new ApiResponse(
                     data: ['message' => $error->message()],

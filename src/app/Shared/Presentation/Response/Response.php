@@ -2,9 +2,9 @@
 
 namespace App\Shared\Presentation\Response;
 
-use Illuminate\Support\Facades\Context;
+use Illuminate\Http\Response as Status;
 use Illuminate\Contracts\Support\Responsable;
-use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Context;
 
 abstract class Response implements Responsable
 {
@@ -12,33 +12,20 @@ abstract class Response implements Responsable
      * @phpstan-param int $status
      */
     protected function __construct(
-        protected int $status
+        protected int $status = Status::HTTP_OK
     ) {}
 
     /**
      * @phpstan-return array<string, mixed>
      */
-    abstract public function data(): array;
-
-    /**
-     * @phpstan-param mixed $request
-     * @phpstan-return JsonResponse
-     */
-    public function toResponse($request): JsonResponse
+    public function metadata(): array
     {
         $requestId = Context::get(key: 'request_id');
         $timestamp = Context::get(key: 'timestamp');
 
-        $data = ['status' => $this->status]
-            + $this->data()
-            + [
-                'metadata' => [
-                    'request_id' => $requestId,
-                    'timestamp' => $timestamp
-                ]
-            ];
-
-        return new JsonResponse(
-            data: $data, status: $this->status);
+        return [
+            'request_id' => $requestId,
+            'timestamp' => $timestamp
+        ];
     }
 }

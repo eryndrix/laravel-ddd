@@ -7,17 +7,17 @@ enum ResetPasswordError: string
     /**
      * User not found or invalid token.
      */
-    case Invalid = 'password.reset.invalid';
+    case InvalidEmail = 'identity.password.reset.invalid_email';
 
     /**
      * Password validation failed.
      */
-    case WeakPassword = 'password.reset.weak';
+    case InvalidPwdFormat = 'identity.password.reset.invalid_format';
 
     /**
      * Unknown error during password reset.
      */
-    case Unknown = 'password.reset.failed';
+    case Unknown = 'identity.password.reset.failed';
     
     /**
      * @phpstan-return string

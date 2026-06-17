@@ -1,11 +1,11 @@
 <?php declare(strict_types=1);
 
-namespace App\Identity\Application\Auth\Token\Handler;
+namespace App\Identity\Application\Auth\RefreshToken\Handler;
 
 use App\Shared\Application\Handler\Handler;
-use App\Identity\Application\Auth\Token\RefreshTokenCommand;
+use App\Identity\Application\Auth\RefreshToken\RefreshTokenCommand;
 use App\Shared\Application\Handler\HandlerException;
-use App\Identity\Application\Auth\Token\RefreshTokenError;
+use App\Identity\Application\Auth\RefreshToken\RefreshTokenError;
 use App\Shared\Application\Result\Result;
 
 final class CheckTokenExpirationHandler extends Handler
@@ -26,7 +26,7 @@ final class CheckTokenExpirationHandler extends Handler
 
         if (is_null(value: $oldToken)) {
             throw new HandlerException(
-                error: RefreshTokenError::InvalidToken
+                error: RefreshTokenError::TokenNotExists
             );
         }
 
@@ -35,7 +35,7 @@ final class CheckTokenExpirationHandler extends Handler
             <= new \DateTimeImmutable()
         ) {
             throw new HandlerException(
-                error: RefreshTokenError::Expired
+                error: RefreshTokenError::TokenExpired
             );
         }
 

@@ -23,6 +23,8 @@ final class ApplyPasswordResetHandler extends Handler
      * @phpstan-param \Closure $next
      * 
      * @phpstan-return mixed
+     * 
+     * @throws \LogicException
      */
     public function handle(
         ResetPasswordCommand $command, \Closure $next): mixed
@@ -47,7 +49,9 @@ final class ApplyPasswordResetHandler extends Handler
         );
 
         if ($status !== PasswordEvent::PASSWORD_RESET) {
-            return $next($command);
+            throw new \LogicException(
+                message: 'Password reset failed.'
+            );
         }
 
         return $next($command);

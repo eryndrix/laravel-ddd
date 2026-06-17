@@ -25,18 +25,15 @@ final class ResetPasswordResponder extends Responder
                 status: Status::HTTP_OK
             ),
             onError: fn (ResetPasswordError $error) => match ($error) {
-                ResetPasswordError::Invalid => new ApiResponse(
+                ResetPasswordError::InvalidEmail,
+                ResetPasswordError::InvalidPwdFormat => new ApiResponse(
                     data: ['message' => $error->message()],
                     status: Status::HTTP_BAD_REQUEST
                 ),
-                ResetPasswordError::WeakPassword => new ApiResponse(
-                    data: ['message' => $error->message()],
-                    status: Status::HTTP_BAD_REQUEST
-                ),
-                default => new ApiResponse(
+                ResetPasswordError::Unknown => new ApiResponse(
                     data: ['message' => $error->message()],
                     status: Status::HTTP_INTERNAL_SERVER_ERROR
-                )
+                ),
             }
         );
     }

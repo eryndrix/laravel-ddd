@@ -6,20 +6,11 @@ use App\Identity\Domain\Avatar;
 use App\Shared\Domain\Email\Email;
 use App\Identity\Domain\Password\Password;
 use App\Identity\Domain\User;
-
 /**
  * @phpstan-template TEntity of User
  */
 trait UserStateChange
 {
-    /**
-     * @phpstan-return UserChanger
-     */
-    public function beginChange(): UserChanger
-    {
-        return new UserChanger(user: $this);
-    }
-    
     /**
      * @phpstan-param Avatar|null $avatar
      * @phpstan-return void
@@ -65,13 +56,5 @@ trait UserStateChange
         ?string $rememberToken): void
     {
         $this->rememberToken = $rememberToken;
-    }
-
-    /**
-     * @phpstan-return TEntity
-     */
-    public function endChange(): User
-    {
-        return $this;
     }
 }

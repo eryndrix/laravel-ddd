@@ -5,7 +5,7 @@ namespace App\Shared\Presentation\Response;
 use Illuminate\Http\Response as Status;
 use Illuminate\Support\MessageBag;
 
-final class ValidationErrorResponse extends Response
+final class ValidationErrorResponse extends ApiResponse
 {
     /**
      * @phpstan-param MessageBag $errors
@@ -14,25 +14,11 @@ final class ValidationErrorResponse extends Response
         private readonly MessageBag $errors
     ) {
         parent::__construct(
+            data: [
+                'message' => 'Validation error.',
+                'errors' => $errors->getMessages(),
+            ],
             status: Status::HTTP_UNPROCESSABLE_ENTITY
         );
-    }
-
-    /**
-     * @phpstan-return array{
-     *     data: array{
-     *         message: string,
-     *         errors: MessageBag
-     *     }
-     * }
-     */
-    public function data(): array
-    {
-        return [
-            'data' => [
-                'message' => 'Validation error.',
-                'errors'  => $this->errors
-            ],
-        ];
     }
 }

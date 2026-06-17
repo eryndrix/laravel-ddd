@@ -28,7 +28,7 @@ final class ThrottleForgotPasswordsHandler extends Handler
             maxAttempts: 3
         )) {
             throw new HandlerException(
-                error: ForgotPasswordError::Throttled
+                error: ForgotPasswordError::TooManyAttempts
             );
         }
 

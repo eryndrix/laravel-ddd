@@ -47,7 +47,7 @@ final class RegisterUserHandler extends Handler
 
         catch (\DomainException $e) {
             throw new HandlerException(
-                error: RegisterError::InvalidCredentials
+                error: RegisterError::InvalidCredentialsFormat
             );
         }
 

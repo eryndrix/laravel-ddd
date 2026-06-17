@@ -22,6 +22,14 @@ final class UserChanger
     ) {}
 
     /**
+     * @phpstan-return self
+     */
+    public function beginChange(): self
+    {
+        return new self(user: $this->user);
+    }
+
+    /**
      * @phpstan-param Avatar|null $avatar
      * @phpstan-return self
      */
@@ -92,5 +100,13 @@ final class UserChanger
         $this->isDirty = true;
 
         return $this;
+    }
+
+    /**
+     * @phpstan-return User
+     */
+    public function endChange(): User
+    {
+        return $this->user;
     }
 }

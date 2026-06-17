@@ -5,14 +5,14 @@ namespace App\Identity\Application\Auth\Register;
 enum RegisterError: string
 {
     /**
-     * Invalid credentials provided.
+     * Invalid email or password format provided.
      */
-    case InvalidCredentials = 'auth.invalid_credentials';
+    case InvalidCredentialsFormat = 'identity.register.invalid_format';
 
     /**
      * Unknown error during registration.
      */
-    case Unknown = 'auth.registration.failed';
+    case Unknown = 'identity.register.failed';
     
     /**
      * @phpstan-return string

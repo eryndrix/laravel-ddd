@@ -12,9 +12,7 @@ use Eryndrix\Paginator\Paginator;
 final class ListRoleHandler extends Handler
 {
     /**
-     * @phpstan-param RoleRepositoryInterface<
-     *     \App\Privilege\Domain\Role
-     * > $repository
+     * @phpstan-param RoleRepositoryInterface $repository
      */
     public function __construct(
         private RoleRepositoryInterface $repository

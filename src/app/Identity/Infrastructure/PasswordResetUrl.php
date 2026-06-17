@@ -18,7 +18,7 @@ final class PasswordResetUrl extends ServiceProvider
             callback: function (mixed $user, string $token): string {
                 if (!$user instanceof UserAdapter) {
                     throw new \InvalidArgumentException(
-                        message: 'User must be an instance of UserAdapter'
+                        message: 'User must be an instance of UserAdapter.'
                     );
                 }
                 

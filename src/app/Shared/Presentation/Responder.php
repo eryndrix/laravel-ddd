@@ -2,20 +2,20 @@
 
 namespace App\Shared\Presentation;
 
-use App\Shared\Presentation\Response\ApiResponse;
+use App\Shared\Presentation\Response\Response;
 use App\Shared\Application\Result\Result;
 
 /**
  * @phpstan-template TValue
  * @phpstan-template TError
  *
- * @phpstan-method ApiResponse respond(Result<TValue, TError> $result)
+ * @phpstan-method Response respond(Result<TValue, TError> $result)
  */
 abstract class Responder
 {
 	/**
      * @phpstan-param Result<TValue, TError> $result
-     * @phpstan-return ApiResponse
+     * @phpstan-return Response
      */
-	abstract public function respond(Result $result): ApiResponse;
+	abstract public function respond(Result $result): Response;
 }

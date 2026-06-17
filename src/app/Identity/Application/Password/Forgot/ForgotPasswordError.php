@@ -7,12 +7,22 @@ enum ForgotPasswordError: string
     /**
      * Too many password reset requests.
      */
-    case Throttled = 'password.forgot.throttled';
+    case TooManyAttempts = 'identity.password.forgot.too_many_attempts';
+
+    /**
+     * Invalid email format provided.
+     */
+    case InvalidEmailFormat = 'identity.password.forgot.invalid_email_format';
+
+    /**
+     * Email does not exist in the system.
+     */
+    case EmailNotExists = 'identity.password.forgot.email_not_exists';
 
     /**
      * Unknown error during password reset.
      */
-    case Unknown = 'password.forgot.failed';
+    case Unknown = 'identity.password.forgot.failed';
     
     /**
      * @phpstan-return string

@@ -16,27 +16,5 @@ return [
     'failed' => 'These credentials do not match our records.',
     'password' => 'The provided password is incorrect.',
     'throttle' => 'Too many login attempts. Please try again in :seconds seconds.',
-    'invalid_credentials' => 'Invalid email or password.',
-
-    'registration' => [
-        'success' => 'Registration successful!',
-        'failed' => 'Registration failed. Please try again later.',
-    ],
-
-    'login' => [
-        'too_many_attempts' => 'Too many login attempts. Please wait a few minutes.',
-        'failed' => 'Login failed. Please try again later.',
-    ],
-
-    'logout' => [
-        'success' => 'Logout successful!',
-        'failed' => 'Logout failed. Please try again later.',
-    ],
-
-    'token' => [
-        'invalid' => 'Invalid refresh token.',
-        'expired' => 'Refresh token has expired. Please log in again.',
-        'missing_ability' => 'This token cannot be used to refresh.',
-        'failed' => 'Refresh token failed. Please log in again.',
-    ],
+    
 ];

@@ -3,7 +3,7 @@
 namespace App\Identity\Presentation\Action\Auth;
 
 use App\Shared\Presentation\Action;
-use App\Identity\Application\Auth\Token\RefreshTokenCommand;
+use App\Identity\Application\Auth\RefreshToken\RefreshTokenCommand;
 use App\Shared\Domain\Bus\CommandBusInterface;
 use App\Identity\Presentation\Responder\Auth\RefreshTokenResponder;
 use Spatie\RouteAttributes\Attributes\Route;
@@ -24,7 +24,7 @@ final class RefreshTokenAction extends Action
     /**
      * @phpstan-param CommandBusInterface<
      *     RefreshTokenCommand,
-     *     \App\Identity\Application\Auth\Token\RefreshTokenProcess
+     *     \App\Identity\Application\Auth\RefreshToken\RefreshTokenProcess
      * > $commandBus
      */
 	public function __construct(
@@ -43,7 +43,7 @@ final class RefreshTokenAction extends Action
         /**
          * @phpstan-var \App\Shared\Application\Result\Result<
          *     array<string, mixed>,
-         *     \App\Identity\Application\Auth\Token\RefreshTokenError
+         *     \App\Identity\Application\Auth\RefreshToken\RefreshTokenError
          * > $result */
         $result = $this->commandBus->send(
             command: RefreshTokenCommand::fromRequest(request: $request)

@@ -12,7 +12,7 @@ use App\Shared\Application\Result\Result;
 final class AttachDefaultRoleHandler
 {
     /**
-     * @phpstan-param \App\Privilege\Domain\Repository\RoleRepositoryInterface<Role> $repository
+     * @phpstan-param \App\Privilege\Domain\Repository\RoleRepositoryInterface $repository
      */
     public function __construct(
         private RoleRepositoryInterface $repository

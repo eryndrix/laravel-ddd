@@ -11,9 +11,7 @@ use App\Shared\Application\Result\Result;
 final class ShowRoleHandler extends Handler
 {
     /**
-     * @phpstan-param RoleRepositoryInterface<
-     *     \App\Privilege\Domain\Role
-     * > $repository
+     * @phpstan-param RoleRepositoryInterface $repository
      */
     public function __construct(
         private RoleRepositoryInterface $repository

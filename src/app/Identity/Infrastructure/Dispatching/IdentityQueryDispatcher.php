@@ -3,8 +3,8 @@
 namespace App\Identity\Infrastructure\Dispatching;
 
 use Illuminate\Support\ServiceProvider;
-// use App\Identity\Application\CheckMe\CheckMeHandler;
-// use App\Identity\Application\CheckMe\CheckMeQuery;
+use App\Identity\Application\Email\Verify\VerifyEmailQuery;
+use App\Identity\Application\Email\Verify\VerifyEmailProcess;
 // use App\Identity\Application\Profile\Show\ShowProfileHandler;
 // use App\Identity\Application\Profile\Show\ShowProfileQuery;
 use App\Shared\Domain\Bus\QueryBusInterface;
@@ -24,6 +24,13 @@ final class IdentityQueryDispatcher extends ServiceProvider
     private array $profile = [
         //ShowProfileQuery::class => ShowProfileHandler::class
     ];
+    
+    /**
+     * @phpstan-var array<class-string, class-string>
+     */
+    private array $email = [
+        VerifyEmailQuery::class => VerifyEmailProcess::class
+    ];
 
     /**
      * @phpstan-param QueryBusInterface<object, object> $queryBus
@@ -33,7 +40,8 @@ final class IdentityQueryDispatcher extends ServiceProvider
     {
         $queryBus->register(map: [
             ...$this->auth,
-            ...$this->profile
+            ...$this->profile,
+            ...$this->email
         ]);
     }
 }

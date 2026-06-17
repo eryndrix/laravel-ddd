@@ -1,16 +1,16 @@
 <?php declare(strict_types=1);
 
-namespace App\Identity\Application\Auth\Token;
+namespace App\Identity\Application\Auth\RefreshToken;
 
 use App\Shared\Application\Process;
-use App\Identity\Application\Auth\Token\Handler\ResolveRefreshTokenHandler;
-use App\Identity\Application\Auth\Token\Handler\CheckTokenExpirationHandler;
-use App\Identity\Application\Auth\Token\Handler\CheckTokenAbilitiesHandler;
-use App\Identity\Application\Auth\Token\Handler\DetectTokenReuseHandler;
-use App\Identity\Application\Auth\Token\Handler\LoadUserHandler;
-use App\Identity\Application\Auth\Token\Handler\RevokeOldTokenHandler;
-use App\Identity\Application\Auth\Token\Handler\EmitNewTokensHandler;
-use App\Identity\Application\Auth\Token\Handler\PersistNewRefreshTokenHandler;
+use App\Identity\Application\Auth\RefreshToken\Handler\ResolveRefreshTokenHandler;
+use App\Identity\Application\Auth\RefreshToken\Handler\CheckTokenExpirationHandler;
+use App\Identity\Application\Auth\RefreshToken\Handler\CheckTokenAbilitiesHandler;
+use App\Identity\Application\Auth\RefreshToken\Handler\DetectTokenReuseHandler;
+use App\Identity\Application\Auth\RefreshToken\Handler\LoadUserHandler;
+use App\Identity\Application\Auth\RefreshToken\Handler\RevokeOldTokenHandler;
+use App\Identity\Application\Auth\RefreshToken\Handler\EmitNewTokensHandler;
+use App\Identity\Application\Auth\RefreshToken\Handler\PersistNewRefreshTokenHandler;
 use App\Shared\Application\Result\Result;
 use App\Shared\Application\Handler\HandlerException;
 use Illuminate\Support\Facades\Log;

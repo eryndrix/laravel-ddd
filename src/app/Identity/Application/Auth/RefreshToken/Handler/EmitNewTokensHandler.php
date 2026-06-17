@@ -1,9 +1,9 @@
 <?php declare(strict_types=1);
 
-namespace App\Identity\Application\Auth\Token\Handler;
+namespace App\Identity\Application\Auth\RefreshToken\Handler;
 
 use App\Shared\Application\Handler\Handler;
-use App\Identity\Application\Auth\Token\RefreshTokenCommand;
+use App\Identity\Application\Auth\RefreshToken\RefreshTokenCommand;
 use App\Identity\Domain\Access\Jwt\JwtTokenIssuerInterface;
 use Illuminate\Contracts\Auth\Authenticatable;
 

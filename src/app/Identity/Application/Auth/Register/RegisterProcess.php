@@ -10,10 +10,7 @@ use App\Shared\Application\Handler\HandlerException;
 use Illuminate\Support\Facades\Log;
 
 /**
- * @phpstan-extends Process<
- *     RegisterCommand,
- *     Result<string, RegisterError>
- * >
+ * @phpstan-extends Process<RegisterCommand, mixed>
  */
 final class RegisterProcess extends Process
 {
@@ -37,7 +34,7 @@ final class RegisterProcess extends Process
             );
 
             return Result::success(
-                value: 'auth.registration.success'
+                value: 'identity.register.success'
             );
         }
 

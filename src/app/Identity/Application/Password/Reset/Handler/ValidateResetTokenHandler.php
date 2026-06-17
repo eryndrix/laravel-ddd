@@ -17,6 +17,7 @@ final class ValidateResetTokenHandler extends Handler
      * @phpstan-return mixed
      * 
      * @throws HandlerException<ResetPasswordError>
+     * @throws \LogicException
      */
     public function handle(
         ResetPasswordCommand $command, \Closure $next): mixed
@@ -27,7 +28,7 @@ final class ValidateResetTokenHandler extends Handler
 
         if (is_null(value: $user)) {
             throw new HandlerException(
-                error: ResetPasswordError::Invalid
+                error: ResetPasswordError::InvalidEmail
             );
         }
 
@@ -37,8 +38,8 @@ final class ValidateResetTokenHandler extends Handler
         );
 
         if (!$status) {
-            throw new HandlerException(
-                error: ResetPasswordError::Invalid
+            throw new \LogicException(
+                message: 'Invalid or expired reset token.'
             );
         }
 

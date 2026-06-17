@@ -7,17 +7,17 @@ enum LoginError: string
     /**
      * Invalid credentials provided.
      */
-    case InvalidCredentials = 'auth.invalid_credentials';
+    case InvalidCredentials = 'identity.login.invalid_credentials';
     
     /**
      * Too many login attempts.
      */
-    case TooManyAttempts = 'auth.login.too_many_attempts';
+    case TooManyAttempts = 'identity.login.too_many_attempts';
 
     /**
      * Unknown error during login.
      */
-    case Unknown = 'auth.login.failed';
+    case Unknown = 'identity.login.failed';
     
     /**
      * @phpstan-return string

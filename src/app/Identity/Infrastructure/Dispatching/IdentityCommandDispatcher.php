@@ -7,14 +7,16 @@ use App\Identity\Application\Auth\Register\RegisterCommand;
 use App\Identity\Application\Auth\Register\RegisterProcess;
 use App\Identity\Application\Auth\Login\LoginCommand;
 use App\Identity\Application\Auth\Login\LoginProcess;
-use App\Identity\Application\Auth\Token\RefreshTokenCommand;
-use App\Identity\Application\Auth\Token\RefreshTokenProcess;
+use App\Identity\Application\Auth\RefreshToken\RefreshTokenCommand;
+use App\Identity\Application\Auth\RefreshToken\RefreshTokenProcess;
 use App\Identity\Application\Password\Forgot\ForgotPasswordCommand;
 use App\Identity\Application\Password\Forgot\ForgotPasswordProcess;
 use App\Identity\Application\Password\Reset\ResetPasswordCommand;
 use App\Identity\Application\Password\Reset\ResetPasswordProcess;
 use App\Identity\Application\Auth\Logout\LogoutCommand;
 use App\Identity\Application\Auth\Logout\LogoutProcess;
+use App\Identity\Application\Email\Update\UpdateEmailCommand;
+use App\Identity\Application\Email\Update\UpdateEmailProcess;
 // use App\Identity\Application\Profile\Update\UpdateProfileCommand;
 // use App\Identity\Application\Profile\Update\UpdateProfileProcess;
 // use App\Identity\Application\Profile\Delete\DeleteProfileCommand;
@@ -38,6 +40,13 @@ final class IdentityCommandDispatcher extends ServiceProvider
     /**
      * @phpstan-var array<class-string, class-string>
      */
+    private array $email = [
+        UpdateEmailCommand::class => UpdateEmailProcess::class,
+    ];
+    
+    /**
+     * @phpstan-var array<class-string, class-string>
+     */
     private array $profile = [
         // UpdateProfileCommand::class => UpdateProfileProcess::class,
         // DeleteProfileCommand::class => DeleteProfileProcess::class
@@ -51,6 +60,7 @@ final class IdentityCommandDispatcher extends ServiceProvider
     {
         $commandBus->register(map: [
             ...$this->auth,
+            ...$this->email,
             ...$this->profile
         ]);
     }

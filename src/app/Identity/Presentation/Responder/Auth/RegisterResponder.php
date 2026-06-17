@@ -25,7 +25,7 @@ final class RegisterResponder extends Responder
                 status: Status::HTTP_CREATED
             ),
             onError: fn (RegisterError $error) => match ($error) {
-                RegisterError::InvalidCredentials => new ApiResponse(
+                RegisterError::InvalidCredentialsFormat => new ApiResponse(
                     data: ['message' => $error->message()],
                     status: Status::HTTP_BAD_REQUEST
                 ),

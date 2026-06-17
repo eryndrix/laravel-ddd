@@ -1,12 +1,12 @@
 <?php declare(strict_types=1);
 
-namespace App\Identity\Application\Auth\Token\Handler;
+namespace App\Identity\Application\Auth\RefreshToken\Handler;
 
 use App\Shared\Application\Handler\Handler;
-use App\Identity\Application\Auth\Token\RefreshTokenCommand;
+use App\Identity\Application\Auth\RefreshToken\RefreshTokenCommand;
 use App\Identity\Domain\Repository\TokenRepositoryInterface;
 use App\Identity\Domain\TokenHash;
-use App\Identity\Application\Auth\Token\RefreshTokenError;
+use App\Identity\Application\Auth\RefreshToken\RefreshTokenError;
 use App\Shared\Application\Handler\HandlerException;
 
 final class ResolveRefreshTokenHandler extends Handler
@@ -37,7 +37,7 @@ final class ResolveRefreshTokenHandler extends Handler
 
         catch (\DomainException $e) {
             throw new HandlerException(
-                error: RefreshTokenError::InvalidToken
+                error: RefreshTokenError::InvalidTokenFormat
             );
         }
         
@@ -47,7 +47,7 @@ final class ResolveRefreshTokenHandler extends Handler
 
         if (is_null(value: $oldToken)) {
             throw new HandlerException(
-                error: RefreshTokenError::InvalidToken
+                error: RefreshTokenError::TokenNotExists
             );
         }
 

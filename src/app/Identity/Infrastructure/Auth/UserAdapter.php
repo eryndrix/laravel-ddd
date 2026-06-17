@@ -8,12 +8,15 @@ use Illuminate\Auth\Authenticatable;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Auth\Passwords\CanResetPassword;
+use Illuminate\Contracts\Auth\MustVerifyEmail as MustVerifyEmailContract;
+use Illuminate\Auth\MustVerifyEmail;
 use App\Identity\Domain\User;
 
 final class UserAdapter implements
     AuthenticatableContract,
     JWTSubject,
-    CanResetPasswordContract
+    CanResetPasswordContract,
+    MustVerifyEmailContract
 {
     /**
      * Enables password reset functionality for the user.
@@ -31,6 +34,11 @@ final class UserAdapter implements
     use Authenticatable;
 
     /**
+     * Provides email verification methods for the user.
+     */
+    use MustVerifyEmail;
+
+    /**
      * @phpstan-param User $user
      */
     public function __construct(
@@ -40,9 +48,17 @@ final class UserAdapter implements
     /**
      * @phpstan-return string
      */
-    public function getJWTIdentifier(): string
+    public function getKey(): string
     {
         return $this->user->id->value();
+    }
+
+    /**
+     * @phpstan-return string
+     */
+    public function getJWTIdentifier(): string
+    {
+        return $this->getKey();
     }
 
     /**
@@ -51,7 +67,7 @@ final class UserAdapter implements
     public function getJWTCustomClaims(): array
     {
         return [
-            'id' => $this->user->id->value(),
+            'id' => $this->getKey(),
             'email' => (string) $this->user->email,
         ];
     }
@@ -65,7 +81,7 @@ final class UserAdapter implements
     }
 
     /**
-     * @phpstan-return string The user's email.
+     * @phpstan-return string
      */
     public function getEmail(): string
     {

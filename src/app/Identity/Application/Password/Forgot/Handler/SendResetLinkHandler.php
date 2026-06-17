@@ -13,25 +13,19 @@ final class SendResetLinkHandler extends Handler
      * @phpstan-param \Closure $next
      * 
      * @phpstan-return mixed
+     * 
+     * @throws \LogicException
      */
     public function handle(
         ForgotPasswordCommand $command, \Closure $next): mixed
     {
-        if (!isset($command->emailExists) || !$command->emailExists) {
-            return $next($command);
-        }
-
         $status = Password::sendResetLink(
             credentials: ['email' => $command->email]
         );
 
         if ($status !== Password::RESET_LINK_SENT) {
-            Log::warning(
-                message: 'Password reset link not sent',
-                context: [
-                    'email' => $command->email,
-                    'status' => $status
-                ]
+            throw new \LogicException(
+                message: 'Password reset link not sent.'
             );
         }
 

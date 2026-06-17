@@ -1,12 +1,12 @@
 <?php declare(strict_types=1);
 
-namespace App\Identity\Application\Auth\Token\Handler;
+namespace App\Identity\Application\Auth\RefreshToken\Handler;
 
 use App\Shared\Application\Handler\Handler;
-use App\Identity\Application\Auth\Token\RefreshTokenCommand;
+use App\Identity\Application\Auth\RefreshToken\RefreshTokenCommand;
 use App\Identity\Domain\Repository\TokenRepositoryInterface;
 use App\Shared\Application\Handler\HandlerException;
-use App\Identity\Application\Auth\Token\RefreshTokenError;
+use App\Identity\Application\Auth\RefreshToken\RefreshTokenError;
 use App\Shared\Application\Result\Result;
 
 final class DetectTokenReuseHandler extends Handler
@@ -52,7 +52,7 @@ final class DetectTokenReuseHandler extends Handler
         }
 
         throw new HandlerException(
-            error: RefreshTokenError::InvalidToken
+            error: RefreshTokenError::TokenRevoked
         );
     }
 }

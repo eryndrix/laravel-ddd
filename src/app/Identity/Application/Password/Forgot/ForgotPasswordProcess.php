@@ -12,7 +12,7 @@ use App\Shared\Application\Handler\HandlerException;
 use Illuminate\Support\Facades\Log;
 
 /**
- * @phpstan-extends Process<ForgotPasswordCommand, ForgotPasswordCommand>
+ * @phpstan-extends Process<ForgotPasswordCommand, mixed>
  */
 final class ForgotPasswordProcess extends Process
 {

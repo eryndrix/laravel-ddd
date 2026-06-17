@@ -3,8 +3,9 @@
 namespace App\Shared\Presentation\Response;
 
 use Illuminate\Http\Response as Status;
+use Illuminate\Http\JsonResponse;
 
-final class ApiResponse extends Response
+class ApiResponse extends Response
 {
     /**
      * @phpstan-param mixed $data
@@ -18,10 +19,15 @@ final class ApiResponse extends Response
     }
 
     /**
-     * @phpstan-return array{data: mixed}
+     * @phpstan-param mixed $request
+     * @phpstan-return JsonResponse
      */
-    public function data(): array
+    public function toResponse($request): JsonResponse
     {
-        return ['data' => $this->data];
+        return new JsonResponse(data: [
+            'status' => $this->status,
+            'data' => $this->data,
+            'metadata' => $this->metadata()
+        ], status: $this->status);
     }
 }

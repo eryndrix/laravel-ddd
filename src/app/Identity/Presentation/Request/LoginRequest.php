@@ -16,7 +16,7 @@ final class LoginRequest extends Request
     {
         return [
             'email' => [
-                'bail', 'required', 'email:rfc,strict,spoof', 'max:254', 'exists:users,email'
+                'bail', 'required', 'email:rfc,strict,spoof', 'max:244', 'exists:users,email'
             ],
             'password' => ['bail', 'required', 'string', 'min:8', 'max:28'],
             'remember_me' => ['bail', 'sometimes', 'boolean'],

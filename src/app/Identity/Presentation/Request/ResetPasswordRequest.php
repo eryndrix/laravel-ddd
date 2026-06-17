@@ -18,7 +18,7 @@ final class ResetPasswordRequest extends Request
 
         return [
             'email' => [
-                'bail', 'required', 'email:rfc,strict,spoof,dns', 'max:254', 'exists:users,email'
+                'bail', 'required', 'email:rfc,strict,spoof,dns', 'max:244', 'exists:users,email'
             ],
             'password' => ['bail', 'required', 'string', $pwdRules, 'confirmed'],
             'token' => ['bail', 'required', 'string']

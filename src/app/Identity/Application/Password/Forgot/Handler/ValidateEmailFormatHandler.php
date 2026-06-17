@@ -4,6 +4,8 @@ namespace App\Identity\Application\Password\Forgot\Handler;
 
 use App\Shared\Application\Handler\Handler;
 use App\Identity\Application\Password\Forgot\ForgotPasswordCommand;
+use App\Shared\Application\Handler\HandlerException;
+use App\Identity\Application\Password\Forgot\ForgotPasswordError;
 use App\Shared\Domain\Email\Email;
 
 final class ValidateEmailFormatHandler extends Handler
@@ -23,8 +25,9 @@ final class ValidateEmailFormatHandler extends Handler
         }
 
         catch (\DomainException $e) {
-            $command->emailExists = false;
-            return $next($command);
+            throw new HandlerException(
+                error: ForgotPasswordError::InvalidEmailFormat
+            );
         }
 
         return $next($command);

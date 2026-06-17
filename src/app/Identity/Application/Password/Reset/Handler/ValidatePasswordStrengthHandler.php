@@ -27,7 +27,7 @@ final class ValidatePasswordStrengthHandler extends Handler
 
         catch (\DomainException $e) {
             throw new HandlerException(
-                error: ResetPasswordError::WeakPassword
+                error: ResetPasswordError::InvalidPwdFormat
             );
         }
 

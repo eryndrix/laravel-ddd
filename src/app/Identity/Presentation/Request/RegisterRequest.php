@@ -19,7 +19,7 @@ final class RegisterRequest extends Request
         return [
             'name' => ['bail', 'required', 'string', 'min:2', 'max:46'],
             'email' => [
-                'bail', 'required', 'email:rfc,strict,spoof,dns', 'max:254', 'unique:users,email'
+                'bail', 'required', 'email:rfc,strict,spoof,dns', 'max:244', 'unique:users,email'
             ],
             'password' => ['bail', 'required', 'string', $pwdRules, 'confirmed'],
         ];

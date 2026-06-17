@@ -8,9 +8,6 @@ use App\Privilege\Domain\Repository\RoleRepositoryInterface;
 use App\Shared\Domain\Id\RoleId;
 use App\Shared\Domain\Slug\RoleSlug;
 
-/**
- * @phpstan-implements RoleRepositoryInterface<Role>
- */
 final class RoleRepository implements RoleRepositoryInterface
 {
     /**

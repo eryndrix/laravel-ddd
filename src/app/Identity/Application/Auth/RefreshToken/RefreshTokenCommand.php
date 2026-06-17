@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace App\Identity\Application\Auth\Token;
+namespace App\Identity\Application\Auth\RefreshToken;
 
 use App\Shared\Application\Command\Command;
 use WendellAdriel\ValidatedDTO\Casting\StringCast;

@@ -15,7 +15,7 @@ final class ForgotPasswordRequest extends Request
     {
         return [
             'email' => [
-                'bail', 'required', 'email:rfc,strict,spoof', 'max:254', 'exists:users,email' 
+                'bail', 'required', 'email:rfc,strict,spoof', 'max:244', 'exists:users,email' 
             ],
         ];
     }

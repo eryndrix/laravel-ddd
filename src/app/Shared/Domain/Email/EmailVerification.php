@@ -32,7 +32,7 @@ trait EmailVerification
     /**
      * @phpstan-return void
      */
-    public function verifyEmail(): void
+    public function markEmailAsVerified(): void
     {
         $this->emailVerifiedAt = new \DateTimeImmutable();
     }

@@ -8,8 +8,8 @@ namespace App\Shared\Domain;
 abstract class Primitive
 {
     /**
-     * @template TOtherValue
-     * @phpstan-param Primitive<TOtherValue> $other
+     * @phpstan-template TOther
+     * @phpstan-param Primitive<TOther> $other
      * @phpstan-return bool
      */
     public function equals(Primitive $other): bool

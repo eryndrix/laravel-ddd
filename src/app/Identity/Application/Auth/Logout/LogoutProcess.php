@@ -10,7 +10,7 @@ use App\Shared\Application\Result\Result;
 use Illuminate\Support\Facades\Log;
 
 /**
- * @phpstan-extends Process<LogoutCommand, Result<string, string>>
+ * @phpstan-extends Process<LogoutCommand, mixed>
  */
 final class LogoutProcess extends Process
 {
@@ -33,7 +33,7 @@ final class LogoutProcess extends Process
             $this->run(payload: $command);
 
             return Result::success(
-                value: 'auth.logout.success'
+                value: 'identity.logout.success'
             );
         }
 
@@ -45,7 +45,7 @@ final class LogoutProcess extends Process
             ]);
 
             return Result::failure(
-                error: 'auth.logout.failed'
+                error: 'identity.logout.failed'
             );
         }
     }
