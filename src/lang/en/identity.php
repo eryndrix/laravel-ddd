@@ -50,6 +50,8 @@ return [
         ],
         'update' => [
             'success' => 'Password update successfully!',
+            'mismatch' => 'Password and password confirmation do not match.',
+            'invalid_pwd_format' => 'Password must be 8-25 characters.',
             'failed' => 'Failed to update password. Please try again.',
             'unknown' => 'An error occurred during password update.',
         ],

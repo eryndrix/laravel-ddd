@@ -13,6 +13,8 @@ use App\Identity\Application\Password\Forgot\ForgotPasswordCommand;
 use App\Identity\Application\Password\Forgot\ForgotPasswordProcess;
 use App\Identity\Application\Password\Reset\ResetPasswordCommand;
 use App\Identity\Application\Password\Reset\ResetPasswordProcess;
+use App\Identity\Application\Password\Update\UpdatePasswordCommand;
+use App\Identity\Application\Password\Update\UpdatePasswordProcess;
 use App\Identity\Application\Auth\Logout\LogoutCommand;
 use App\Identity\Application\Auth\Logout\LogoutProcess;
 use App\Identity\Application\Email\Update\UpdateEmailCommand;
@@ -32,8 +34,6 @@ final class IdentityCommandDispatcher extends ServiceProvider
         RegisterCommand::class => RegisterProcess::class,
         LoginCommand::class => LoginProcess::class,
         RefreshTokenCommand::class => RefreshTokenProcess::class,
-        ForgotPasswordCommand::class => ForgotPasswordProcess::class,
-        ResetPasswordCommand::class => ResetPasswordProcess::class,
         LogoutCommand::class => LogoutProcess::class
     ];
     
@@ -42,6 +42,15 @@ final class IdentityCommandDispatcher extends ServiceProvider
      */
     private array $email = [
         UpdateEmailCommand::class => UpdateEmailProcess::class,
+    ];
+    
+    /**
+     * @phpstan-var array<class-string, class-string>
+     */
+    private array $password = [
+        ForgotPasswordCommand::class => ForgotPasswordProcess::class,
+        ResetPasswordCommand::class => ResetPasswordProcess::class,
+        UpdatePasswordCommand::class => UpdatePasswordProcess::class,
     ];
     
     /**
@@ -61,6 +70,7 @@ final class IdentityCommandDispatcher extends ServiceProvider
         $commandBus->register(map: [
             ...$this->auth,
             ...$this->email,
+            ...$this->password,
             ...$this->profile
         ]);
     }

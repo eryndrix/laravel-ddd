@@ -8,6 +8,8 @@ use App\Identity\Domain\Repository\UserRepositoryInterface;
 use App\Identity\Domain\Password\Password;
 use App\Identity\Domain\Access\Auth\UserAdapterInterface;
 use App\Identity\Domain\Changing\UserChanger;
+use App\Identity\Application\Password\Update\UpdatePasswordError;
+use App\Shared\Application\Handler\HandlerException;
 
 final class UpdatePasswordHandler extends Handler
 {
@@ -23,6 +25,8 @@ final class UpdatePasswordHandler extends Handler
      * @phpstan-param \Closure $next
      * 
      * @phpstan-return mixed
+     * 
+     * @throws HandlerException<UpdatePasswordError>
      */
     public function handle(
         UpdatePasswordCommand $command, \Closure $next): mixed
@@ -31,6 +35,16 @@ final class UpdatePasswordHandler extends Handler
         
         /** @phpstan-var UserAdapterInterface $authUser */
         $profile = $authUser->unwrap();
+
+        try {
+            $password = Password::fromPlain(value: $command->password);
+        }
+
+        catch (\DomainException $e) {
+            throw new HandlerException(
+                error: UpdatePasswordError::InvalidPwdFormat
+            );
+        }
 
         $newPassword = Password::fromPlain(
             value: $command->password

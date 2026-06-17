@@ -37,7 +37,7 @@ final class UpdatePasswordAction extends Action
      * @phpstan-param UpdatePasswordRequest $request
      * @phpstan-return ApiResponse
      */
-    #[Route(methods: 'POST', uri: '/password/update')]
+    #[Route(methods: 'PUT', uri: '/password/update')]
     public function __invoke(UpdatePasswordRequest $request): ApiResponse
     {
         /**

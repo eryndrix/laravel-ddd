@@ -4,9 +4,8 @@ namespace App\Identity\Application\Password\Update\Handler;
 
 use App\Shared\Application\Handler\Handler;
 use App\Identity\Application\Password\Update\UpdatePasswordCommand;
-use App\Shared\Application\Handler\HandlerException;
 use App\Identity\Application\Password\Update\UpdatePasswordError;
-use App\Identity\Domain\Password\Password;
+use App\Shared\Application\Handler\HandlerException;
 
 final class ValidatePasswordHandler extends Handler
 {
@@ -21,22 +20,9 @@ final class ValidatePasswordHandler extends Handler
     public function handle(
         UpdatePasswordCommand $command, \Closure $next): mixed
     {
-        try {
-            $password = Password::fromPlain(value: $command->password);
-            $passwordConfirmation = Password::fromPlain(
-                value: $command->passwordConfirmation
-            );
-
-            if (!$password->equals(other: $passwordConfirmation)) {
-                throw new HandlerException(
-                    error: UpdatePasswordError::Mismatch
-                );
-            }
-        }
-
-        catch (\DomainException $e) {
+        if ($command->password !== $command->passwordConfirmation) {
             throw new HandlerException(
-                error: UpdatePasswordError::InvalidPwdFormat
+                error: UpdatePasswordError::Mismatch
             );
         }
 

@@ -12,7 +12,7 @@ enum UpdatePasswordError: string
     /**
      * Password format is invalid.
      */
-    case InvalidPwdFormat = 'identity.password.update.invalid_format';
+    case InvalidPwdFormat = 'identity.password.update.invalid_pwd_format';
 
     /**
      * Password update failed due to an error.

@@ -34,7 +34,7 @@ final class UpdatePasswordProcess extends Process
             $this->run(payload: $command);
 
             return Result::success(
-                value: 'password.update.success'
+                value: 'identity.password.update.success'
             );
         }
 
