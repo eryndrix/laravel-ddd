@@ -22,7 +22,7 @@ final class Password extends HashPassword
      * @phpstan-param string $password
      * @phpstan-return bool
      */
-    public static function isValidPassword(string $password): bool
+    public static function isValid(string $password): bool
     {
         $length = mb_strlen(
             string: $password,
@@ -41,7 +41,7 @@ final class Password extends HashPassword
      */
     public static function fromPlain(string $value): self
     {
-        if (!self::isValidPassword(password: $value)) {
+        if (!self::isValid(password: $value)) {
             throw new \DomainException(
                 message: 'Password must be 8-25 chars.'
             );

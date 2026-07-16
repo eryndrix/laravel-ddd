@@ -4,9 +4,8 @@ namespace App\Identity\Application\Email\Update;
 
 use App\Shared\Application\Command\Command;
 use WendellAdriel\ValidatedDTO\Casting\StringCast;
-use WendellAdriel\ValidatedDTO\Casting\ObjectCast;
 use WendellAdriel\ValidatedDTO\Attributes\Cast;
-use Illuminate\Contracts\Auth\Authenticatable;
+use App\Identity\Domain\User;
 
 final class UpdateEmailCommand extends Command
 {
@@ -17,8 +16,7 @@ final class UpdateEmailCommand extends Command
     public string $email;
 
     /**
-     * @phpstan-var Authenticatable|null
+     * @phpstan-var User|null
      */
-    #[Cast(type: ObjectCast::class, param: null)]
-    public ?Authenticatable $user;
+    public ?User $user = null;
 }

@@ -2,47 +2,43 @@
 
 namespace App\Identity\Application\Email\Update\Handler;
 
-use App\Shared\Application\Handler\Handler;
+use App\Shared\Application\Handler;
 use App\Identity\Application\Email\Update\UpdateEmailCommand;
+use Illuminate\Contracts\Auth\Authenticatable;
 use App\Identity\Domain\Access\Auth\UserAdapterInterface;
-use App\Shared\Application\Handler\HandlerException;
-use App\Identity\Application\Email\Update\UpdateEmailError;
-use App\Shared\Domain\Email\Email;
+use App\Identity\Application\Email\Update\Exception\EmailUnchangedException;
+use App\Identity\Application\Email\Update\Exception\UserNotFoundException;
+use Illuminate\Support\Facades\Auth;
 
 final class ValidateEmailHandler extends Handler
 {
     /**
      * @phpstan-param UpdateEmailCommand $command
-     * @phpstan-param \Closure $next
-     * 
+     * @phpstan-param \Closure(UpdateEmailCommand):mixed $next
+     *
      * @phpstan-return mixed
-     * 
-     * @throws HandlerException<UpdateEmailError>
+     *
+     * @throws UserNotFoundException
+     * @throws EmailUnchangedException
      */
     public function handle(
         UpdateEmailCommand $command, \Closure $next): mixed
     {
-        try {
-            $authUser = $command->user;
-            /** @phpstan-var UserAdapterInterface $authUser */
-            $user = $authUser->unwrap();
+        $authUser = Auth::user();
 
-            $newEmail = Email::of(value: $command->email);
-            /** @phpstan-var Email $oldEmail */
-            $oldEmail = $user->email;
-
-            if ($oldEmail->value() === $newEmail->value()) {
-                throw new HandlerException(
-                    error: UpdateEmailError::EmailSameAsCurrent
-                );
-            }
+        if (!$authUser instanceof Authenticatable
+            || !$authUser instanceof UserAdapterInterface
+        ) {
+            throw new UserNotFoundException();
         }
 
-        catch (\DomainException $e) {
-            throw new HandlerException(
-                error: UpdateEmailError::InvalidEmailFormat
-            );
+        $user = $authUser->unwrap();
+
+        if ($user->email->value() === $command->email) {
+            throw new EmailUnchangedException();
         }
+
+        $command->user = $user;
 
         return $next($command);
     }

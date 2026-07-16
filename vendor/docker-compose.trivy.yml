@@ -13,7 +13,7 @@ services:
       - ./docker/trivy/trivy.yml:/root/.config/trivy/trivy.yml:ro
       - trivy-cache:/root/.cache/trivy
       - /var/run/docker.sock:/var/run/docker.sock:ro
-    command: image --config /root/.config/trivy/trivy.yml chechly-app:latest
+    command: image --config /root/.config/trivy/trivy.yml laravel-ddd:latest
     networks:
       - app-network
     read_only: true

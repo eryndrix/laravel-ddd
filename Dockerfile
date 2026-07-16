@@ -1,12 +1,21 @@
 # =====================================================================
-# PHP 8.5-FPM Application Container
+# 1. PHP 8.5-FPM APPLICATION CONTAINER
 # =====================================================================
-FROM php:8.5-fpm
+FROM php:8.5-fpm AS app
 
 # =====================================================================
-# 1. SYSTEM DEPENDENCIES
+# 2. ENVIRONMENT VARIABLES
+# =====================================================================
+ENV APP_TZ=Asia/Yekaterinburg
+ENV COMPOSER_HOME=/tmp/composer \
+    COMPOSER_CACHE_DIR=/tmp/composer/cache
+
+# =====================================================================
+# 3. SYSTEM DEPENDENCIES
 # =====================================================================
 RUN apt-get update && apt-get install -y --no-install-recommends \
+    ca-certificates \
+    openssl \
     unzip \
     curl \
     netcat-openbsd \
@@ -21,6 +30,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     autoconf \
     redis-tools \
     tzdata \
+    && update-ca-certificates \
     && ln -snf /usr/share/zoneinfo/$APP_TZ /etc/localtime \
     && echo "$APP_TZ" > /etc/timezone \
     && dpkg-reconfigure -f noninteractive tzdata \
@@ -29,7 +39,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && rm -rf /tmp/* /var/tmp/*
 
 # =====================================================================
-# 2 SECURITY UPDATES
+# 4. SECURITY UPDATES
 # =====================================================================
 RUN apt-get update \
     && apt-get upgrade -y \
@@ -38,7 +48,7 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/*
 
 # =====================================================================
-# 3. PHP EXTENSIONS (CORE)
+# 5. PHP EXTENSIONS (CORE)
 # =====================================================================
 RUN docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install -j$(nproc) \
@@ -54,7 +64,7 @@ RUN docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-source delete
 
 # =====================================================================
-# 4. PHP EXTENSIONS (PECL)
+# 6. PHP EXTENSIONS (PECL)
 # =====================================================================
 RUN pecl install -f redis \
     && docker-php-ext-enable redis \
@@ -65,29 +75,25 @@ RUN pecl install -f apcu \
     && rm -rf /tmp/pear
 
 # =====================================================================
-# 5. ENVIRONMENT VARIABLES
+# 7. PHP TIMEZONE CONFIGURATION
 # =====================================================================
-ENV APP_TZ=Asia/Yekaterinburg
-ENV COMPOSER_HOME=/tmp/composer \
-    COMPOSER_CACHE_DIR=/tmp/composer/cache
-
-# =====================================================================
-# 6. SET PHP TIMEZONE CONFIGURATION
-# =====================================================================
-# Set PHP date.timezone to match the system timezone (Europe/Moscow)
 RUN echo "date.timezone = Europe/Moscow" > /usr/local/etc/php/conf.d/timezone.ini
 
 # =====================================================================
-# 7. SUPERCRONIC (SCHEDULED TASKS)
+# 8. SUPERCRONIC
 # =====================================================================
-RUN curl -fsSL -o /tmp/supercronic \
-    https://github.com/aptible/supercronic/releases/download/v0.2.46/supercronic-linux-amd64 \
-    && echo "5adff01c5a797663948e656d2b61d10932369ee437eb5cb54fa872b2960f222b  /tmp/supercronic" | sha256sum -c - \
-    && chmod +x /tmp/supercronic \
-    && mv /tmp/supercronic /usr/local/bin/supercronic
+ENV SUPERCRONIC_URL=https://github.com/aptible/supercronic/releases/download/v0.2.46/supercronic-linux-amd64 \
+    SUPERCRONIC_SHA1SUM=5bcefed628e32adc08e32634db2d10e9230dbca0 \
+    SUPERCRONIC=supercronic-linux-amd64
+
+RUN curl -fsSLO "$SUPERCRONIC_URL" \
+    && echo "${SUPERCRONIC_SHA1SUM}  ${SUPERCRONIC}" | sha1sum -c - \
+    && chmod +x "$SUPERCRONIC" \
+    && mv "$SUPERCRONIC" "/usr/local/bin/${SUPERCRONIC}" \
+    && ln -s "/usr/local/bin/${SUPERCRONIC}" /usr/local/bin/supercronic
 
 # =====================================================================
-# 8. NON-ROOT USER SETUP
+# 9. NON-ROOT USER SETUP
 # =====================================================================
 ARG UID=1000
 ARG GID=1000
@@ -96,7 +102,7 @@ RUN groupadd -g ${GID} appgroup 2>/dev/null || true \
     && useradd -u ${UID} -g ${GID} -m -s /usr/sbin/nologin appuser 2>/dev/null || true
 
 # =====================================================================
-# 9. DIRECTORIES AND OWNERSHIP
+# 10. DIRECTORIES AND OWNERSHIP
 # =====================================================================
 RUN mkdir -p /tmp/composer/cache \
     && chown -R appuser:appgroup /tmp/composer
@@ -108,54 +114,60 @@ RUN mkdir -p /etc/supercronic \
     && chown appuser:appgroup /etc/supercronic
 
 # =====================================================================
-# 10. WORKING DIRECTORY
+# 11. WORKING DIRECTORY
 # =====================================================================
 WORKDIR /var/www/html
 
 # =====================================================================
-# 11. APPLICATION SOURCE CODE
+# 12. APPLICATION SOURCE CODE
 # =====================================================================
 COPY --chown=appuser:appgroup ./src /var/www/html
 
 # =====================================================================
-# 12. COMPOSER WRAPPER
+# 13. COMPOSER STAGE
 # =====================================================================
-RUN curl -sS https://getcomposer.org/installer -o composer-setup.php \
-    && php composer-setup.php --install-dir=/usr/local/bin --filename=composer \
-    && rm composer-setup.php \
-    && chown appuser:appgroup /usr/local/bin/composer
+FROM composer:2.10.1 AS composer-bin
 
 # =====================================================================
-# 13. STORAGE DIRECTORY
+# 14. FINAL APP STAGE
+# =====================================================================
+FROM app
+
+COPY --from=composer-bin /usr/bin/composer /usr/local/bin/composer
+RUN chown appuser:appgroup /usr/local/bin/composer \
+    && /usr/local/bin/composer --version
+
+# =====================================================================
+# 15. STORAGE DIRECTORY
 # =====================================================================
 RUN chown -R appuser:appgroup storage \
     && chmod -R 750 storage
 
 # =====================================================================
-# 14. QUEUE HELPER SCRIPT
+# 16. QUEUE HELPER SCRIPT
 # =====================================================================
 COPY ./docker/rabbitmq/wait-for-rabbitmq.sh /usr/local/bin/wait-for-rabbitmq.sh
 RUN chmod +x /usr/local/bin/wait-for-rabbitmq.sh \
     && chown appuser:appgroup /usr/local/bin/wait-for-rabbitmq.sh
 
 # =====================================================================
-# 15. PHP CONFIGURATION FILES
+# 17. PHP CONFIGURATION FILES
 # =====================================================================
 COPY ./docker/php/php.ini /usr/local/etc/php/php.ini
 
 # =====================================================================
-# 16. SUPERCRONIC CRONTAB
+# 18. SUPERCRONIC CRONTAB
 # =====================================================================
 COPY ./docker/schedule/crontab /etc/supercronic/chechly
 RUN chmod 0644 /etc/supercronic/chechly \
     && chown appuser:appgroup /etc/supercronic/chechly
 
 # =====================================================================
-# 17. EXPOSE PORT
+# 19. EXPOSE PORT
 # =====================================================================
 EXPOSE 8000
 
 # =====================================================================
-# 18. SWITCH TO NON-ROOT USER
+# 20. SWITCH TO NON-ROOT USER
 # =====================================================================
 USER appuser

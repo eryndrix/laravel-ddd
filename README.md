@@ -37,7 +37,7 @@ If you **don't have g++** installed, use these Docker commands manually:
 
 ```
 $ docker network create app-network
-$ docker compose \
+$ docker compose --env-file ./src/.env \
     -f docker-compose.yml \
     -f vendor/docker-compose.traefik.yml \
     -f vendor/docker-compose.postgres.yml \
@@ -48,7 +48,7 @@ $ docker compose \
     -f vendor/docker-compose.swagger.yml \
     -f vendor/docker-compose.trivy.yml \
     -f vendor/docker-compose.watchtower.yml \
-    up --build -d --remove-orphans
+    up --profile security up --build -d --remove-orphans
 ```
 
 ### 3. Install Composer Dependencies

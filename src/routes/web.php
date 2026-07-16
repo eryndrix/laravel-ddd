@@ -12,7 +12,7 @@ Route::get('/password/reset', function () {
 
 Route::get(
     '/email/verify',
-    \App\Identity\Presentation\Action\Email\VerifyEmailAction::class
+    \App\Identity\Presentation\Email\Verify\VerifyEmailAction::class
 )->middleware(
     ['signed', 'throttle:6,1']
 )->name(

@@ -5,11 +5,11 @@ namespace App\Identity\Infrastructure\Auth;
 use App\Identity\Domain\User;
 use Illuminate\Contracts\Auth\Authenticatable;
 use App\Identity\Domain\Access\Auth\UserProviderInterface;
-use App\Identity\Domain\TokenHash;
+use App\Identity\Domain\Access\TokenHash;
 use App\Identity\Domain\Repository\UserRepositoryInterface;
 use App\Identity\Domain\Password\Password;
 use App\Shared\Domain\Id\UserId;
-use App\Shared\Domain\Email\Email;
+use App\Identity\Domain\Email\Email;
 
 final class UserProvider implements UserProviderInterface
 {

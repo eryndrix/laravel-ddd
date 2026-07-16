@@ -2,14 +2,14 @@
 
 namespace App\Identity\Application\Auth\Register\Handler;
 
-use App\Shared\Application\Handler\Handler;
-use App\Shared\Domain\Repository\RoleRepositoryInterface;
-use App\Shared\Domain\Slug\RoleSlug;
+use App\Shared\Application\Handler;
 use App\Identity\Application\Auth\Register\RegisterCommand;
-use App\Privilege\Domain\Role;
+use App\Shared\Domain\Repository\RoleRepositoryInterface;
+use App\Identity\Application\Auth\Register\Exception\DefaultRoleNotFoundException;
+use App\Shared\Domain\Slug\RoleSlug;
 use App\Shared\Application\Result\Result;
 
-final class AttachDefaultRoleHandler
+final class AttachDefaultRoleHandler extends Handler
 {
     /**
      * @phpstan-param \App\Privilege\Domain\Repository\RoleRepositoryInterface $repository
@@ -24,7 +24,7 @@ final class AttachDefaultRoleHandler
      * 
      * @phpstan-return mixed
      * 
-     * @throws \RuntimeException
+     * @throws \LogicException
      */
     public function handle(
         RegisterCommand $command, \Closure $next): mixed
@@ -33,10 +33,8 @@ final class AttachDefaultRoleHandler
             slug: RoleSlug::of(value: 'user')
         );
 
-        if (!$role instanceof Role) {
-            throw new \RuntimeException(
-                message: 'Role with slug "user" not found.'
-            );
+        if (is_null(value: $role)) {
+            throw new DefaultRoleNotFoundException();
         }
         
         $command->roleId = $role->id;

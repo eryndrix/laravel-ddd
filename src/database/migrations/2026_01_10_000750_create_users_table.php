@@ -15,25 +15,33 @@ return new class extends Migration
         Schema::create(table: 'users',
             callback: function (Blueprint $table): void {
                 $table->uuid(column: 'id')->primary()->default(
-                    DB::raw(value: 'uuidv7()')
+                    value: DB::raw(value: 'uuidv7()')
                 );
-                
+
                 $table->uuid(column: 'role_id');
+
+                $table->string(column: 'first_name', length: 60);
+                $table->string(column: 'last_name', length: 80);
                 
                 $table->string(column: 'avatar', length: 255)->nullable();
-                $table->string(column: 'name', length: 61);
-                
+
                 $table->string(column: 'email', length: 244)->unique();
-                $table->timestamp(column: 'email_verified_at', precision: 6)->nullable();
-                
+                $table->timestampTz(column: 'email_verified_at', precision: 6)->nullable();
+
+                $table->string(column: 'phone', length: 20)->unique()->nullable();
+                $table->timestampTz(column: 'phone_verified_at', precision: 6)->nullable();
+
                 $table->boolean(column: 'is_active')->default(value: true);
+
                 $table->string(column: 'password', length: 60);
-                
-                //$table->ipAddress(column: 'ip_address');
+                $table->timestampTz(column: 'password_changed_at', precision: 6)->nullable();
+
+                $table->timestampTz(column: 'last_login_at', precision: 6)->nullable();
+
                 $table->rememberToken();
 
-                $table->timestampsTz(precision: 6);
-                $table->softDeletes(column: 'deleted_at', precision: 6);
+                $table->timestamps(precision: 6);
+                $table->softDeletes(precision: 6);
             }
         );
 

@@ -2,10 +2,9 @@
 
 namespace App\Identity\Application\Email\Verify\Handler;
 
-use App\Shared\Application\Handler\Handler;
+use App\Shared\Application\Handler;
+use App\Identity\Application\Email\Verify\Exception\InvalidVerificationHashException;
 use App\Identity\Application\Email\Verify\VerifyEmailQuery;
-use App\Identity\Application\Email\Verify\VerifyEmailError;
-use App\Shared\Application\Handler\HandlerException;
 
 final class ValidateHashHandler extends Handler
 {
@@ -15,20 +14,17 @@ final class ValidateHashHandler extends Handler
      * 
      * @phpstan-return mixed
      * 
-     * @throws HandlerException<VerifyEmailError>
+     * @throws InvalidVerificationHashException
      */
     public function handle(
         VerifyEmailQuery $query, \Closure $next): mixed
     {
         /** @phpstan-var \App\Identity\Domain\User $user */
         $user = $query->user;
+        $email = $user->email->value();
 
-        if (sha1(string: $user->email->value())
-            !== $query->hash
-        ) {
-            throw new HandlerException(
-                error: VerifyEmailError::InvalidHash
-            );
+        if (sha1(string: $email) !== $query->hash) {
+            throw new InvalidVerificationHashException();
         }
 
         return $next($query);

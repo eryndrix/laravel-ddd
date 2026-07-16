@@ -3,10 +3,10 @@
 namespace App\Identity\Application\Auth\Register;
 
 use App\Shared\Application\Command\Command;
-use WendellAdriel\ValidatedDTO\Casting\StringCast;
-use WendellAdriel\ValidatedDTO\Casting\ObjectCast;
-use WendellAdriel\ValidatedDTO\Attributes\Cast;
 use App\Shared\Domain\Id\RoleId;
+use WendellAdriel\ValidatedDTO\Casting\StringCast;
+use WendellAdriel\ValidatedDTO\Attributes\Cast;
+use App\Identity\Domain\User;
 
 final class RegisterCommand extends Command
 {
@@ -14,7 +14,13 @@ final class RegisterCommand extends Command
      * @phpstan-var string
      */
     #[Cast(type: StringCast::class, param: null)]
-    public string $name;
+    public string $firstName;
+
+    /**
+     * @phpstan-var string
+     */
+    #[Cast(type: StringCast::class, param: null)]
+    public string $lastName;
 
     /**
      * @phpstan-var string
@@ -31,6 +37,21 @@ final class RegisterCommand extends Command
     /**
      * @phpstan-var RoleId|null
      */
-    #[Cast(type: ObjectCast::class, param: null)]
     public ?RoleId $roleId = null;
+
+    /**
+     * @phpstan-var User|null
+     */
+    public ?User $user = null;
+    
+    /**
+     * @phpstan-return array<string, string>
+     */
+    protected function mapData(): array
+    {
+        return [
+            'first_name' => 'firstName',
+            'last_name' => 'lastName'
+        ];
+    }
 }

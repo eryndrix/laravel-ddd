@@ -2,12 +2,11 @@
 
 namespace App\Identity\Application\Email\Update\Handler;
 
-use App\Shared\Application\Handler\Handler;
+use App\Shared\Application\Handler;
 use App\Identity\Domain\Repository\UserRepositoryInterface;
+use App\Identity\Application\Email\Update\Exception\UserNotFoundException;
 use App\Identity\Application\Email\Update\UpdateEmailCommand;
-use App\Identity\Domain\Changing\UserChanger;
-use App\Identity\Domain\Access\Auth\UserAdapterInterface;
-use App\Shared\Domain\Email\Email;
+use App\Identity\Domain\Email\Email;
 
 final class PersistNewEmailHandler extends Handler
 {
@@ -20,23 +19,24 @@ final class PersistNewEmailHandler extends Handler
 
     /**
      * @phpstan-param UpdateEmailCommand $command
-     * @phpstan-param \Closure $next
+     * @phpstan-param \Closure(UpdateEmailCommand):mixed $next
      * 
      * @phpstan-return mixed
+     * 
+     * @throws UserNotFoundException
      */
     public function handle(
         UpdateEmailCommand $command, \Closure $next): mixed
     {
-        $authUser = $command->user;
-        
-        /** @phpstan-var UserAdapterInterface $authUser */
-        $profile = $authUser->unwrap();
+        /* @phpstan-var \App\Identity\Domain\User $user */
+        $user = $command->user;
+
+        if (is_null(value: $user)) {
+            throw new UserNotFoundException();
+        }
 
         $newEmail = Email::of(value: $command->email);
-        $user = new UserChanger(user: $profile)
-            ->beginChange()
-            ->email(email: $newEmail)
-            ->endChange();
+        $user->changeEmail(email: $newEmail);
 
         $this->repository->save(user: $user);
 

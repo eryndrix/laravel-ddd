@@ -7,6 +7,7 @@ return [
     \Eryndrix\Doctrine\DoctrineConnector::class,
     \App\Shared\Infrastructure\DoctrinePersistenceBinder::class,
     \App\Shared\Infrastructure\BusServiceProvider::class,
+    \App\Shared\Infrastructure\Logging\LoggerServiceProvider::class,
     \Eryndrix\Telescope\TelescopeServiceProvider::class,
 
     /*
@@ -18,6 +19,8 @@ return [
     App\Identity\Infrastructure\Dispatching\IdentityCommandDispatcher::class,
     App\Identity\Infrastructure\Dispatching\IdentityQueryDispatcher::class,
     App\Identity\Infrastructure\PasswordResetUrl::class,
+    App\Identity\Infrastructure\IdentityEventsMapping::class,
+    App\Identity\Infrastructure\IdentityExceptionsResolver::class,
 
     /*
      * Privilege module bindings

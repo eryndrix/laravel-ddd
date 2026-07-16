@@ -2,7 +2,7 @@
 
 namespace App\Shared\Application;
 
-use App\Shared\Domain\Storage\UnitOfWorkInterface;
+use App\Shared\Domain\Contract\UnitOfWorkInterface;
 use Illuminate\Pipeline\Pipeline;
 
 /**
@@ -25,7 +25,7 @@ abstract class Process
      * @phpstan-param TPayload $payload
      * @phpstan-return TResult
      */
-    public function run(object $payload): mixed
+    final public function run(object $payload): mixed
     {
         $unitOfWork = app()->make(
             abstract: UnitOfWorkInterface::class

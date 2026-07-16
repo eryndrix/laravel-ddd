@@ -3,7 +3,7 @@
 namespace App\Identity\Domain\Changing;
 
 use App\Identity\Domain\Avatar;
-use App\Shared\Domain\Email\Email;
+use App\Identity\Domain\Email\Email;
 use App\Identity\Domain\Password\Password;
 use App\Identity\Domain\User;
 
@@ -35,12 +35,6 @@ final class UserChanger
      */
     public function avatar(?Avatar $avatar): self
     {
-        if ($avatar !== null && $this->user->avatar 
-            !== null && $this->user->avatar->equals(other: $avatar)
-        ) {
-            return $this;
-        }
-
         $this->user->changeAvatar(avatar: $avatar);
         $this->isDirty = true;
 
@@ -48,22 +42,24 @@ final class UserChanger
     }
 
     /**
-     * @phpstan-param string $name
+     * @phpstan-param string $firstName
      * @phpstan-return self
-     * 
-     * @throws \DomainException
      */
-    public function name(string $name): self
+    public function firstName(string $firstName): self
     {
-        if ($name === '') {
-            throw new \DomainException(message: 'Name cannot be empty.');
-        }
+        $this->user->changeFirstName(firstName: $firstName);
+        $this->isDirty = true;
 
-        if ($this->user->name === $name) {
-            return $this;
-        }
+        return $this;
+    }
 
-        $this->user->changeName(name: $name);
+    /**
+     * @phpstan-param string $lastName
+     * @phpstan-return self
+     */
+    public function changeLastName(string $lastName): self
+    {
+        $this->user->changeLastName(lastName: $lastName);
         $this->isDirty = true;
 
         return $this;
@@ -75,12 +71,7 @@ final class UserChanger
      */
     public function email(Email $email): self
     {
-        if ($this->user->email->equals(other: $email)) {
-            return $this;
-        }
-
         $this->user->changeEmail(email: $email);
-        $this->user->resetEmailVerification();
         $this->isDirty = true;
 
         return $this;
@@ -92,10 +83,6 @@ final class UserChanger
      */
     public function password(Password $newPassword): self
     {
-        if ($this->user->password->equals(other: $newPassword)) {
-            return $this;
-        }
-
         $this->user->changePassword(password: $newPassword);
         $this->isDirty = true;
 

@@ -4,10 +4,10 @@ use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 use Illuminate\Http\Middleware\HandleCors;
-use App\Shared\Presentation\Response\ResultResponse;
 use Illuminate\Console\Scheduling\Schedule;
-use App\Identity\Presentation\RefreshTokensRotator;
+use App\Identity\Presentation\Auth\Token\RefreshTokensRotator;
 use Eryndrix\Middleware\SecurityHeaders;
+use WendellAdriel\Idempotency\Http\Middleware\Idempotent;
 use Eryndrix\Middleware\ApiRequestLogger;
 use Illuminate\Http\Request;
 
@@ -20,6 +20,10 @@ return Application::configure(
     health: '/up',
 )->withMiddleware(
     callback: function (Middleware $middleware): void {
+        $middleware->alias(aliases: [
+            'idempotent' => Idempotent::class
+        ]);
+
         $middleware->appendToGroup(
             group: 'api',
             middleware: [
@@ -27,6 +31,10 @@ return Application::configure(
                 SecurityHeaders::class,
                 ApiRequestLogger::class
             ]
+        );
+
+        $middleware->redirectGuestsTo(
+            redirect: fn (Request $request): null => null
         );
     }
 )->withExceptions(

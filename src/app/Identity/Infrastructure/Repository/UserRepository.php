@@ -2,12 +2,12 @@
 
 namespace App\Identity\Infrastructure\Repository;
 
-use App\Shared\Domain\Email\Email;
-use App\Shared\Domain\Id\UserId;
-use App\Identity\Domain\Repository\UserRepositoryInterface;
 use Doctrine\ORM\EntityManagerInterface;
+use App\Identity\Domain\Email\Email;
+use App\Identity\Domain\Repository\UserRepositoryInterface;
+use App\Shared\Domain\Id\UserId;
+use App\Identity\Domain\Access\TokenHash;
 use App\Identity\Domain\User;
-use App\Identity\Domain\TokenHash;
 
 final class UserRepository implements UserRepositoryInterface
 {

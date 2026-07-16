@@ -4,7 +4,7 @@ namespace App\Identity\Infrastructure\Jwt;
 
 use Tymon\JWTAuth\Token as JwtToken;
 use Illuminate\Contracts\Auth\Authenticatable;
-use App\Identity\Domain\TokenHash;
+use App\Identity\Domain\Access\TokenHash;
 use App\Identity\Domain\Access\Jwt\JwtTokenManagerInterface;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 use Tymon\JWTAuth\Exceptions\JWTException;

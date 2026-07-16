@@ -2,7 +2,7 @@
 
 namespace App\Identity\Application\Email\Verify\Handler;
 
-use App\Shared\Application\Handler\Handler;
+use App\Shared\Application\Handler;
 use App\Identity\Application\Email\Verify\VerifyEmailQuery;
 use App\Identity\Domain\Repository\UserRepositoryInterface;
 

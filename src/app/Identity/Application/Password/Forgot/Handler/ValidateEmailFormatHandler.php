@@ -6,7 +6,7 @@ use App\Shared\Application\Handler\Handler;
 use App\Identity\Application\Password\Forgot\ForgotPasswordCommand;
 use App\Shared\Application\Handler\HandlerException;
 use App\Identity\Application\Password\Forgot\ForgotPasswordError;
-use App\Shared\Domain\Email\Email;
+use App\Identity\Domain\Email\Email;
 
 final class ValidateEmailFormatHandler extends Handler
 {

@@ -8,9 +8,12 @@ use Illuminate\Contracts\Auth\CanResetPassword;
 use App\Identity\Domain\User;
 
 interface UserAdapterInterface extends
-	Authenticatable,
-	MustVerifyEmail,
-	CanResetPassword
+    Authenticatable,
+    MustVerifyEmail,
+    CanResetPassword
 {
+    /**
+     * @phpstan-return User
+     */
 	public function unwrap(): User;
 }

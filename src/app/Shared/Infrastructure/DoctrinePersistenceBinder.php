@@ -2,7 +2,7 @@
 
 namespace App\Shared\Infrastructure;
 
-use App\Shared\Domain\Storage\UnitOfWorkInterface;
+use App\Shared\Domain\Contract\UnitOfWorkInterface;
 use Illuminate\Support\ServiceProvider;
 
 final class DoctrinePersistenceBinder extends ServiceProvider

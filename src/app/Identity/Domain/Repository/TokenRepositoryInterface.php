@@ -3,9 +3,9 @@
 namespace App\Identity\Domain\Repository;
 
 use App\Shared\Domain\Id\UserId;
-use App\Shared\Domain\Id\TokenId;
+use App\Identity\Domain\Access\TokenHash;
 use App\Identity\Domain\Token;
-use App\Identity\Domain\TokenHash;
+use App\Shared\Domain\Id\TokenId;
 
 interface TokenRepositoryInterface
 {

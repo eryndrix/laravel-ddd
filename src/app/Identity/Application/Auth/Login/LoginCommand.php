@@ -3,12 +3,10 @@
 namespace App\Identity\Application\Auth\Login;
 
 use App\Shared\Application\Command\Command;
+use App\Identity\Domain\Access\Auth\UserAdapterInterface;
 use WendellAdriel\ValidatedDTO\Casting\StringCast;
 use WendellAdriel\ValidatedDTO\Casting\BooleanCast;
-use WendellAdriel\ValidatedDTO\Casting\ArrayCast;
-use WendellAdriel\ValidatedDTO\Casting\ObjectCast;
 use WendellAdriel\ValidatedDTO\Attributes\Cast;
-use Illuminate\Contracts\Auth\Authenticatable;
 
 final class LoginCommand extends Command
 {
@@ -31,16 +29,14 @@ final class LoginCommand extends Command
     public bool $rememberMe = false;
 
     /**
-     * @phpstan-var Authenticatable
+     * @phpstan-var UserAdapterInterface|null
      */
-    #[Cast(type: ObjectCast::class, param: null)]
-    public ?Authenticatable $user;
+    public ?UserAdapterInterface $user = null;
 
     /**
-     * @phpstan-var array<string, mixed>
+     * @phpstan-var array<string, mixed>|null
      */
-    #[Cast(type: ArrayCast::class, param: null)]
-    public ?array $jwtTokenPair;
+    public ?array $jwtTokenPair = null;
     
     /**
      * @phpstan-return array<string, string>

@@ -2,11 +2,10 @@
 
 namespace App\Identity\Application\Email\Verify\Handler;
 
-use App\Shared\Application\Handler\Handler;
+use App\Shared\Application\Handler;
 use App\Identity\Application\Email\Verify\VerifyEmailQuery;
+use App\Identity\Application\Email\Verify\Exception\UserNotFoundException;
 use App\Identity\Domain\Repository\UserRepositoryInterface;
-use App\Shared\Application\Handler\HandlerException;
-use App\Identity\Application\Email\Verify\VerifyEmailError;
 use App\Shared\Domain\Id\UserId;
 
 final class LoadUserByIdHandler extends Handler
@@ -24,27 +23,16 @@ final class LoadUserByIdHandler extends Handler
      * 
      * @phpstan-return mixed
      * 
-     * @throws HandlerException<VerifyEmailError>
+     * @throws UserNotFoundException
      */
     public function handle(
         VerifyEmailQuery $query, \Closure $next): mixed
     {
-        try {
-            $userId = UserId::of(value: $query->userId);
-        }
-
-        catch (\DomainException $e) {
-            throw new HandlerException(
-                error: VerifyEmailError::Failed
-            );
-        }
-
+        $userId = UserId::of(value: $query->userId);
         $user = $this->repository->findById(id: $userId);
         
         if (is_null(value: $user)) {
-            throw new HandlerException(
-                error: VerifyEmailError::Failed
-            );
+            throw new UserNotFoundException();
         }
 
         $query = $query->withUser(user: $user);

@@ -2,12 +2,11 @@
 
 namespace App\Identity\Infrastructure\Repository;
 
-use App\Identity\Domain\Token;
-use App\Identity\Domain\TokenHash;
-use App\Identity\Domain\Repository\TokenRepositoryInterface;
 use Doctrine\ORM\EntityManagerInterface;
-use App\Shared\Domain\Id\UserId;
-use App\Shared\Domain\Id\TokenId;
+use App\Identity\Domain\Repository\TokenRepositoryInterface;
+use App\Identity\Domain\Token;
+use App\Identity\Domain\Access\TokenHash;
+use App\Shared\Domain\Id\{TokenId, UserId};
 
 final class TokenRepository implements TokenRepositoryInterface
 {

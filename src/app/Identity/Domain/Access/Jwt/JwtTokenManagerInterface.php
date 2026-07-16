@@ -3,7 +3,7 @@
 namespace App\Identity\Domain\Access\Jwt;
 
 use Illuminate\Contracts\Auth\Authenticatable;
-use App\Identity\Domain\TokenHash;
+use App\Identity\Domain\Access\TokenHash;
 
 interface JwtTokenManagerInterface
 {

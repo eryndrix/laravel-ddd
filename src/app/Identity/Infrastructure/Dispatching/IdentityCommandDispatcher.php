@@ -4,11 +4,11 @@ namespace App\Identity\Infrastructure\Dispatching;
 
 use Illuminate\Support\ServiceProvider;
 use App\Identity\Application\Auth\Register\RegisterCommand;
-use App\Identity\Application\Auth\Register\RegisterProcess;
+use App\Identity\Application\Auth\Register\RegisterUseCase;
 use App\Identity\Application\Auth\Login\LoginCommand;
-use App\Identity\Application\Auth\Login\LoginProcess;
-use App\Identity\Application\Auth\RefreshToken\RefreshTokenCommand;
-use App\Identity\Application\Auth\RefreshToken\RefreshTokenProcess;
+use App\Identity\Application\Auth\Login\LoginUseCase;
+use App\Identity\Application\Auth\Token\Refresh\RefreshTokenCommand;
+use App\Identity\Application\Auth\Token\Refresh\RefreshTokenUseCase;
 use App\Identity\Application\Password\Forgot\ForgotPasswordCommand;
 use App\Identity\Application\Password\Forgot\ForgotPasswordProcess;
 use App\Identity\Application\Password\Reset\ResetPasswordCommand;
@@ -16,9 +16,9 @@ use App\Identity\Application\Password\Reset\ResetPasswordProcess;
 use App\Identity\Application\Password\Update\UpdatePasswordCommand;
 use App\Identity\Application\Password\Update\UpdatePasswordProcess;
 use App\Identity\Application\Auth\Logout\LogoutCommand;
-use App\Identity\Application\Auth\Logout\LogoutProcess;
+use App\Identity\Application\Auth\Logout\LogoutUseCase;
 use App\Identity\Application\Email\Update\UpdateEmailCommand;
-use App\Identity\Application\Email\Update\UpdateEmailProcess;
+use App\Identity\Application\Email\Update\UpdateEmailUseCase;
 // use App\Identity\Application\Profile\Update\UpdateProfileCommand;
 // use App\Identity\Application\Profile\Update\UpdateProfileProcess;
 // use App\Identity\Application\Profile\Delete\DeleteProfileCommand;
@@ -31,17 +31,17 @@ final class IdentityCommandDispatcher extends ServiceProvider
      * @phpstan-var array<class-string, class-string>
      */
     private array $auth = [
-        RegisterCommand::class => RegisterProcess::class,
-        LoginCommand::class => LoginProcess::class,
-        RefreshTokenCommand::class => RefreshTokenProcess::class,
-        LogoutCommand::class => LogoutProcess::class
+        RegisterCommand::class => RegisterUseCase::class,
+        LoginCommand::class => LoginUseCase::class,
+        RefreshTokenCommand::class => RefreshTokenUseCase::class,
+        LogoutCommand::class => LogoutUseCase::class
     ];
     
     /**
      * @phpstan-var array<class-string, class-string>
      */
     private array $email = [
-        UpdateEmailCommand::class => UpdateEmailProcess::class,
+        UpdateEmailCommand::class => UpdateEmailUseCase::class,
     ];
     
     /**

@@ -5,9 +5,6 @@ namespace App\Shared\Application;
 use App\Shared\Domain\Bus\EventBusInterface;
 use Illuminate\Contracts\Events\Dispatcher;
 
-/**
- * @phpstan-implements EventBusInterface<string|object, mixed, string|\Closure>
- */
 final class EventBus implements EventBusInterface
 {
     /**

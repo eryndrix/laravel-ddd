@@ -5,9 +5,8 @@ namespace App\Identity\Domain;
 use Doctrine\ORM\Mapping as ORM;
 use App\Shared\Domain\AggregateRoot;
 use App\Identity\Domain\Changing\UserStateChange;
-use App\Shared\Domain\Email\Email;
-use App\Shared\Domain\Email\EmailVerification;
-use App\Shared\Domain\Activatable;
+use App\Identity\Domain\Email\Email;
+use App\Identity\Domain\Email\EmailVerification;
 use App\Identity\Domain\Password\Password;
 use App\Shared\Domain\Id\UserId;
 use App\Shared\Domain\Id\RoleId;
@@ -24,16 +23,6 @@ use Doctrine\DBAL\Types\Types;
 #[ORM\HasLifecycleCallbacks]
 class User extends AggregateRoot
 {
-    /**
-     * @phpstan-use Activatable<bool>
-     */
-    use Activatable;
-
-    /**
-     * @phpstan-use EmailVerification<\DateTimeImmutable|null>
-     */
-    use EmailVerification;
-
     /**
      * @phpstan-use UserStateChange<$this>
      */
@@ -62,37 +51,66 @@ class User extends AggregateRoot
     public private(set) UserId $id;
 
     /**
-     * @phpstan-var RoleId
-     */
-    #[ORM\Column(name: 'role_id', type: RoleId::class)]
-    public private(set) RoleId $roleId;
-
-    /**
      * @phpstan-var Avatar|null
      */
-    #[ORM\Embedded(class: Avatar::class, columnPrefix: false)]
+    #[ORM\Column(name: 'avatar', type: Avatar::class, length: 255, nullable: true)]
     public private(set) ?Avatar $avatar = null;
 
     /**
      * @phpstan-var string
      * @throws \DomainException
      */
-    #[ORM\Column(name: 'name', type: Types::STRING, length: 61)]
-    public private(set) string $name {
+    #[ORM\Column(name: 'first_name', type: Types::STRING, length: 60)]
+    public private(set) string $firstName {
         set (string $value) {
+            $value = trim(string: $value);
+
             if ($value === '') {
                 throw new \DomainException(
-                    message: 'Name cannot be empty.'
+                    message: 'First name cannot be empty.'
                 );
             }
 
-            $this->name = $value
-                |> trim(...)
-                |> (fn (string $name): string => mb_convert_case(
-                    string: $name,
-                    mode: MB_CASE_TITLE,
-                    encoding: 'UTF-8'
-                ));
+            if (mb_strlen(string: $value) > 60) {
+                throw new \DomainException(
+                    message: 'First name is too long.'
+                );
+            }
+
+            $this->firstName = mb_convert_case(
+                string: $value,
+                mode: MB_CASE_TITLE,
+                encoding: 'UTF-8'
+            );
+        }
+    }
+
+    /**
+     * @phpstan-var string
+     * @throws \DomainException
+     */
+    #[ORM\Column(name: 'last_name', type: Types::STRING, length: 80)]
+    public private(set) string $lastName {
+        set (string $value) {
+            $value = trim(string: $value);
+
+            if ($value === '') {
+                throw new \DomainException(
+                    message: 'Last name cannot be empty.'
+                );
+            }
+
+            if (mb_strlen(string: $value) > 80) {
+                throw new \DomainException(
+                    message: 'Last name is too long.'
+                );
+            }
+
+            $this->lastName = mb_convert_case(
+                string: $value,
+                mode: MB_CASE_TITLE,
+                encoding: 'UTF-8'
+            );
         }
     }
 
@@ -103,10 +121,54 @@ class User extends AggregateRoot
     public private(set) Email $email;
 
     /**
+     * @phpstan-var \DateTimeImmutable|null
+     */
+    #[ORM\Column(
+        name: 'email_verified_at',
+        type: Types::DATETIME_IMMUTABLE,
+        nullable: true
+    )]
+    private ?\DateTimeImmutable $emailVerifiedAt = null;
+
+    /**
+     * @phpstan-var Phone|null
+     */
+    #[ORM\Column(name: 'phone', type: Phone::class, length: 20, nullable: true)]
+    public private(set) ?Phone $phone = null;
+
+    /**
+     * @phpstan-var \DateTimeImmutable|null
+     */
+    #[ORM\Column(
+        name: 'phone_verified_at',
+        type: Types::DATETIME_IMMUTABLE,
+        precision: 6,
+        nullable: true
+    )]
+    public private(set) ?\DateTimeImmutable $phoneVerifiedAt = null;
+
+    /**
+     * @phpstan-var bool
+     */
+    #[ORM\Column(name: 'is_active', type: Types::BOOLEAN, options: ['default' => true])]
+    public private(set) bool $isActive = true;
+
+    /**
      * @phpstan-var Password
      */
     #[ORM\Embedded(class: Password::class, columnPrefix: false)]
     public private(set) Password $password;
+
+    /**
+     * @phpstan-var \DateTimeImmutable|null
+     */
+    #[ORM\Column(
+        name: 'password_changed_at',
+        type: Types::DATETIME_IMMUTABLE,
+        precision: 6,
+        nullable: true
+    )]
+    public private(set) ?\DateTimeImmutable $passwordChangedAt = null;
     
     /**
      * @phpstan-var string|null
@@ -121,29 +183,57 @@ class User extends AggregateRoot
     )]
     public private(set) ?string $rememberToken = null {
         set (string|null $value) {
-            if ($value === '') {
+            if ($value === null) {
+                $this->rememberToken = null;
+                return;
+            }
+
+            $rememberToken = trim(string: $value);
+
+            if ($rememberToken === '') {
                 throw new \DomainException(
                     message: 'Remember token cannot be empty.'
                 );
             }
-            
-            $rememberToken = $value !== null
-                ? trim(string: $value)
-                : null;
+
+            if (mb_strlen(string: $rememberToken) > 100) {
+                throw new \DomainException(
+                    message: 'Remember token is too long.'
+                );
+            }
 
             $this->rememberToken = $rememberToken;
         }
     }
 
     /**
-     * @phpstan-param string $name
+     * @phpstan-var \DateTimeImmutable|null
+     */
+    #[ORM\Column(
+        name: 'last_login_at',
+        type: Types::DATETIME_IMMUTABLE,
+        precision: 6,
+        nullable: true
+    )]
+    public private(set) ?\DateTimeImmutable $lastLoginAt = null;
+
+    /**
+     * @phpstan-var RoleId
+     */
+    #[ORM\Column(name: 'role_id', type: RoleId::class)]
+    public private(set) RoleId $roleId;
+
+    /**
+     * @phpstan-param string $firstName
+     * @phpstan-param string $lastName
      * @phpstan-param Email $email
      * @phpstan-param Password $password
      * @phpstan-param RoleId $roleId
      * @phpstan-param UserId|null $id
      */
     public function __construct(
-        string $name,
+        string $firstName,
+        string $lastName,
         Email $email,
         Password $password,
         RoleId $roleId,
@@ -157,7 +247,8 @@ class User extends AggregateRoot
         /**
          * Assigns user data properties.
          */
-        $this->name = $name;
+        $this->firstName = $firstName;
+        $this->lastName = $lastName;
         $this->email = $email;
         $this->password = $password;
         $this->roleId = $roleId;

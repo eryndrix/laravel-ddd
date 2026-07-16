@@ -3,12 +3,12 @@
 namespace App\Identity\Infrastructure\Auth;
 
 use App\Identity\Domain\User;
+use Tymon\JWTAuth\Contracts\JWTSubject;
 use App\Identity\Domain\Access\Auth\UserAdapterInterface;
 use Illuminate\Auth\Authenticatable;
-use Tymon\JWTAuth\Contracts\JWTSubject;
-use Illuminate\Notifications\Notifiable;
-use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Auth\MustVerifyEmail;
+use Illuminate\Auth\Passwords\CanResetPassword;
+use Illuminate\Notifications\Notifiable;
 
 final class UserAdapter implements
     JWTSubject,

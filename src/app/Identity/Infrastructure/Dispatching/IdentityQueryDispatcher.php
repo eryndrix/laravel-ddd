@@ -4,7 +4,9 @@ namespace App\Identity\Infrastructure\Dispatching;
 
 use Illuminate\Support\ServiceProvider;
 use App\Identity\Application\Email\Verify\VerifyEmailQuery;
-use App\Identity\Application\Email\Verify\VerifyEmailProcess;
+use App\Identity\Application\Email\Verify\VerifyEmailUseCase;
+use App\Identity\Application\Auth\User\UserQuery;
+use App\Identity\Application\Auth\User\UserUseCase;
 // use App\Identity\Application\Profile\Show\ShowProfileHandler;
 // use App\Identity\Application\Profile\Show\ShowProfileQuery;
 use App\Shared\Domain\Bus\QueryBusInterface;
@@ -15,7 +17,7 @@ final class IdentityQueryDispatcher extends ServiceProvider
      * @phpstan-var array<class-string, class-string>
      */
     private array $auth = [
-        //CheckMeQuery::class => CheckMeHandler::class
+        UserQuery::class => UserUseCase::class
     ];
     
     /**
@@ -29,7 +31,7 @@ final class IdentityQueryDispatcher extends ServiceProvider
      * @phpstan-var array<class-string, class-string>
      */
     private array $email = [
-        VerifyEmailQuery::class => VerifyEmailProcess::class
+        VerifyEmailQuery::class => VerifyEmailUseCase::class
     ];
 
     /**

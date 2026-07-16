@@ -2,8 +2,9 @@
 
 namespace App\Identity\Application\Auth\Logout\Handler;
 
-use App\Shared\Application\Handler\Handler;
+use App\Shared\Application\Handler;
 use App\Identity\Domain\Access\Jwt\JwtTokenManagerInterface;
+use App\Identity\Application\Auth\Logout\Exception\JwtTokenInvalidationException;
 use App\Identity\Application\Auth\Logout\LogoutCommand;
 
 final class InvalidateJwtHandler extends Handler
@@ -17,12 +18,22 @@ final class InvalidateJwtHandler extends Handler
 
     /**
      * @phpstan-param LogoutCommand $command
-     * @phpstan-param \Closure $next
+     * @phpstan-param \Closure(LogoutCommand):mixed $next
+     *
+     * @throws JwtTokenInvalidationException
      */
     public function handle(
         LogoutCommand $command, \Closure $next): mixed
     {
-        $this->jwtTokenManager->invalidateToken();
+        try {
+            $this->jwtTokenManager->invalidateToken();
+        }
+
+        catch (\RuntimeException $e) {
+            throw new JwtTokenInvalidationException(
+                previous: $e
+            );
+        }
 
         return $next($command);
     }

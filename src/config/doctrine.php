@@ -107,6 +107,14 @@ return [
             App\Shared\Infrastructure\Id\UserIdType::class
         ],
         [
+            App\Identity\Infrastructure\Type\AvatarType::NAME,
+            App\Identity\Infrastructure\Type\AvatarType::class
+        ],
+        [
+            App\Identity\Infrastructure\Type\PhoneType::NAME,
+            App\Identity\Infrastructure\Type\PhoneType::class
+        ],
+        [
             App\Shared\Infrastructure\Id\RoleIdType::NAME,
             App\Shared\Infrastructure\Id\RoleIdType::class
         ],

@@ -4,8 +4,9 @@ namespace App\Identity\Domain;
 
 use Doctrine\ORM\Mapping as ORM;
 use App\Shared\Domain\AggregateRoot;
-use App\Identity\Domain\Changing\TokenStateChange;
 use App\Shared\Domain\Id\TokenId;
+use App\Identity\Domain\Access\Abilities;
+use App\Identity\Domain\Access\TokenHash;
 use App\Shared\Domain\Id\UserId;
 use App\Shared\Domain\Date\CreatedDateProvider;
 use App\Shared\Domain\Date\UpdatedDateProvider;
@@ -19,11 +20,6 @@ use Doctrine\DBAL\Types\Types;
 #[ORM\HasLifecycleCallbacks]
 class Token extends AggregateRoot
 {
-    /**
-     * @phpstan-use TokenStateChange<$this>
-     */
-    use TokenStateChange;
-
     /**
      * @phpstan-use CreatedDateProvider<\DateTimeImmutable>
      */
@@ -147,5 +143,74 @@ class Token extends AggregateRoot
          */
         $this->initializeCreatedAt();
         $this->initializeUpdatedAt();
+    }
+    
+    /**
+     * @phpstan-param UserId $userId
+     * @phpstan-param TokenHash $tokenHash
+     * @phpstan-param \DateTimeImmutable $expiresAt
+     * 
+     * @phpstan-return Token
+     */
+    public static function create(
+        UserId $userId,
+        TokenHash $tokenHash,
+        \DateTimeImmutable $expiresAt): Token
+    {
+        return new Token(
+            tokenableType: User::class,
+            tokenableId: $userId,
+            name: 'refresh_token',
+            token: $tokenHash,
+            abilities: Abilities::fromArray(value: ['refresh']),
+            expiresAt: $expiresAt
+        );
+    }
+    /**
+     * @phpstan-param string $ability
+     * @phpstan-return bool
+     */
+    public function can(string $ability): bool
+    {
+        return $this->abilities !== null
+            && $this->abilities->has(ability: $ability);
+    }
+
+    /**
+     * @phpstan-return void
+     */
+    public function markAsUsed(): void
+    {
+        if ($this->lastUsedAt?->getTimestamp()
+            === (new \DateTimeImmutable())->getTimestamp()
+        ) {
+            return;
+        }
+
+        $this->lastUsedAt = new \DateTimeImmutable();
+    }
+
+    /**
+     * @phpstan-return void
+     */
+    public function revoke(): void
+    {
+        if ($this->isRevoked()) {
+            return;
+        }
+
+        $oldExpiresAt = $this->expiresAt;
+        $this->expiresAt = new \DateTimeImmutable();
+
+        $occurredAt = $this->expiresAt;
+    }
+
+    /**
+     * @phpstan-return bool
+     */
+    public function isRevoked(): bool
+    {
+        return $this->expiresAt !== null
+            && $this->expiresAt <= new \DateTimeImmutable();
     }
 }

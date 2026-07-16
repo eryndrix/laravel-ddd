@@ -2,16 +2,11 @@
 
 namespace App\Shared\Domain\Bus;
 
-/**
- * @phpstan-template TEvent of string|object
- * @phpstan-template TPayload
- * @phpstan-template TListener of string|callable
- */
 interface EventBusInterface
 {
     /**
-     * @phpstan-param TEvent $event
-     * @phpstan-param TPayload $payload
+     * @phpstan-param string|object $event
+     * @phpstan-param mixed $payload
      * @phpstan-param bool $halt
      * 
      * @phpstan-return array<array-key, mixed>|null

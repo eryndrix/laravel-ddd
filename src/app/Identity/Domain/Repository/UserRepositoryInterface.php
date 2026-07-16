@@ -2,10 +2,10 @@
 
 namespace App\Identity\Domain\Repository;
 
-use App\Identity\Domain\TokenHash;
-use App\Identity\Domain\User;
-use App\Shared\Domain\Email\Email;
 use App\Shared\Domain\Id\UserId;
+use App\Identity\Domain\Access\TokenHash;
+use App\Identity\Domain\Email\Email;
+use App\Identity\Domain\User;
 
 interface UserRepositoryInterface
 {

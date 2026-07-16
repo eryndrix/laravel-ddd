@@ -4,16 +4,15 @@ return [
 
 	'register' => [
 		'success' => 'Registration successful!',
-		'invalid_format' => 'Invalid email format or password format.',
 		'failed' => 'Registration failed. Please try again.',
 		'unknown' => 'An error occurred during registration.',
 	],
 
 	'login' => [
-		'invalid_credentials' => 'Invalid email or password.',
-		'too_many_attempts' => 'Too many attempts. Please wait.',
-		'failed' => 'Login failed. Please try again.',
-		'unknown' => 'An error occurred during login.',
+	    'invalid_credentials' => 'Invalid email or password.',
+	    'unauthorized' => 'Client failed to authorize.',
+	    'failed' => 'Login failed. Please try again.',
+	    'unknown' => 'An error occurred during login.',
 	],
 
 	'refresh_token' => [
@@ -28,6 +27,7 @@ return [
 
 	'logout' => [
 		'success' => 'Logout successful!',
+		'unauthorized' => 'You are not authorized to log out.',
 		'failed' => 'Logout failed. Please try again.',
 		'unknown' => 'An error occurred during logout.',
 	],
@@ -73,5 +73,10 @@ return [
             'unknown' => 'An error occurred during email verification.',
         ],
     ],
+
+    'user' => [
+	    'failed' => 'User operation failed. Please try again.',
+	    'unknown' => 'An error occurred during user operation.',
+	],
 
 ];

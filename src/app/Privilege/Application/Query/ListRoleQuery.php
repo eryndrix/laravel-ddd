@@ -10,7 +10,7 @@ use App\Shared\Application\Query\Query;
 final class ListRoleQuery extends Query
 {
     /**
-     * @phpstan-param int $perPage
+     * @phpstan-param TPerPage $perPage
      */
     public function __construct(
         public private(set) int $perPage = 15
