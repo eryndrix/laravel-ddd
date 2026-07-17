@@ -6,7 +6,7 @@ use App\Shared\Presentation\Responder;
 use App\Shared\Presentation\Response\WebResponse;
 use App\Identity\Application\Email\Verify\Exception\EmailAlreadyVerifiedException;
 use App\Identity\Application\Email\Verify\Exception\InvalidVerificationHashException;
-use App\Identity\Application\Email\Verify\Exception\UserNotFoundException;
+use App\Shared\Application\Exception\UserNotFoundException;
 use App\Shared\Application\Result\Result;
 
 /**

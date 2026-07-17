@@ -30,7 +30,7 @@ final class EmailAlreadyVerifiedExceptionHandler extends ExceptionHandler
      */
     public function map(\Throwable $e): Result
     {
-        $this->logger->error(
+        $this->logger->notice(
             message: 'Email is already verified.',
             exception: $e
         );

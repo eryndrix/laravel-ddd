@@ -4,7 +4,7 @@ namespace App\Identity\Application\Email\Update\Handler;
 
 use App\Shared\Application\Handler;
 use App\Identity\Application\Email\Update\UpdateEmailCommand;
-use App\Identity\Application\Email\Update\Exception\UserNotFoundException;
+use App\Shared\Application\Exception\UserNotFoundException;
 use App\Shared\Domain\Bus\EventBusInterface;
 
 final class DispatchVerificationLinkHandler extends Handler

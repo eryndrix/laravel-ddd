@@ -4,8 +4,8 @@ namespace App\Identity\Application\Email\Update\Handler;
 
 use App\Shared\Application\Handler;
 use App\Identity\Domain\Repository\UserRepositoryInterface;
-use App\Identity\Application\Email\Update\Exception\UserNotFoundException;
 use App\Identity\Application\Email\Update\UpdateEmailCommand;
+use App\Shared\Application\Exception\UserNotFoundException;
 use App\Identity\Domain\Email\Email;
 
 final class PersistNewEmailHandler extends Handler

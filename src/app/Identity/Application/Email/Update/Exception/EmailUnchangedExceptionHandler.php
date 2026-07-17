@@ -30,7 +30,7 @@ final class EmailUnchangedExceptionHandler extends ExceptionHandler
      */
     public function map(\Throwable $e): Result
     {
-        $this->logger->error(
+        $this->logger->notice(
             message: 'New email must be different from the current email.',
             exception: $e
         );

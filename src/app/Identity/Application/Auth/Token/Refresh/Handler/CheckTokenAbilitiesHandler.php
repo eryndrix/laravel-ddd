@@ -3,8 +3,8 @@
 namespace App\Identity\Application\Auth\Token\Refresh\Handler;
 
 use App\Shared\Application\Handler;
-use App\Identity\Application\Token\Refresh\Exception\TokenNotFoundException;
-use App\Identity\Application\Token\Refresh\Exception\MissingAbilityException;
+use App\Identity\Application\Auth\Token\Refresh\Exception\TokenNotFoundException;
+use App\Identity\Application\Auth\Token\Refresh\Exception\MissingAbilityException;
 use App\Identity\Application\Auth\Token\Refresh\RefreshTokenCommand;
 
 final class CheckTokenAbilitiesHandler extends Handler

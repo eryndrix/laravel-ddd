@@ -30,7 +30,7 @@ final class InvalidVerificationHashExceptionHandler extends ExceptionHandler
      */
     public function map(\Throwable $e): Result
     {
-        $this->logger->error(
+        $this->logger->warning(
             message: 'Invalid verification hash.',
             exception: $e
         );

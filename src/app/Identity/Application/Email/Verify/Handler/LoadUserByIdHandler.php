@@ -4,7 +4,7 @@ namespace App\Identity\Application\Email\Verify\Handler;
 
 use App\Shared\Application\Handler;
 use App\Identity\Application\Email\Verify\VerifyEmailQuery;
-use App\Identity\Application\Email\Verify\Exception\UserNotFoundException;
+use App\Shared\Application\Exception\UserNotFoundException;
 use App\Identity\Domain\Repository\UserRepositoryInterface;
 use App\Shared\Domain\Id\UserId;
 

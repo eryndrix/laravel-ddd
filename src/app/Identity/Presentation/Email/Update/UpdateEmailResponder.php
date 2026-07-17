@@ -5,7 +5,7 @@ namespace App\Identity\Presentation\Email\Update;
 use App\Shared\Presentation\Responder;
 use App\Shared\Presentation\Response\ApiResponse;
 use App\Identity\Application\Email\Update\Exception\EmailUnchangedException;
-use App\Identity\Application\Email\Update\Exception\UserNotFoundException;
+use App\Shared\Application\Exception\UserNotFoundException;
 use App\Shared\Application\Result\Result;
 use Illuminate\Http\Response;
 

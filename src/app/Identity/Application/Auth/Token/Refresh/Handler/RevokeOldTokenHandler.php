@@ -4,7 +4,7 @@ namespace App\Identity\Application\Auth\Token\Refresh\Handler;
 
 use App\Shared\Application\Handler;
 use App\Identity\Application\Auth\Token\Refresh\RefreshTokenCommand;
-use App\Identity\Application\Token\Refresh\Exception\TokenNotFoundException;
+use App\Identity\Application\Auth\Token\Refresh\Exception\TokenNotFoundException;
 use App\Identity\Domain\Repository\TokenRepositoryInterface;
 
 final class RevokeOldTokenHandler extends Handler

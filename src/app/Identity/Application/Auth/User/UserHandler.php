@@ -16,6 +16,7 @@ final class UserHandler extends Handler
      */
     public function execute(UserQuery $query): UserData
     {
+        // @phpstan-ignore instanceof.alwaysTrue
         if (!$query->user instanceof User) {
             throw new UserNotFoundException();
         }

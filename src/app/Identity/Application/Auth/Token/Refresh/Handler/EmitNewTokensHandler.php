@@ -5,7 +5,7 @@ namespace App\Identity\Application\Auth\Token\Refresh\Handler;
 use App\Shared\Application\Handler;
 use App\Identity\Application\Auth\Token\Refresh\RefreshTokenCommand;
 use App\Identity\Domain\Access\Jwt\JwtTokenIssuerInterface;
-use App\Identity\Application\Token\Refresh\Exception\TokenIssuanceException;
+use App\Identity\Application\Auth\Token\Refresh\Exception\TokenIssuanceException;
 use Illuminate\Contracts\Auth\Authenticatable;
 
 final class EmitNewTokensHandler extends Handler
