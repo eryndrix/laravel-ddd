@@ -4,11 +4,11 @@ namespace App\Identity\Presentation\Auth\Token\Refresh;
 
 use App\Shared\Presentation\Responder;
 use App\Shared\Presentation\Response\ApiResponse;
+use App\Shared\Application\Exception\UserNotFoundException;
 use App\Identity\Application\Auth\Token\Refresh\Exception\TokenNotFoundException;
 use App\Identity\Application\Auth\Token\Refresh\Exception\TokenExpiredException;
 use App\Identity\Application\Auth\Token\Refresh\Exception\MissingAbilityException;
 use App\Identity\Application\Auth\Token\Refresh\Exception\TokenReuseDetectedException;
-use App\Identity\Application\Auth\Token\Refresh\Exception\UserNotFoundException;
 use App\Identity\Application\Auth\Token\Refresh\Exception\TokenIssuanceException;
 use App\Identity\Application\Auth\Token\TokenData;
 use App\Shared\Application\Result\Result;
@@ -31,22 +31,23 @@ final class RefreshTokenResponder extends Responder
                 status: Response::HTTP_OK
             ),
             onError: fn (\Throwable $e) => match (true) {
+                $e instanceof \DomainException,
                 $e instanceof MissingAbilityException => new ApiResponse(
                     data: ['message' => $e->getMessage()],
                     status: Response::HTTP_BAD_REQUEST
                 ),
+                $e instanceof TokenExpiredException,
                 $e instanceof TokenNotFoundException,
                 $e instanceof UserNotFoundException => new ApiResponse(
                     data: ['message' => $e->getMessage()],
                     status: Response::HTTP_UNAUTHORIZED
                 ),
-                $e instanceof TokenExpiredException,
                 $e instanceof TokenReuseDetectedException => new ApiResponse(
                     data: ['message' => $e->getMessage()],
                     status: Response::HTTP_FORBIDDEN
                 ),
                 $e instanceof TokenIssuanceException => new ApiResponse(
-                    data: ['message' => __('identity.refresh_token.failed')],
+                    data: ['message' => $e->getMessage()],
                     status: Response::HTTP_INTERNAL_SERVER_ERROR
                 ),
                 default => new ApiResponse(

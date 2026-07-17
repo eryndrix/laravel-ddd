@@ -30,7 +30,7 @@ final class MissingAbilityExceptionHandler extends ExceptionHandler
      */
     public function map(\Throwable $e): Result
     {
-        $this->logger->notice(
+        $this->logger->warning(
             message: $e->getMessage(),
             exception: $e
         );

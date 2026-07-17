@@ -30,7 +30,7 @@ final class TokenIssuanceExceptionHandler extends ExceptionHandler
      */
     public function map(\Throwable $e): Result
     {
-        $this->logger->critical(
+        $this->logger->error(
             message: 'Failed to issue refresh tokens.',
             exception: $e
         );

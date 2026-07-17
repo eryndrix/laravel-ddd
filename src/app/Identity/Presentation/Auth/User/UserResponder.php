@@ -32,7 +32,7 @@ final class UserResponder extends Responder
                 ),
                 $e instanceof UserNotFoundException => new ApiResponse(
                     data: ['message' => __(key: 'identity.register.failed')],
-                    status: Response::HTTP_INTERNAL_SERVER_ERROR
+                    status: Response::HTTP_UNAUTHORIZED
                 ),
                 default => new ApiResponse(
                     data: ['message' => __(key: 'identity.register.unknown')],

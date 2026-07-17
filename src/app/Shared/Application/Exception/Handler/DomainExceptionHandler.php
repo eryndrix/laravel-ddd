@@ -29,7 +29,7 @@ class DomainExceptionHandler extends ExceptionHandler
      */
     public function map(\Throwable $e): Result
     {
-        $this->logger->error(
+        $this->logger->warning(
             message: $this->message(
                 default: 'Domain error occurred.'
             ),

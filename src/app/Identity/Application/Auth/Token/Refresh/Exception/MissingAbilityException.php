@@ -10,7 +10,7 @@ final class MissingAbilityException extends \LogicException
      * @phpstan-param \Throwable|null $previous
      */
     public function __construct(
-        string $message = 'Refresh token does not have refresh ability.',
+        string $message = 'Refresh token not found.',
         int $code = 0,
         ?\Throwable $previous = null
     ) {

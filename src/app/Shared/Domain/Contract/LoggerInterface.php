@@ -27,4 +27,12 @@ interface LoggerInterface
      * @phpstan-return void
      */
     public function warning(string $message, \Throwable $exception): void;
+
+    /**
+     * @phpstan-param string $message
+     * @phpstan-param \Throwable $exception
+     * 
+     * @phpstan-return void
+     */
+    public function notice(string $message, \Throwable $exception): void;
 }

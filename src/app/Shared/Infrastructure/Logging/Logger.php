@@ -67,4 +67,24 @@ final class Logger implements LoggerInterface
             ]
         );
     }
+    
+    /**
+     * @phpstan-param string $message
+     * @phpstan-param \Throwable $exception
+     * 
+     * @phpstan-return void
+     */
+    public function notice(
+        string $message, \Throwable $exception): void
+    {
+        Log::notice(
+            message: $message,
+            context: [
+                'exception' => $exception::class,
+                'code' => (int) $exception->getCode(),
+                'file' => $exception->getFile(),
+                'line' => $exception->getLine()
+            ]
+        );
+    }
 }

@@ -26,12 +26,12 @@ final class RegisterResponder extends Responder
                 status: Response::HTTP_CREATED
             ),
             onError: fn (\Throwable $e) => match (true) {
-                $e instanceof \DomainException => new ApiResponse(
+                $e instanceof \DomainException,
+                $e instanceof RoleIdRequiredException => new ApiResponse(
                     data: ['message' => $e->getMessage()],
                     status: Response::HTTP_BAD_REQUEST
                 ),
-                $e instanceof DefaultRoleNotFoundException,
-                $e instanceof RoleIdRequiredException => new ApiResponse(
+                $e instanceof DefaultRoleNotFoundException => new ApiResponse(
                     data: ['message' => __(key: 'identity.register.failed')],
                     status: Response::HTTP_INTERNAL_SERVER_ERROR
                 ),

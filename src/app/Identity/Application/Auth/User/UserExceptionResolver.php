@@ -4,6 +4,7 @@ namespace App\Identity\Application\Auth\User;
 
 use App\Shared\Application\Exception\ExceptionResolver;
 use App\Shared\Application\Exception\Handler\DomainExceptionHandler;
+use App\Shared\Application\Exception\Handler\UserNotFoundExceptionHandler;
 use App\Shared\Application\Exception\Handler\UnexpectedExceptionHandler;
 use App\Shared\Domain\Contract\ExceptionHandlerInterface;
 
@@ -14,6 +15,7 @@ final class UserExceptionResolver extends ExceptionResolver
      */
     protected array $exceptionHandlers = [
         DomainExceptionHandler::class,
+        UserNotFoundExceptionHandler::class,
         UnexpectedExceptionHandler::class
     ];
 }

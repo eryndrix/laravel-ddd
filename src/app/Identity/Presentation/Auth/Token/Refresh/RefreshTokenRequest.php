@@ -23,4 +23,18 @@ final class RefreshTokenRequest extends Request
             ],
         ];
     }
+
+    /**
+     * @phpstan-return void
+     */
+    protected function prepareForValidation(): void
+    {
+        $refreshToken = $this->header(key: 'X-Refresh-Token');
+
+        $this->merge(input: [
+            'plain_refresh_token' => is_string(value: $refreshToken)
+                ? $refreshToken
+                : '',
+        ]);
+    }
 }

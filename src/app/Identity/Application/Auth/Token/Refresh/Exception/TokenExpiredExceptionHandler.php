@@ -30,7 +30,7 @@ final class TokenExpiredExceptionHandler extends ExceptionHandler
      */
     public function map(\Throwable $e): Result
     {
-        $this->logger->warning(
+        $this->logger->notice(
             message: $e->getMessage(),
             exception: $e
         );

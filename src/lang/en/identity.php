@@ -16,11 +16,6 @@ return [
 	],
 
 	'refresh_token' => [
-		'invalid_format' => 'Invalid refresh token format.',
-		'not_exists' => 'Refresh token does not exist.',
-		'revoked' => 'Refresh token has been revoked (already used).',
-		'expired' => 'Refresh token has expired.',
-		'missing_ability' => 'Token missing required ability to refresh.',
 		'failed' => 'Token refresh failed. Please try again.',
 		'unknown' => 'An error occurred during token refresh.',
 	],

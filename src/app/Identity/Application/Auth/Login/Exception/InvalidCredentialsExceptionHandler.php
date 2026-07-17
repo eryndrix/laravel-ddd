@@ -30,7 +30,7 @@ final class InvalidCredentialsExceptionHandler extends ExceptionHandler
      */
     public function map(\Throwable $e): Result
     {
-        $this->logger->error(
+        $this->logger->notice(
             message: 'Invalid email or password.',
             exception: $e
         );

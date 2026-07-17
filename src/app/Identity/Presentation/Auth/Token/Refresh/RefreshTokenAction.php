@@ -9,9 +9,10 @@ use Spatie\RouteAttributes\Attributes\Route;
 use Spatie\RouteAttributes\Attributes\Middleware;
 use Spatie\RouteAttributes\Attributes\Prefix;
 use App\Shared\Presentation\Response\ApiResponse;
+use App\Shared\Application\Result\Result;
 
 #[Prefix(prefix: 'v1')]
-#[Middleware(middleware: 'auth:api')]
+#[Middleware(middleware: ['guest', 'throttle:3,5'])]
 final class RefreshTokenAction extends Action
 {
 	/**
@@ -22,7 +23,7 @@ final class RefreshTokenAction extends Action
     /**
      * @phpstan-param CommandBusInterface<
      *     RefreshTokenCommand,
-     *     \App\Identity\Application\Token\Refresh\RefreshTokenProcess
+     *     \App\Identity\Application\Auth\Token\Refresh\RefreshTokenUseCase
      * > $commandBus
      */
 	public function __construct(
@@ -39,9 +40,9 @@ final class RefreshTokenAction extends Action
     public function __invoke(RefreshTokenRequest $request): ApiResponse
     {
         /**
-         * @phpstan-var \App\Shared\Application\Result\Result<
-         *     array<string, mixed>,
-         *     \App\Identity\Application\Token\Refresh\RefreshTokenError
+         * @phpstan-var Result<
+         *     \App\Identity\Application\Auth\Token\TokenData,
+         *     \Throwable
          * > $result */
         $result = $this->commandBus->send(
             command: RefreshTokenCommand::fromRequest(request: $request)

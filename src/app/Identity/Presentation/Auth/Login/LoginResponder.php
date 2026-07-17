@@ -32,11 +32,11 @@ final class LoginResponder extends Responder
                     data: ['message' => $e->getMessage()],
                     status: Response::HTTP_BAD_REQUEST
                 ),
+                $e instanceof UserNotFoundException,
                 $e instanceof InvalidCredentialsException => new ApiResponse(
                     data: ['message' => $e->getMessage()],
                     status: Response::HTTP_UNAUTHORIZED
                 ),
-                $e instanceof UserNotFoundException,
                 $e instanceof JwtTokenIssuanceException => new ApiResponse(
                     data: ['message' => __(key: 'identity.login.failed')],
                     status: Response::HTTP_INTERNAL_SERVER_ERROR
