@@ -1,12 +1,12 @@
 <?php declare(strict_types=1);
 
-namespace App\Identity\Presentation\Auth\User;
+namespace App\Identity\Presentation\Auth\Check;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Http\Request;
 
 /**
- * @mixin \App\Identity\Application\Auth\User\UserData
+ * @mixin \App\Identity\Application\Auth\Check\UserData
  */
 final class UserResource extends JsonResource
 {
@@ -23,7 +23,7 @@ final class UserResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        /** @phpstan-var \App\Identity\Application\Auth\User\UserData $user */
+        /** @phpstan-var \App\Identity\Application\Auth\Check\UserData $user */
         $user = $this->resource;
 
         return [

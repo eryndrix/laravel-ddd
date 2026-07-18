@@ -1,19 +1,19 @@
 <?php declare(strict_types=1);
 
-namespace App\Identity\Presentation\Action\Password;
+namespace App\Identity\Presentation\Password\Reset;
 
 use App\Shared\Presentation\Action;
-use App\Identity\Application\Password\Reset\ResetPasswordCommand;
 use App\Shared\Domain\Bus\CommandBusInterface;
-use App\Identity\Presentation\Request\Password\ResetPasswordRequest;
-use App\Identity\Presentation\Responder\Password\ResetPasswordResponder;
+use App\Identity\Application\Password\Reset\ResetPasswordCommand;
+use App\Identity\Application\Password\Reset\ResetPasswordUseCase;
 use Spatie\RouteAttributes\Attributes\Route;
 use Spatie\RouteAttributes\Attributes\Middleware;
 use Spatie\RouteAttributes\Attributes\Prefix;
 use App\Shared\Presentation\Response\ApiResponse;
+use App\Shared\Application\Result\Result;
 
 #[Prefix(prefix: 'v1')]
-#[Middleware(middleware: 'guest')]
+#[Middleware(middleware: ['guest', 'throttle:3,5'])]
 final class ResetPasswordAction extends Action
 {
     /**
@@ -24,7 +24,7 @@ final class ResetPasswordAction extends Action
     /**
      * @phpstan-param CommandBusInterface<
      *     ResetPasswordCommand,
-     *     \App\Identity\Application\Password\Reset\ResetPasswordProcess
+     *     ResetPasswordUseCase
      * > $commandBus
      */
     public function __construct(
@@ -38,16 +38,14 @@ final class ResetPasswordAction extends Action
      * @phpstan-return ApiResponse
      */
     #[Route(methods: 'POST', uri: '/password/reset')]
-    public function __invoke(ResetPasswordRequest $request): ApiResponse
+    public function __invoke(
+        ResetPasswordRequest $request): ApiResponse
     {
-        /**
-         * @phpstan-var \App\Shared\Application\Result\Result<
-         *     string,
-         *     \App\Identity\Application\Password\Reset\ResetPasswordError
-         * > $result
-         */
+        /** @phpstan-var Result<null, \Throwable> $result */
         $result = $this->commandBus->send(
-            command: ResetPasswordCommand::fromRequest(request: $request)
+            command: ResetPasswordCommand::fromRequest(
+                request: $request
+            )
         );
 
         return $this->responder->respond(result: $result);

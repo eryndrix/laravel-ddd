@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace App\Identity\Presentation\Request\Password;
+namespace App\Identity\Presentation\Password\Reset;
 
 use App\Shared\Presentation\Request;
 use Illuminate\Validation\Rules\Password;

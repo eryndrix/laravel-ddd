@@ -2,10 +2,11 @@
 
 namespace App\Identity\Application\Password\Reset\Handler;
 
-use App\Shared\Application\Handler\Handler;
+use App\Shared\Application\Handler;
 use App\Identity\Application\Password\Reset\ResetPasswordCommand;
 use App\Identity\Domain\Repository\UserRepositoryInterface;
-use App\Identity\Infrastructure\Auth\UserAdapter;
+use App\Identity\Application\Password\Reset\Exception\PasswordResetFailedException;
+use App\Identity\Domain\Access\Auth\UserAdapterInterface;
 use Illuminate\Support\Facades\Password as PasswordEvent;
 use App\Identity\Domain\Password\Password;
 
@@ -24,7 +25,7 @@ final class ApplyPasswordResetHandler extends Handler
      * 
      * @phpstan-return mixed
      * 
-     * @throws \LogicException
+     * @throws PasswordResetFailedException
      */
     public function handle(
         ResetPasswordCommand $command, \Closure $next): mixed
@@ -37,21 +38,20 @@ final class ApplyPasswordResetHandler extends Handler
                 'token' => $command->token
             ],
             callback: function (
-                UserAdapter $auth, string $password): void {
-                $auth->user->changePassword(
+                UserAdapterInterface $user, string $password): void {
+                $user = $user->unwrap();
+                $user->changePassword(
                     password: Password::fromPlain(
                         value: $password
                     )
                 );
 
-                $this->repository->save(user: $auth->user);
+                $this->repository->save(user: $user);
             }
         );
 
         if ($status !== PasswordEvent::PASSWORD_RESET) {
-            throw new \LogicException(
-                message: 'Password reset failed.'
-            );
+            throw new PasswordResetFailedException();
         }
 
         return $next($command);

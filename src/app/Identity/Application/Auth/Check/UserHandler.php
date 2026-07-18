@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace App\Identity\Application\Auth\User;
+namespace App\Identity\Application\Auth\Check;
 
 use App\Shared\Application\Handler;
 use App\Shared\Application\Exception\UserNotFoundException;

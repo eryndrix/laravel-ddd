@@ -2,11 +2,11 @@
 
 namespace App\Identity\Application\Password\Forgot\Handler;
 
-use App\Shared\Application\Handler\Handler;
+use App\Shared\Application\Handler;
 use App\Identity\Application\Password\Forgot\ForgotPasswordCommand;
+use App\Identity\Application\Password\Forgot\Exception\EmailNotFoundException;
 use App\Identity\Domain\Access\Auth\UserProviderInterface;
-use App\Identity\Application\Password\Forgot\ForgotPasswordError;
-use App\Shared\Application\Handler\HandlerException;
+use App\Identity\Domain\Email\Email;
 
 final class ValidateEmailExistsHandler extends Handler
 {
@@ -23,22 +23,23 @@ final class ValidateEmailExistsHandler extends Handler
      * 
      * @phpstan-return mixed
      * 
-     * @throws HandlerException<ForgotPasswordError>
+     * @throws EmailNotFoundException
      */
     public function handle(
         ForgotPasswordCommand $command, \Closure $next): mixed
     {
-        $credentials = ['email' => $command->email];
+        $email = Email::of(value: $command->email);
+        $credentials = ['email' => $email->value()];
 
         $user = $this->userProvider->retrieveByCredentials(
             credentials: $credentials
         );
 
         if (is_null(value: $user)) {
-            throw new HandlerException(
-                error: ForgotPasswordError::EmailNotExists
-            );
+            throw new EmailNotFoundException();
         }
+
+        $command->email = $email->value();
 
         return $next($command);
     }

@@ -1,9 +1,9 @@
 <?php declare(strict_types=1);
 
-namespace App\Identity\Application\Auth\User;
+namespace App\Identity\Application\Auth\Check;
 
 use App\Shared\Application\UseCase;
-use App\Identity\Application\Auth\User\UserExceptionResolver;
+use App\Identity\Application\Auth\Check\UserExceptionResolver;
 use App\Shared\Application\Result\Result;
 
 final class UserUseCase extends UseCase

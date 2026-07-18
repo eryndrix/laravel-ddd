@@ -2,9 +2,10 @@
 
 namespace App\Identity\Application\Password\Forgot\Handler;
 
-use App\Shared\Application\Handler\Handler;
+use App\Shared\Application\Handler;
 use App\Identity\Application\Password\Forgot\ForgotPasswordCommand;
-use Illuminate\Support\Facades\{Password, Log};
+use App\Identity\Application\Password\Forgot\Exception\PasswordResetLinkNotSentException;
+use Illuminate\Support\Facades\Password;
 
 final class SendResetLinkHandler extends Handler
 {
@@ -14,7 +15,7 @@ final class SendResetLinkHandler extends Handler
      * 
      * @phpstan-return mixed
      * 
-     * @throws \LogicException
+     * @throws PasswordResetLinkNotSentException
      */
     public function handle(
         ForgotPasswordCommand $command, \Closure $next): mixed
@@ -24,9 +25,7 @@ final class SendResetLinkHandler extends Handler
         );
 
         if ($status !== Password::RESET_LINK_SENT) {
-            throw new \LogicException(
-                message: 'Password reset link not sent.'
-            );
+            throw new PasswordResetLinkNotSentException();
         }
 
         return $next($command);

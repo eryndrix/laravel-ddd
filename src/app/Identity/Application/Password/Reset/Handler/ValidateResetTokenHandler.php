@@ -2,11 +2,12 @@
 
 namespace App\Identity\Application\Password\Reset\Handler;
 
-use App\Shared\Application\Handler\Handler;
+use App\Shared\Application\Handler;
 use App\Identity\Application\Password\Reset\ResetPasswordCommand;
+use App\Identity\Application\Password\Reset\Exception\InvalidResetEmailException;
+use App\Identity\Application\Password\Reset\Exception\InvalidResetTokenException;
+use App\Identity\Domain\Email\Email;
 use Illuminate\Support\Facades\Password;
-use App\Identity\Application\Password\Reset\ResetPasswordError;
-use App\Shared\Application\Handler\HandlerException;
 
 final class ValidateResetTokenHandler extends Handler
 {
@@ -16,20 +17,19 @@ final class ValidateResetTokenHandler extends Handler
      * 
      * @phpstan-return mixed
      * 
-     * @throws HandlerException<ResetPasswordError>
-     * @throws \LogicException
+     * @throws InvalidResetEmailException
+     * @throws InvalidResetTokenException
      */
     public function handle(
         ResetPasswordCommand $command, \Closure $next): mixed
     {
-        $user = Password::getUser(
-            credentials: ['email' => $command->email]
-        );
+        $email = Email::of(value: $command->email);
+        $credentials = ['email' => $email->value()];
+
+        $user = Password::getUser(credentials: $credentials);
 
         if (is_null(value: $user)) {
-            throw new HandlerException(
-                error: ResetPasswordError::InvalidEmail
-            );
+            throw new InvalidResetEmailException();
         }
 
         $status = Password::tokenExists(
@@ -38,9 +38,7 @@ final class ValidateResetTokenHandler extends Handler
         );
 
         if (!$status) {
-            throw new \LogicException(
-                message: 'Invalid or expired reset token.'
-            );
+            throw new InvalidResetTokenException();
         }
 
         return $next($command);

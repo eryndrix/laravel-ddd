@@ -10,9 +10,9 @@ use App\Identity\Application\Auth\Login\LoginUseCase;
 use App\Identity\Application\Auth\Token\Refresh\RefreshTokenCommand;
 use App\Identity\Application\Auth\Token\Refresh\RefreshTokenUseCase;
 use App\Identity\Application\Password\Forgot\ForgotPasswordCommand;
-use App\Identity\Application\Password\Forgot\ForgotPasswordProcess;
+use App\Identity\Application\Password\Forgot\ForgotPasswordUseCase;
 use App\Identity\Application\Password\Reset\ResetPasswordCommand;
-use App\Identity\Application\Password\Reset\ResetPasswordProcess;
+use App\Identity\Application\Password\Reset\ResetPasswordUseCase;
 use App\Identity\Application\Password\Update\UpdatePasswordCommand;
 use App\Identity\Application\Password\Update\UpdatePasswordProcess;
 use App\Identity\Application\Auth\Logout\LogoutCommand;
@@ -48,8 +48,8 @@ final class IdentityCommandDispatcher extends ServiceProvider
      * @phpstan-var array<class-string, class-string>
      */
     private array $password = [
-        ForgotPasswordCommand::class => ForgotPasswordProcess::class,
-        ResetPasswordCommand::class => ResetPasswordProcess::class,
+        ForgotPasswordCommand::class => ForgotPasswordUseCase::class,
+        ResetPasswordCommand::class => ResetPasswordUseCase::class,
         UpdatePasswordCommand::class => UpdatePasswordProcess::class,
     ];
     

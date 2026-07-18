@@ -1,19 +1,19 @@
 <?php declare(strict_types=1);
 
-namespace App\Identity\Presentation\Action\Password;
+namespace App\Identity\Presentation\Password\Forgot;
 
 use App\Shared\Presentation\Action;
-use App\Identity\Application\Password\Forgot\ForgotPasswordCommand;
 use App\Shared\Domain\Bus\CommandBusInterface;
-use App\Identity\Presentation\Request\Password\ForgotPasswordRequest;
-use App\Identity\Presentation\Responder\Password\ForgotPasswordResponder;
+use App\Identity\Application\Password\Forgot\ForgotPasswordCommand;
+use App\Identity\Application\Password\Forgot\ForgotPasswordUseCase;
 use Spatie\RouteAttributes\Attributes\Route;
 use Spatie\RouteAttributes\Attributes\Middleware;
 use Spatie\RouteAttributes\Attributes\Prefix;
 use App\Shared\Presentation\Response\ApiResponse;
+use App\Shared\Application\Result\Result;
 
 #[Prefix(prefix: 'v1')]
-#[Middleware(middleware: 'guest')]
+#[Middleware(middleware: ['guest', 'throttle:3,5'])]
 final class ForgotPasswordAction extends Action
 {
     /**
@@ -24,7 +24,7 @@ final class ForgotPasswordAction extends Action
     /**
      * @phpstan-param CommandBusInterface<
      *     ForgotPasswordCommand,
-     *     \App\Identity\Application\Password\Forgot\ForgotPasswordProcess
+     *     ForgotPasswordUseCase
      * > $commandBus
      */
     public function __construct(
@@ -38,16 +38,14 @@ final class ForgotPasswordAction extends Action
      * @phpstan-return ApiResponse
      */
     #[Route(methods: 'POST', uri: '/password/email')]
-    public function __invoke(ForgotPasswordRequest $request): ApiResponse
+    public function __invoke(
+        ForgotPasswordRequest $request): ApiResponse
     {
-        /**
-         * @phpstan-var \App\Shared\Application\Result\Result<
-         *     string,
-         *     \App\Identity\Application\Password\Forgot\ForgotPasswordError
-         * > $result
-         */
+        /** @phpstan-var Result<null, \Throwable> $result */
         $result = $this->commandBus->send(
-            command: ForgotPasswordCommand::fromRequest(request: $request)
+            command: ForgotPasswordCommand::fromRequest(
+                request: $request
+            )
         );
 
         return $this->responder->respond(result: $result);

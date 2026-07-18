@@ -1,9 +1,9 @@
 <?php declare(strict_types=1);
 
-namespace App\Identity\Presentation\Auth\User;
+namespace App\Identity\Presentation\Auth\Check;
 
 use App\Shared\Presentation\Action;
-use App\Identity\Application\Auth\User\UserQuery;
+use App\Identity\Application\Auth\Check\UserQuery;
 use App\Shared\Domain\Bus\QueryBusInterface;
 use App\Identity\Domain\Access\Auth\UserAdapterInterface;
 use Spatie\RouteAttributes\Attributes\Prefix;
@@ -25,7 +25,7 @@ final class UserAction extends Action
     /**
      * @phpstan-param QueryBusInterface<
      *     UserQuery<\App\Identity\Domain\User>,
-     *     \App\Identity\Application\Auth\User\UserUseCase
+     *     \App\Identity\Application\Auth\Check\UserUseCase
      * > $queryBus
      */
     public function __construct(
@@ -48,7 +48,7 @@ final class UserAction extends Action
 
         /**
          * @phpstan-var Result<
-         *     \App\Identity\Application\Auth\User\UserData,
+         *     \App\Identity\Application\Auth\Check\UserData,
          *     \Throwable
          * > $result
          */

@@ -1,12 +1,12 @@
 <?php declare(strict_types=1);
 
-namespace App\Identity\Presentation\Auth\User;
+namespace App\Identity\Presentation\Auth\Check;
 
 use App\Shared\Presentation\Responder;
 use App\Shared\Presentation\Response\ApiResponse;
 use App\Shared\Application\Exception\UserNotFoundException;
 use App\Shared\Application\Result\Result;
-use App\Identity\Application\Auth\User\UserData;
+use App\Identity\Application\Auth\Check\UserData;
 use Illuminate\Http\Response;
 
 /**

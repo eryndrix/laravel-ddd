@@ -4,10 +4,12 @@ namespace App\Identity\Presentation\Auth\Login;
 
 use App\Shared\Presentation\Action;
 use App\Identity\Application\Auth\Login\LoginCommand;
+use App\Identity\Application\Auth\Login\LoginUseCase;
 use App\Shared\Domain\Bus\CommandBusInterface;
 use Spatie\RouteAttributes\Attributes\Route;
 use Spatie\RouteAttributes\Attributes\Middleware;
 use Spatie\RouteAttributes\Attributes\Prefix;
+use App\Identity\Application\Auth\Token\TokenData;
 use App\Shared\Presentation\Response\ApiResponse;
 use App\Shared\Application\Result\Result;
 
@@ -23,7 +25,7 @@ final class LoginAction extends Action
     /**
      * @phpstan-param CommandBusInterface<
      *     LoginCommand,
-     *     \App\Identity\Application\Auth\Login\LoginUseCase
+     *     LoginUseCase
      * > $commandBus
      */
 	public function __construct(
@@ -37,15 +39,14 @@ final class LoginAction extends Action
      * @phpstan-return ApiResponse
      */
     #[Route(methods: 'POST', uri: '/login')]
-    public function __invoke(LoginRequest $request): ApiResponse
+    public function __invoke(
+        LoginRequest $request): ApiResponse
     {
-        /**
-         * @phpstan-var Result<
-         *     \App\Identity\Application\Auth\Token\TokenData,
-         *     \Throwable
-         * > $result */
+        /** @phpstan-var Result<TokenData, \Throwable> $result */
         $result = $this->commandBus->send(
-            command: LoginCommand::fromRequest(request: $request)
+            command: LoginCommand::fromRequest(
+                request: $request
+            )
         );
         
         return $this->responder->respond(result: $result);
