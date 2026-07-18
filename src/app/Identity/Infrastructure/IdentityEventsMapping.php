@@ -14,7 +14,7 @@ final class IdentityEventsMapping extends EventServiceProvider
             \App\Identity\Application\Auth\Register\Listener\SendEmailConfirmationListener::class
         ],
         \App\Identity\Domain\Email\EmailChanged::class => [
-            \App\Identity\Application\Email\Update\Listener\SendEmailChangeLinkListener::class
+            \App\Identity\Application\Profile\Update\Email\Listener\SendEmailChangeLinkListener::class
         ],
     ];
 

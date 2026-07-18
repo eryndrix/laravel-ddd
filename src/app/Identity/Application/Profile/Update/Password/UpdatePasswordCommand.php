@@ -1,12 +1,12 @@
 <?php declare(strict_types=1);
 
-namespace App\Identity\Application\Password\Update;
+namespace App\Identity\Application\Profile\Update\Password;
 
 use App\Shared\Application\Command\Command;
 use WendellAdriel\ValidatedDTO\Casting\StringCast;
 use WendellAdriel\ValidatedDTO\Casting\ObjectCast;
 use WendellAdriel\ValidatedDTO\Attributes\Cast;
-use Illuminate\Contracts\Auth\Authenticatable;
+use App\Identity\Domain\User;
 
 final class UpdatePasswordCommand extends Command
 {
@@ -23,10 +23,10 @@ final class UpdatePasswordCommand extends Command
     public string $passwordConfirmation;
 
     /**
-     * @phpstan-var Authenticatable|null
+     * @phpstan-var User|null
      */
     #[Cast(type: ObjectCast::class, param: null)]
-    public ?Authenticatable $user;
+    public ?User $user;
     
     /**
      * @phpstan-return array<string, string>

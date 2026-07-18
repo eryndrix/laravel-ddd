@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace App\Identity\Application\Email\Update\Listener;
+namespace App\Identity\Application\Profile\Update\Email\Listener;
 
 use App\Shared\Application\Listener;
 use App\Identity\Domain\Email\EmailChanged;

@@ -1,15 +1,11 @@
 <?php declare(strict_types=1);
 
-namespace App\Identity\Application\Password\Update\Handler;
+namespace App\Identity\Application\Profile\Update\Password\Handler;
 
-use App\Shared\Application\Handler\Handler;
-use App\Identity\Application\Password\Update\UpdatePasswordCommand;
+use App\Shared\Application\Handler;
+use App\Identity\Application\Profile\Update\Password\UpdatePasswordCommand;
 use App\Identity\Domain\Repository\UserRepositoryInterface;
 use App\Identity\Domain\Password\Password;
-use App\Identity\Domain\Access\Auth\UserAdapterInterface;
-use App\Identity\Domain\Changing\UserChanger;
-use App\Identity\Application\Password\Update\UpdatePasswordError;
-use App\Shared\Application\Handler\HandlerException;
 
 final class UpdatePasswordHandler extends Handler
 {
@@ -26,34 +22,20 @@ final class UpdatePasswordHandler extends Handler
      * 
      * @phpstan-return mixed
      * 
-     * @throws HandlerException<UpdatePasswordError>
+     * @throws \LogicException
      */
     public function handle(
         UpdatePasswordCommand $command, \Closure $next): mixed
     {
-        $authUser = $command->user;
-        
-        /** @phpstan-var UserAdapterInterface $authUser */
-        $profile = $authUser->unwrap();
-
-        try {
-            $password = Password::fromPlain(value: $command->password);
-        }
-
-        catch (\DomainException $e) {
-            throw new HandlerException(
-                error: UpdatePasswordError::InvalidPwdFormat
-            );
-        }
+        $user = $command->user;
 
         $newPassword = Password::fromPlain(
             value: $command->password
         );
 
-        $user = new UserChanger(user: $profile)
-            ->beginChange()
-            ->password(newPassword: $newPassword)
-            ->endChange();
+        $user->changePassword(
+            newPassword: $newPassword
+        );
 
         $this->repository->save(user: $user);
 

@@ -1,14 +1,11 @@
 <?php declare(strict_types=1);
 
-namespace App\Identity\Application\Password\Update;
+namespace App\Identity\Application\Profile\Update\Password;
 
 use App\Shared\Application\Process;
-use App\Identity\Application\Password\Update\Handler\LoadAuthUserHandler;
-use App\Identity\Application\Password\Update\Handler\ValidatePasswordHandler;
-use App\Identity\Application\Password\Update\Handler\UpdatePasswordHandler;
-use App\Shared\Application\Result\Result;
-use App\Shared\Application\Handler\HandlerException;
-use Illuminate\Support\Facades\Log;
+use App\Identity\Application\Profile\Update\Password\Handler\LoadAuthUserHandler;
+use App\Identity\Application\Profile\Update\Password\Handler\ValidatePasswordHandler;
+use App\Identity\Application\Profile\Update\Password\Handler\UpdatePasswordHandler;
 
 /**
  * @phpstan-extends Process<UpdatePasswordCommand, mixed>
@@ -25,35 +22,11 @@ final class UpdatePasswordProcess extends Process
     ];
 
     /**
-     * @phpstan-param UpdatePasswordCommand $command
-     * @phpstan-return Result<string, UpdatePasswordError>
+     * @phpstan-param UpdateEmailCommand $command
+     * @phpstan-return void
      */
-    public function __invoke(UpdatePasswordCommand $command): Result
+    public function execute(UpdatePasswordCommand $command): void
     {
-        try {
-            $this->run(payload: $command);
-
-            return Result::success(
-                value: 'identity.password.update.success'
-            );
-        }
-
-        catch (HandlerException $e) {
-            /** @phpstan-var UpdatePasswordError $error */
-            $error = $e->getError();
-            return Result::failure(error: $error);
-        }
-
-        catch (\Throwable $e) {
-            Log::critical(message: $e::class, context: [
-                'line' => $e->getLine(),
-                'code' => $e->getCode(),
-                'message' => $e->getMessage()
-            ]);
-
-            return Result::failure(
-                error: UpdatePasswordError::Unknown
-            );
-        }
+        $this->run(payload: $command);
     }
 }

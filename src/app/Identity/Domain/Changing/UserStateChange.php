@@ -2,12 +2,14 @@
 
 namespace App\Identity\Domain\Changing;
 
-use App\Identity\Domain\Avatar;
+use App\Identity\Domain\User;
 use App\Identity\Domain\Email\Email;
 use App\Identity\Domain\Email\EmailChanged;
+use App\Identity\Domain\Phone\Phone;
+use App\Identity\Domain\Phone\PhoneChanged;
 use App\Identity\Domain\Password\Password;
 use App\Identity\Domain\Password\PasswordChanged;
-use App\Identity\Domain\User;
+use App\Identity\Domain\Avatar;
 
 /**
  * @phpstan-template TEntity of User
@@ -79,6 +81,24 @@ trait UserStateChange
         
         $this->record(
             event: new EmailChanged(userId: $this->id)
+        );
+    }
+
+    /**
+     * @phpstan-param Phone $phone
+     * @phpstan-return void
+     */
+    public function changePhone(Phone $phone): void
+    {
+        if ($this->phone->equals(other: $phone)) {
+            return;
+        }
+
+        $this->phone = $phone;
+        $this->phoneVerifiedAt = null;
+        
+        $this->record(
+            event: new PhoneChanged(userId: $this->id)
         );
     }
 

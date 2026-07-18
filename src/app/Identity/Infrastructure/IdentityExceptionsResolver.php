@@ -8,7 +8,7 @@ use App\Identity\Application\Auth\Register\Exception\RegisterExceptionResolver;
 use App\Identity\Application\Auth\Logout\Exception\LogoutExceptionResolver;
 use App\Identity\Application\Auth\Check\UserExceptionResolver;
 use App\Identity\Application\Auth\Token\Refresh\Exception\RefreshTokenExceptionResolver;
-use App\Identity\Application\Email\Update\Exception\UpdateEmailExceptionResolver;
+use App\Identity\Application\Profile\Update\Email\Exception\UpdateEmailExceptionResolver;
 use App\Identity\Application\Email\Verify\Exception\VerifyEmailExceptionResolver;
 use App\Identity\Application\Password\Forgot\Exception\ForgotPasswordExceptionResolver;
 use App\Identity\Application\Password\Reset\Exception\ResetPasswordExceptionResolver;

@@ -1,12 +1,12 @@
 <?php declare(strict_types=1);
 
-namespace App\Identity\Application\Email\Update\Handler;
+namespace App\Identity\Application\Profile\Update\Email\Handler;
 
 use App\Shared\Application\Handler;
-use App\Identity\Application\Email\Update\UpdateEmailCommand;
+use App\Identity\Application\Profile\Update\Email\UpdateEmailCommand;
 use Illuminate\Contracts\Auth\Authenticatable;
 use App\Identity\Domain\Access\Auth\UserAdapterInterface;
-use App\Identity\Application\Email\Update\Exception\EmailUnchangedException;
+use App\Identity\Application\Profile\Update\Email\Exception\EmailUnchangedException;
 use App\Shared\Application\Exception\UserNotFoundException;
 use Illuminate\Support\Facades\Auth;
 

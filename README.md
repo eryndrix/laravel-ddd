@@ -2,6 +2,8 @@
 
 A robust starter kit for Laravel 13 (PHP 8.5) featuring Hexagonal Architecture, Domain-Driven Design (DDD), Command Query Responsibility Segregation (CQRS), and the Action-Domain-Responder pattern. This kit provides a clean and extendable base for complex applications, following modern design best practices.
 
+> I’m pausing this project because I’m shifting focus to other technologies and priorities. PHP and Laravel remain great tools for building web applications, but I’m moving on to other stacks and won’t continue development here.
+
 ## Features
 
 - **Laravel 13** with PHP 8.5 support

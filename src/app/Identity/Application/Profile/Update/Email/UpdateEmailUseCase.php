@@ -1,9 +1,9 @@
 <?php declare(strict_types=1);
 
-namespace App\Identity\Application\Email\Update;
+namespace App\Identity\Application\Profile\Update\Email;
 
 use App\Shared\Application\UseCase;
-use App\Identity\Application\Email\Update\Exception\UpdateEmailExceptionResolver;
+use App\Identity\Application\Profile\Update\Email\Exception\UpdateEmailExceptionResolver;
 use App\Shared\Application\Result\Result;
 
 final class UpdateEmailUseCase extends UseCase

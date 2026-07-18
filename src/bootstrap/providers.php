@@ -13,7 +13,7 @@ return [
     /*
      * Identity module bindings
      */
-    App\Identity\Infrastructure\IdentityRepositoryRegistrar::class,
+    App\Identity\Infrastructure\Repository\IdentityRepositoryRegistrar::class,
     App\Identity\Infrastructure\Auth\AuthServiceProvider::class,
     App\Identity\Infrastructure\Jwt\JwtSecurityBootstrapper::class,
     App\Identity\Infrastructure\Dispatching\IdentityCommandDispatcher::class,

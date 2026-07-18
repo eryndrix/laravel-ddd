@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace App\Identity\Application\Email\Update\Exception;
+namespace App\Identity\Application\Profile\Update\Email\Exception;
 
 use App\Shared\Application\Exception\ExceptionResolver;
 use App\Shared\Application\Exception\Handler\DomainExceptionHandler;

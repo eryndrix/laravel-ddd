@@ -10,22 +10,21 @@ use App\Shared\Domain\Primitive;
 final class Avatar extends Primitive
 {
     /**
+     * @phpstan-var string
+     */
+    private string $avatar;
+
+    /**
      * @phpstan-param string $avatar
      * @throws \DomainException
      */
-    public function __construct(private string $avatar)
+    public function __construct(string $avatar)
     {
         $avatar = trim(string: $avatar);
 
-        if ($avatar === '') {
+        if (!self::isValid(value: $avatar)) {
             throw new \DomainException(
-                message: 'Avatar path cannot be empty.'
-            );
-        }
-
-        if (mb_strlen(string: $avatar) > 255) {
-            throw new \DomainException(
-                message: 'Avatar path exceeds 255 characters.'
+                message: 'Avatar path is invalid.'
             );
         }
 
@@ -39,6 +38,17 @@ final class Avatar extends Primitive
     public static function of(string $value): self
     {
         return new self(avatar: $value);
+    }
+
+    /**
+     * @phpstan-param string $value
+     */
+    public static function isValid(string $value): bool
+    {
+        $value = trim(string: $value);
+
+        return $value !== ''
+            && mb_strlen(string: $value) <= 255;
     }
 
     /**

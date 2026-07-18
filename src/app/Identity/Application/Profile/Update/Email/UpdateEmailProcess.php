@@ -1,11 +1,11 @@
 <?php declare(strict_types=1);
 
-namespace App\Identity\Application\Email\Update;
+namespace App\Identity\Application\Profile\Update\Email;
 
 use App\Shared\Application\Process;
-use App\Identity\Application\Email\Update\Handler\ValidateEmailHandler;
-use App\Identity\Application\Email\Update\Handler\PersistNewEmailHandler;
-use App\Identity\Application\Email\Update\Handler\DispatchVerificationLinkHandler;
+use App\Identity\Application\Profile\Update\Email\Handler\ValidateEmailHandler;
+use App\Identity\Application\Profile\Update\Email\Handler\PersistNewEmailHandler;
+use App\Identity\Application\Profile\Update\Email\Handler\DispatchVerificationLinkHandler;
 
 /**
  * @phpstan-extends Process<UpdateEmailCommand, mixed>

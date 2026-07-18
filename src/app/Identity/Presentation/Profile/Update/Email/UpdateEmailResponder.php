@@ -1,10 +1,10 @@
 <?php declare(strict_types=1);
 
-namespace App\Identity\Presentation\Email\Update;
+namespace App\Identity\Presentation\Profile\Update\Email;
 
 use App\Shared\Presentation\Responder;
 use App\Shared\Presentation\Response\ApiResponse;
-use App\Identity\Application\Email\Update\Exception\EmailUnchangedException;
+use App\Identity\Application\Profile\Update\Email\Exception\EmailUnchangedException;
 use App\Shared\Application\Exception\UserNotFoundException;
 use App\Shared\Application\Result\Result;
 use Illuminate\Http\Response;

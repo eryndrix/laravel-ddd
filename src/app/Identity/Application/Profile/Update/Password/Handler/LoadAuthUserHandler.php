@@ -1,11 +1,9 @@
 <?php declare(strict_types=1);
 
-namespace App\Identity\Application\Password\Update\Handler;
+namespace App\Identity\Application\Profile\Update\Password\Handler;
 
-use App\Shared\Application\Handler\Handler;
-use App\Identity\Application\Password\Update\UpdatePasswordCommand;
-use App\Shared\Application\Handler\HandlerException;
-use App\Identity\Application\Password\Update\UpdatePasswordError;
+use App\Shared\Application\Handler;
+use App\Identity\Application\Profile\Update\Password\UpdatePasswordCommand;
 use Illuminate\Support\Facades\Auth;
 
 final class LoadAuthUserHandler extends Handler
@@ -16,17 +14,16 @@ final class LoadAuthUserHandler extends Handler
      * 
      * @phpstan-return mixed
      * 
-     * @throws HandlerException<UpdatePasswordError>
+     * @throws \LogicException
      */
     public function handle(
         UpdatePasswordCommand $command, \Closure $next): mixed
     {
-        $user = Auth::user();
+        $auth = Auth::user();
+        $user = $auth->unwrap();
         
         if (is_null(value: $user)) {
-            throw new HandlerException(
-                error: UpdatePasswordError::Failed
-            );
+            throw new \LogicException();
         }
 
         $command->user = $user;

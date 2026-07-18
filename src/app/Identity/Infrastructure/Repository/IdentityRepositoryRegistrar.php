@@ -1,12 +1,10 @@
 <?php declare(strict_types=1);
 
-namespace App\Identity\Infrastructure;
+namespace App\Identity\Infrastructure\Repository;
 
 use Illuminate\Support\ServiceProvider;
 use App\Identity\Domain\Repository\UserRepositoryInterface;
-use App\Identity\Infrastructure\Repository\UserRepository;
 use App\Identity\Domain\Repository\TokenRepositoryInterface;
-use App\Identity\Infrastructure\Repository\TokenRepository;
 
 final class IdentityRepositoryRegistrar extends ServiceProvider
 {
